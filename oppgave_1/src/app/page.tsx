@@ -1,6 +1,11 @@
 import type { Task } from "@/types";
 import Header from "@/components/Header";
 import Tasks from "@/components/Tasks";
+import Answer from "@/components/Answer";
+import Taskify from "@/components/Task";
+import TaskText from "@/components/Text";
+import Progress from "@/components/Progress";
+
 
 export default async function Home() {
   const response = await fetch("http://localhost:3000/api/restapi?count=2", {
@@ -14,7 +19,13 @@ export default async function Home() {
     <div>
       <Header />
       <main className="px-6 md:px-0">
-      <Tasks tasks={data} />
+      <Tasks>
+        <Taskify tasks={data}>
+          <TaskText text={"Skriv resultatet av regneoperasjonen"} />
+        </Taskify>
+        <Answer />
+        <Progress tasks={data} />
+      </Tasks>
       </main>
     </div>
   );

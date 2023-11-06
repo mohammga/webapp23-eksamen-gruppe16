@@ -1,14 +1,16 @@
 "use client";
 
+import type { ReactNode } from "react"
 import { useState } from 'react';
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
 
 type TasksProps = {
   tasks: Task[];
+  children: ReactNode
 };
 
-export default function Task({ tasks }: TasksProps) {
+export default function Task({ tasks, children }: TasksProps) {
   const { count } = useProgress({ tasks });
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
 
@@ -29,6 +31,7 @@ export default function Task({ tasks }: TasksProps) {
       <p className='text-muted-foreground'>{count} av 3 forsøk</p>
       <div className="">
         <p>Spørsmål {currentTaskIndex + 1}</p>
+         {children}
         <article key={currentTaskIndex}>
           <h3 className="text-lg font-semibold text-gray-800">{tasks[currentTaskIndex].text}</h3>
           <p className="text-base text-gray-600">{tasks[currentTaskIndex].data}</p>

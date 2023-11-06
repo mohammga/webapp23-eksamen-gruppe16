@@ -13,17 +13,9 @@ export default function Progress(props: { tasks: Task[] }) {
     setState(state + 1)
   }
   
-  const prev = (event: MouseEvent<HTMLButtonElement>) => {
-    console.log(event)
-    setState(state - 1)
-  }
-
   return (
     <footer className="mt-4 border-t-slate-300">
       <p>{currentTask.id}</p>
-      <button onClick={prev} className="bg-purple-700 text-white">
-        Forrige
-      </button>
       <button onClick={next} className="bg-teal-700 text-white">
         Neste
       </button>

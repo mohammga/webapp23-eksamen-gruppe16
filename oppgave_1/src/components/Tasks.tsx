@@ -1,19 +1,14 @@
-import Answer from "@/components/Answer";
-import Taskify from "@/components/Task";
-import { Task } from "@/types";
-import Progress from "@/components/Progress";
+import type { ReactNode } from "react"
 
 type TasksProps = {
-  tasks: Task[]
+  children: ReactNode
 }
 
-export default function Tasks({ tasks }: TasksProps) {
+export default function Tasks({ children }: TasksProps) {
   return (
     <section className="flex justify-center items-center w-full h-screen">
-      <div className="w-full md:w-[500px] rounded-lg border bg-white p-4 shadow-md">
-      <Taskify tasks={tasks} />
-      <Answer />
-      <Progress tasks={tasks} />
+      <div className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
+      {children}
       </div>
     </section>
   )

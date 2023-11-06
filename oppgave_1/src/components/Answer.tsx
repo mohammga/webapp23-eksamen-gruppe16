@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import type { FormEvent, MouseEvent } from "react";
-import TaskText from "@/components/Text"
 import useProgress from "@/hooks/useProgress"
 
 
 export default function Answer() {
   const [answer, setAnswer] = useState(0)
-
 
   const send = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -25,7 +23,6 @@ export default function Answer() {
 
   return (
     <div className="flex flex-col">
-      <TaskText text={"Skriv resultatet av regneoperasjonen"} />
       <label htmlFor="answer">Svar</label>
       <input
         name="answer"
