@@ -2,7 +2,7 @@ import type { Task } from "@/types";
 import Header from "@/components/Header";
 import Tasks from "@/components/Tasks";
 import Answer from "@/components/Answer";
-import Taskify from "@/components/Task";
+import TaskCard from "@/components/Task";
 import TaskText from "@/components/Text";
 import Progress from "@/components/Progress";
 
@@ -20,9 +20,9 @@ export default async function Home() {
       <Header />
       <main className="px-6 md:px-0">
       <Tasks>
-        <Taskify tasks={data}>
+        <TaskCard tasks={data}>
           <TaskText text={"Skriv resultatet av regneoperasjonen"} />
-        </Taskify>
+        </TaskCard>
         <Answer />
         <Progress tasks={data} />
       </Tasks>
