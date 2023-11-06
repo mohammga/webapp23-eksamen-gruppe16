@@ -11,9 +11,11 @@ export default async function Home() {
   const data: Task[] = result.data; 
 
   return (
-    <main>
+    <div>
       <Header />
+      <main className="px-6 md:px-0">
       <Tasks tasks={data} />
-    </main>
+      </main>
+    </div>
   );
 }
