@@ -7,16 +7,28 @@ async function main() {
     // Eksempeldata for seeding
     const tasks = [
       {
-        text: "Skriv resultatet av regneoperasjonen 1",
+        text: "Skriv resultatet av regneoperasjonen",
         type: "add",
-        data: "9|4",
-      },
-      {
-        text: "Skriv resultatet av regneoperasjonen 2",
-        type: "add",
-        data: "7|2",
-      },
-      // Legg til flere oppgaver etter behov
+        data: "9+1"
+    },
+    {
+      
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "subtract",
+        data: "12-6"
+    },
+    {
+        
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "multiply",
+        data: "7*2"
+    },
+    {
+       
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "divide",
+        data: "20/5"
+    }
     ]
 
     for (const task of tasks) {
