@@ -1,26 +1,19 @@
 import type { Task } from "@/types";
-
-
-
-import Answer from "@/components/Answer";
 import Header from "@/components/Header";
-import Progress from "@/components/Progress";
 import Tasks from "@/components/Tasks";
 
 export default async function Home() {
-  const response = await fetch("http://localhost:3000/api/restapi?count=1", {
-    method: "get",
+  const response = await fetch("http://localhost:3000/api/restapi?count=2", {
+    method: "GET",
   })
   const result: any = await response.json()
 
-  const tasks: Task[] = result.data; // Extract tasks from the "data" property
+  const data: Task[] = result.data; 
 
   return (
     <main>
       <Header />
-      <Tasks tasks={tasks}>
-        <Answer />
-      </Tasks>
+      <Tasks tasks={data} />
     </main>
   );
 }

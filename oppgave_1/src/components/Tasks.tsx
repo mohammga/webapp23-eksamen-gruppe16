@@ -1,27 +1,20 @@
-import { ReactNode } from "react"
-
-import { Task } from "@/types"
+import Answer from "@/components/Answer";
+import Taskify from "@/components/Task";
+import { Task } from "@/types";
+import Progress from "@/components/Progress";
 
 type TasksProps = {
-  children: ReactNode
   tasks: Task[]
 }
 
-export default function Tasks({ children, tasks }: TasksProps) {
+export default function Tasks({ tasks }: TasksProps) {
   return (
-    <section className="bg-gray-100 p-4">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {tasks.map((task) => (
-          <article
-            key={task.id}
-            className="rounded-lg border bg-white p-4 shadow-md"
-          >
-            <h3 className="text-lg font-semibold text-gray-800">{task.text}</h3>
-            <p className="text-base text-gray-600">{task.data}</p>
-          </article>
-        ))}
+    <section className="flex justify-center items-center w-full h-screen">
+      <div className="w-full md:w-[500px] rounded-lg border bg-white p-4 shadow-md">
+      <Taskify tasks={tasks} />
+      <Answer />
+      <Progress tasks={tasks} />
       </div>
-      {children}
     </section>
   )
 }
