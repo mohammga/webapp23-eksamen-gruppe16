@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import type { FormEvent, MouseEvent } from "react"
+import TaskText from "@/components/Text"
+
 
 export default function Answer() {
   const [answer, setAnswer] = useState(0)
@@ -16,7 +18,8 @@ export default function Answer() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col">
+      <TaskText text={"Skriv resultatet av regneoperasjonen"} />
       <label htmlFor="answer">Svar</label>
       <input
         name="answer"
@@ -25,7 +28,7 @@ export default function Answer() {
         onInput={update}
       />
       {9 + 2 === answer ? "Bra jobbet!" : null}
-      <button onClick={send}>Send</button>
+      <button className="bg-blue-500 text-white" onClick={send}>Send</button>
     </div>
   )
 }

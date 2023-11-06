@@ -6,8 +6,6 @@ import Answer from "@/components/Answer";
 import Header from "@/components/Header";
 import Progress from "@/components/Progress";
 import Tasks from "@/components/Tasks";
-import TaskText from "@/components/Text";
-
 
 export default async function Home() {
   const response = await fetch("http://localhost:3000/api/restapi?count=1", {
@@ -23,8 +21,6 @@ export default async function Home() {
       <Tasks tasks={tasks}>
         <Answer />
       </Tasks>
-      <TaskText text={"Skriv resultatet av regneoperasjonen"} />
-      <Progress tasks={tasks} />
     </main>
   );
 }
