@@ -8,8 +8,8 @@ type TasksProps = {
 export default function Progress({ next, current}: TasksProps) {
 
   return (
-    <footer className="mt-4 border-t-slate-300">
-      <button onClick={next} className="bg-teal-700 text-white">
+    <footer className="">
+      <button onClick={next} className="bg-black rounded-sm text-white w-full">
         Neste
       </button>
     </footer>

@@ -4,8 +4,7 @@ import Header from "@/components/Header";
 import Tasks from "@/components/Tasks";
 
 export default async function Home() {
-
-const count = 10
+const count = 10;
  await new Promise((resolve) => setTimeout(resolve, 1000));
  const response = await fetch(`http://localhost:3000/api/restapi?count=${count}`, {
    method: "GET",

@@ -11,5 +11,9 @@ export default function useProgress() {
     setCount(count + 1)
   }
 
-  return { count, current, next }
+  const setError = () => {
+    setCount(count + 1)
+  }
+
+  return { count, current, next, setError}
 }
