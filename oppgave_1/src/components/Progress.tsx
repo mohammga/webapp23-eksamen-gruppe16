@@ -1,9 +1,11 @@
 "use client"
 
-import useProgress from "@/hooks/useProgress";
+type TasksProps = {
+  next: () => void;
+  current: number;
+}
 
-export default function Progress( ) {
-  const { next } = useProgress();
+export default function Progress({ next, current}: TasksProps) {
 
   return (
     <footer className="mt-4 border-t-slate-300">
@@ -13,4 +15,3 @@ export default function Progress( ) {
     </footer>
   )
 }
-

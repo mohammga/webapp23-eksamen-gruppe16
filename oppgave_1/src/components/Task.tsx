@@ -1,16 +1,16 @@
 "use client";
+
 import type { ReactNode } from "react";
 import { Task } from "@/types";
-import useProgress from "@/hooks/useProgress";
 
 type TasksProps = {
   tasks: Task[];
   children: ReactNode;
+  current: number;
+  count: number;
 };
 
-export default function Task({ tasks, children }: TasksProps) {
-  let { count, current } = useProgress();
-
+export default function Task({ tasks, children, current, count }: TasksProps) {
   return (
     <section>
       <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
