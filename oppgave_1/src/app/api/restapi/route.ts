@@ -15,7 +15,6 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    // Hent data fra databasen ved hjelp av Prisma
     const tasks = await prisma.task.findMany({
       take: parseInt(count),
     })
@@ -40,7 +39,6 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Hent data fra databasen ved hjelp av Prisma
     const tasks = await prisma.task.findMany({
       take: parseInt(count),
     });
