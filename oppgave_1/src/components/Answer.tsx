@@ -31,7 +31,7 @@ export default function Answer() {
         onInput={update}
       />
       {9 + 4 === answer ? "Bra jobbet!" : null}
-      <button className="bg-black rounded-sm text-white" onClick={send}>Send</button>
+      <button className="bg-black rounded-sm text-white" onClick={send}>Sjekk svar</button>
     </div>
   )
 }
