@@ -11,10 +11,11 @@ type TasksProps = {
   current: number
   next: () => void
   setError: () => void
+  resetCount: () => void
   tasks: Task[]
 }
 
-export default function Answer({ tasks, current, setError, next }: TasksProps) {
+export default function Answer({ tasks, current, setError, resetCount, next }: TasksProps) {
   const [correct, setCorrect] = useState(false)
   const [message, setMessage] = useState("")
 
@@ -33,6 +34,7 @@ export default function Answer({ tasks, current, setError, next }: TasksProps) {
     if (values.answer === correctAnswer) {
       setCorrect(true)
       setMessage("Bra jobbet!")
+      resetCount()
       actions.resetForm() // Use 'actions.resetForm()' to reset the form
     } else {
       setCorrect(false)

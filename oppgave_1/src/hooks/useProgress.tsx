@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 
 export default function useProgress() {
   const [count, setCount] = useState(0)
@@ -11,12 +11,13 @@ export default function useProgress() {
       setCurrent(current + 1)
       setCount(count + 1)
     }
-
   }
 
   const setError = () => {
-    setCount(count + 1)
+    if (count < 3) {
+      setCount(count + 1)
+    }
   }
 
-  return { count, current, next, setError}
+  return { count, current, next, setError }
 }
