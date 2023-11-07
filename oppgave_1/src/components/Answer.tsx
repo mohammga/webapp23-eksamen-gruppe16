@@ -2,11 +2,18 @@
 
 import { useState } from "react";
 import type { FormEvent, MouseEvent } from "react";
-import useProgress from "@/hooks/useProgress"
+import { Task } from "@/types"
 
 
-export default function Answer() {
+type TasksProps = {
+  current: number;
+  tasks: Task[]
+}
+
+export default function Answer({ tasks, current } : TasksProps) {
   const [answer, setAnswer] = useState(0)
+
+  console.log(tasks[current].data)
 
   const send = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -30,8 +37,8 @@ export default function Answer() {
         placeholder="Sett svar her"
         onInput={update}
       />
-      {9 + 4 === answer ? "Bra jobbet!" : null}
-      <button className="bg-black rounded-sm text-white" onClick={send}>Send</button>
+      {eval(tasks[current].data) - answer === 0 ? "Bra jobbet!" : null}
+      <button className="bg-black rounded-sm text-white" onClick={send}>Sjekk svar</button>
     </div>
   )
 }

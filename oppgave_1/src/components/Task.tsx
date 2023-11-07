@@ -2,36 +2,25 @@
 
 import type { ReactNode } from "react";
 import { Task } from "@/types";
-import useProgress from "@/hooks/useProgress";
 
 type TasksProps = {
   tasks: Task[];
   children: ReactNode;
+  current: number;
+  count: number;
 };
 
-export default function Task({ tasks, children }: TasksProps) {
-  const { count, current, next, prev } = useProgress({ tasks });
-
-  const nextTask = () => {
-    next();
-  };
-
-  const previousTask = () => {
-    prev();
-  };
-
+export default function Task({ tasks, children, current, count }: TasksProps) {
   return (
     <section>
-      <p className='text-muted-foreground'>{count} av 3 forsøk</p>
+      <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
       <div className="">
-        <p>Spørsmål {count + 1}</p>
+        <p>Spørsmål {count + 1} av </p>
         {children}
         <article key={count}>
-          <h3 className="text-lg font-semibold text-gray-800">{current.text}</h3>
-          <p className="text-base text-gray-600">{current.data}</p>
+          <h3 className="text-lg font-semibold text-gray-800">{tasks[current].text}</h3>
+          <p className="text-base text-gray-600">{tasks[current].data}</p>
         </article>
-        <button onClick={previousTask}>Forrige Spørsmål</button>
-        <button onClick={nextTask}>Neste Spørsmål</button>
       </div>
     </section>
   );

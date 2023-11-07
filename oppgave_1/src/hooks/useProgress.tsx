@@ -1,18 +1,15 @@
 import { useState } from "react";
-import type { Task } from "@/types"
 
-export default function useProgress({ tasks }: { tasks: Task[] }) {
+export default function useProgress() {
   const [count, setCount] = useState(0)
-  const current = tasks[7]
+  const [current, setCurrent] = useState(0)
 
   const next = () => {
-    //sette neste spørsmål
-    setCount((prevCount) => prevCount + 1)
-  }
-  const prev = () => {
-    //sette forrige spørsmål
-    setCount(count - 1)
+    //hvis svaret er riktig så skal counten resetes
+    //ellers hvis feil
+    setCurrent(current + 1)
+    setCount(count + 1)
   }
 
-  return { count, current, next, prev }
+  return { count, current, next }
 }
