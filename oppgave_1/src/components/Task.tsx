@@ -1,40 +1,34 @@
 "use client";
 
-import type { ReactNode } from "react"
-import { useState } from 'react';
+import type { ReactNode } from "react";
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
 
 type TasksProps = {
   tasks: Task[];
-  children: ReactNode
+  children: ReactNode;
 };
 
 export default function Task({ tasks, children }: TasksProps) {
-  const { count } = useProgress({ tasks });
-  const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
+  const { count, current, next, prev } = useProgress({ tasks });
 
   const nextTask = () => {
-    if (currentTaskIndex < tasks.length - 1) {
-      setCurrentTaskIndex(currentTaskIndex + 1);
-    }
+    next();
   };
 
   const previousTask = () => {
-    if (currentTaskIndex > 0) {
-      setCurrentTaskIndex(currentTaskIndex - 1);
-    }
+    prev();
   };
 
   return (
     <section>
       <p className='text-muted-foreground'>{count} av 3 forsøk</p>
       <div className="">
-        <p>Spørsmål {currentTaskIndex + 1}</p>
-         {children}
-        <article key={currentTaskIndex}>
-          <h3 className="text-lg font-semibold text-gray-800">{tasks[currentTaskIndex].text}</h3>
-          <p className="text-base text-gray-600">{tasks[currentTaskIndex].data}</p>
+        <p>Spørsmål {count + 1}</p>
+        {children}
+        <article key={count}>
+          <h3 className="text-lg font-semibold text-gray-800">{current.text}</h3>
+          <p className="text-base text-gray-600">{current.data}</p>
         </article>
         <button onClick={previousTask}>Forrige Spørsmål</button>
         <button onClick={nextTask}>Neste Spørsmål</button>

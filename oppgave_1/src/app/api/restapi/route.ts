@@ -15,7 +15,6 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    // Hent data fra databasen ved hjelp av Prisma
     const tasks = await prisma.task.findMany({
       take: parseInt(count),
     })
@@ -30,26 +29,25 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const count = request.nextUrl.searchParams.get("count")
+  const count = request.nextUrl.searchParams.get("count");
 
-  if (!count || count === "0") {
+  if (!count || parseInt(count) < 1 || parseInt(count) > 10) {
     return NextResponse.json(
       { success: false, error: "Invalid count" },
       { status: 400 },
-    )
+    );
   }
 
   try {
-    // Hent data fra databasen ved hjelp av Prisma
     const tasks = await prisma.task.findMany({
       take: parseInt(count),
-    })
+    });
 
-    return NextResponse.json({ success: true, data: tasks }, { status: 200 })
+    return NextResponse.json({ success: true, data: tasks }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: "Database error" },
       { status: 500 },
-    )
+    );
   }
 }
