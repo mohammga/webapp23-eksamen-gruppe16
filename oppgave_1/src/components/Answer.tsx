@@ -3,9 +3,6 @@
 import { useState } from "react";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
-
-
-
 import Progress from "@/components/Progress";
 import { Task } from "@/types";
 

@@ -7,8 +7,11 @@ export default function useProgress() {
   const next = () => {
     //hvis svaret er riktig så skal counten resetes
     //ellers hvis feil
-    setCurrent(current + 1)
-    setCount(count + 1)
+    if (count < 3) {
+      setCurrent(current + 1)
+      setCount(count + 1)
+    }
+
   }
 
   const setError = () => {
