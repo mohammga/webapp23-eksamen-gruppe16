@@ -10,14 +10,16 @@ import { Task } from "@/types";
 type TasksProps = {
   current: number
   next: () => void
+  previous: () => void
   setError: () => void
   changeCount: () => void
-  tasks: Task[]
+  setCorrect: Function
+  task: Task
   failed: boolean
+  correct: boolean
 }
 
-export default function Answer({ tasks, current, failed, setError, changeCount, next }: TasksProps) {
-  const [correct, setCorrect] = useState(false)
+export default function Answer({ task, current, failed, correct, setError, changeCount, setCorrect, next, previous }: TasksProps) {
   const [message, setMessage] = useState("")
 
 
@@ -27,7 +29,7 @@ export default function Answer({ tasks, current, failed, setError, changeCount, 
       .required("Svar er påkrevd")
   })
 
-  const correctAnswer = eval(tasks[current].data)
+  const correctAnswer = eval(task.data)
 
   const handleSubmit = async (
     values: { answer: string },
@@ -55,6 +57,14 @@ export default function Answer({ tasks, current, failed, setError, changeCount, 
         svarelement.innerHTML = `Svaret er: ${correctAnswer}`
       }
   }
+
+  console.log(`Correct answer? is: ${correct}`);
+
+// For current
+  console.log(`Current index is: ${current}`);
+
+  // For failed (assuming it's a boolean state)
+  console.log(`Has the current attempt failed? ${failed}`);
 
 
 
@@ -84,14 +94,14 @@ export default function Answer({ tasks, current, failed, setError, changeCount, 
           )}
           {failed && (
             <>
-            <button className="rounded-sm bg-black text-white" onClick={visFasit}>
+            <button className="rounded-sm bg-black text-white" type="button" onClick={visFasit}>
               Du fikk feil 3 ganger. Trykk for å sjekke fasiten!
             </button> <br />
             <span id="fasit"></span>
             </>
           )}
           {(correct || failed) && (
-            <Progress next={next} current={current} />
+            <Progress next={next} previous={previous} current={current} />
           )}
         </Form>
       )}

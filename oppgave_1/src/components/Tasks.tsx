@@ -12,9 +12,10 @@ type TasksProps = {
 }
 
 export default function Tasks({ tasks, antallOppgaver }: TasksProps) {
-  const { count, current, failed, next, setError, changeCount } = useProgress()
+  const { count, current, correct, failed, next, previous, setCorrect, setError, changeCount } = useProgress()
 
   const task = tasks[current]
+
 
   return (
     <section className="flex justify-center items-center w-full h-screen">
@@ -22,7 +23,7 @@ export default function Tasks({ tasks, antallOppgaver }: TasksProps) {
         <TaskCard task={task} oppgaveNummer={current} count={count} antallOppgaver={antallOppgaver}>
           <TaskText text={"Skriv resultatet av regneoperasjonen"} />
         </TaskCard>
-        <Answer tasks={tasks} current={current} failed={failed} next={next} changeCount={changeCount} setError={setError} />
+        <Answer task={task} current={current} failed={failed} correct={correct} next={next} previous={previous} setCorrect={setCorrect} changeCount={changeCount} setError={setError} />
       </div>
     </section>
   )
