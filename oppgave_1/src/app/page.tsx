@@ -19,7 +19,7 @@ const count = 10;
     <div>
       <Header />
       <main className="px-6 md:px-0">
-      <Tasks tasks={data}/>
+      <Tasks tasks={data} antallOppgaver={count}/>
       </main>
     </div>
   );

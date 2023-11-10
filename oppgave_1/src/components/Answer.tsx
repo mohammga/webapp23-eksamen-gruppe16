@@ -11,13 +11,15 @@ type TasksProps = {
   current: number
   next: () => void
   setError: () => void
-  resetCount: () => void
+  changeCount: () => void
   tasks: Task[]
+  failed: boolean
 }
 
-export default function Answer({ tasks, current, setError, resetCount, next }: TasksProps) {
+export default function Answer({ tasks, current, failed, setError, changeCount, next }: TasksProps) {
   const [correct, setCorrect] = useState(false)
   const [message, setMessage] = useState("")
+
 
   // Validation schema using Yup
   const validationSchema = Yup.object().shape({
@@ -34,15 +36,24 @@ export default function Answer({ tasks, current, setError, resetCount, next }: T
     if (values.answer === correctAnswer) {
       setCorrect(true)
       setMessage("Bra jobbet!")
-      resetCount()
+      //resetCount()      //  -     Behøver ikke resette counten, dette gjøres i useProgress
       actions.resetForm() // Use 'actions.resetForm()' to reset the form
     } else {
+      actions.resetForm() // Use 'actions.resetForm()' to reset the form      
       setCorrect(false)
       setError()
+      changeCount()
       setMessage("")
-      actions.resetForm() // Use 'actions.resetForm()' to reset the form
+      
     }
     actions.setSubmitting(false) // Use 'actions.setSubmitting()' to update the submitting state
+  }
+
+  const visFasit = () => {
+      let svarelement = document.getElementById("fasit")
+      if (svarelement != null) {
+        svarelement.innerHTML = `Svaret er: ${correctAnswer}`
+      }
   }
 
 
@@ -66,12 +77,22 @@ export default function Answer({ tasks, current, setError, resetCount, next }: T
           />
           <ErrorMessage name="answer" component="div" className="error" />
           <p>{message}</p>
-          {!correct && (
+          {!correct && !failed && (
             <button className="rounded-sm bg-black text-white" type="submit" disabled={isSubmitting}>
               Sjekk svar
             </button>
           )}
-          {correct && <Progress next={next} current={current} />}
+          {failed && (
+            <>
+            <button className="rounded-sm bg-black text-white" onClick={visFasit}>
+              Du fikk feil 3 ganger. Trykk for å sjekke fasiten!
+            </button> <br />
+            <span id="fasit"></span>
+            </>
+          )}
+          {(correct || failed) && (
+            <Progress next={next} current={current} />
+          )}
         </Form>
       )}
       </Formik>

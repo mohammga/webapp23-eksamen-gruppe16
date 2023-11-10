@@ -12,6 +12,11 @@ export default function Progress({ next, current}: TasksProps) {
       <button onClick={next} className="bg-black rounded-sm text-white w-full">
         Neste
       </button>
+      
+      {current !== 0 && (
+      <button  className="bg-black rounded-sm text-white w-full">
+        Forrige
+      </button>)}
     </footer>
   )
 }
