@@ -1,7 +1,7 @@
-
 import type { Task } from "@/types";
 import Header from "@/components/Header";
 import Tasks from "@/components/Tasks";
+
 
 export default async function Home() {
 const count = 10;
@@ -22,5 +22,5 @@ const count = 10;
       <Tasks tasks={data} antallOppgaver={count}/>
       </main>
     </div>
-  );
+  ); 
 }

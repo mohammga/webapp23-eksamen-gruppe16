@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { N } from "vitest/dist/reporters-5f784f42"
 
 export default function useProgress() {
   const [count, setCount] = useState(0)
@@ -6,8 +7,8 @@ export default function useProgress() {
   const [failed, setFailed] = useState(false)
   const [savedForsøk, setSavedForsøk] = useState([1])
   const [correct, setCorrect] = useState(false)
-
   const [rightAnswers, setRightAnswers] = useState([false])
+  const [poeng, setPoeng] = useState(0)
 
   const next = () => {
     let nextCurrent = current + 1
@@ -51,8 +52,6 @@ export default function useProgress() {
       console.log('Already at the first question');
     }
   };
-  
-  
 
   const changeCount = () => {
     if (count >= 2) {
@@ -67,6 +66,9 @@ export default function useProgress() {
       setCount(count + 1)
     }
   }
+  const leggPoeng = () =>{
+    setPoeng(poeng + 1)
+  }
 
-  return { count, current, correct, failed, next, previous, setCorrect, setError, changeCount}
+  return {leggPoeng, poeng, count, current, correct, failed, next, previous, setCorrect, setError, changeCount}
 }

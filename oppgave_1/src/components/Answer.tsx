@@ -5,7 +5,7 @@ import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import Progress from "@/components/Progress";
 import { Task } from "@/types";
-
+import useProgress from "@/hooks/useProgress";
 
 type TasksProps = {
   current: number
@@ -21,6 +21,8 @@ type TasksProps = {
 
 export default function Answer({ task, current, failed, correct, setError, changeCount, setCorrect, next, previous }: TasksProps) {
   const [message, setMessage] = useState("")
+  const { poeng, leggPoeng } = useProgress()
+
 
 
   // Validation schema using Yup
@@ -38,6 +40,7 @@ export default function Answer({ task, current, failed, correct, setError, chang
     if (values.answer === correctAnswer) {
       setCorrect(true)
       setMessage("Bra jobbet!")
+      leggPoeng()
       //resetCount()      //  -     Behøver ikke resette counten, dette gjøres i useProgress
       actions.resetForm() // Use 'actions.resetForm()' to reset the form
     } else {
@@ -46,66 +49,67 @@ export default function Answer({ task, current, failed, correct, setError, chang
       setError()
       changeCount()
       setMessage("")
-      
+
     }
     actions.setSubmitting(false) // Use 'actions.setSubmitting()' to update the submitting state
   }
 
   const visFasit = () => {
-      let svarelement = document.getElementById("fasit")
-      if (svarelement != null) {
-        svarelement.innerHTML = `Svaret er: ${correctAnswer}`
-      }
+    let svarelement = document.getElementById("fasit")
+    if (svarelement != null) {
+      svarelement.innerHTML = `Svaret er: ${correctAnswer}`
+    }
   }
 
   console.log(`Correct answer? is: ${correct}`);
-
-// For current
+  // For current
   console.log(`Current index is: ${current}`);
 
   // For failed (assuming it's a boolean state)
   console.log(`Has the current attempt failed? ${failed}`);
-
-
+  console.log(`poeng: ${poeng}`)
 
   return (
     <div className="flex flex-col">
       <label htmlFor="answer">Svar</label>
       <Formik
-        initialValues={{ answer: "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ errors, handleChange, handleBlur, values, isSubmitting }) => (
-        <Form>
-          <Field
-            type="number"
-            name="answer"
-            placeholder="Sett svar her"
-            onChange={handleChange}
-            onBlur={handleBlur}     
-          />
-          <ErrorMessage name="answer" component="div" className="error" />
-          <p>{message}</p>
-          {!correct && !failed && (
-            <button className="rounded-sm bg-black text-white" type="submit" disabled={isSubmitting}>
-              Sjekk svar
-            </button>
-          )}
-          {failed && (
-            <>
-            <button className="rounded-sm bg-black text-white" type="button" onClick={visFasit}>
-              Du fikk feil 3 ganger. Trykk for å sjekke fasiten!
-            </button> <br />
-            <span id="fasit"></span>
-            </>
-          )}
-          {(correct || failed) && (
-            <Progress next={next} previous={previous} current={current} />
-          )}
-        </Form>
+  initialValues={{ answer: "" }}
+  validationSchema={validationSchema}
+  onSubmit={handleSubmit}
+>
+  {({ errors, handleChange, handleBlur, values, isSubmitting }) => (
+    <Form className="flex-col">
+      <Field
+        type="number"
+        name="answer"
+        placeholder="Sett svar her"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        className="p-2 border rounded-md"
+      />
+      <ErrorMessage name="answer" component="div" className="error" />
+      <p>{message}</p>
+      {!correct && !failed && (
+        <button className="mt-2 rounded-sm bg-black text-white p-2" type="submit" disabled={isSubmitting}>
+          Sjekk svar {`(${poeng} poeng)`}
+        </button>
       )}
-      </Formik>
+      {failed && (
+        <>
+          <button className="mt-2 rounded-sm bg-black text-white p-2" type="button" onClick={visFasit}>
+            Du fikk feil 3 ganger. Trykk for å sjekke fasiten!
+          </button>
+          <br />
+          <span id="fasit"></span>
+        </>
+      )}
+      {(correct || failed) && (
+        <Progress next={next} previous={previous} current={current} />
+      )}
+  
+    </Form>
+  )}
+</Formik>
     </div>
   )
 }
