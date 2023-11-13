@@ -13,10 +13,9 @@ type TasksProps = {
 }
 
 export default function Tasks({tasks, antallOppgaver }: TasksProps) {
-  const {count, current, correct, failed, next, previous, setCorrect, setError, changeCount, leggPoeng } = useProgress()
+  const {count, current, correct, failed, next, previous, setCorrect, setError, changeCount, poeng, leggPoeng } = useProgress()
 
   const task = tasks[current]
-
 
   return (
     <section className="flex items-center w-full h-screen flex-col py-20">
@@ -41,11 +40,13 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
           setCorrect={setCorrect}
           changeCount={changeCount}
           setError={setError}
+          leggPoeng={leggPoeng}
+          poeng={poeng}
         />
       </div>
     ) : (
       <div>
-        <Result operationToPractice="multiplication" />
+        <Result operationToPractice="multiplication" poeng={poeng} />
       </div>
     )}
   </section>

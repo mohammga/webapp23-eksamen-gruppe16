@@ -1,11 +1,13 @@
 import React from 'react'
-import useProgress from "@/hooks/useProgress";
 type ResultProps = {
     operationToPractice: string;
+    poeng: number;
   };
 
- const Result: React.FC<ResultProps> = ({ operationToPractice}) => {
-  const {poeng} = useProgress()
+ const Result: React.FC<ResultProps> = ({ operationToPractice, poeng}) => {
+
+  console.log(`Poengsummen er: ${poeng}`);
+
 
   const handleRestartQuiz = () => {
     // Add a function to reset the state or fetch new tasks

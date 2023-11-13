@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
+
+
+
 import Progress from "@/components/Progress";
-import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
+import { Task } from "@/types";
+
 
 type TasksProps = {
   current: number
@@ -14,14 +18,15 @@ type TasksProps = {
   setError: () => void
   changeCount: () => void
   setCorrect: Function
+  leggPoeng: () => void
+  poeng: number
   task: Task
   failed: boolean
   correct: boolean
 }
 
-export default function Answer({ task, current, failed, correct, setError, changeCount, setCorrect, next, previous }: TasksProps) {
+export default function Answer({ task, current, failed, correct, setError, changeCount, setCorrect, next, previous, poeng, leggPoeng }: TasksProps) {
   const [message, setMessage] = useState("")
-  const { poeng, leggPoeng } = useProgress()
 
 
 
