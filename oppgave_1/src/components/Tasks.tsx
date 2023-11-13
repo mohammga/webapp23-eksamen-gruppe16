@@ -13,20 +13,18 @@ type TasksProps = {
 }
 
 export default function Tasks({tasks, antallOppgaver }: TasksProps) {
-  const {count, current, correct, failed, next, previous, setCorrect, setError, changeCount, poeng, leggPoeng } = useProgress()
-
+  const {count, current, correct, failed, next, previous, setCorrect, setError, poeng, leggPoeng } = useProgress()
   const task = tasks[current]
 
   return (
     <section className="flex items-center w-full h-screen flex-col py-20">
-    {current < 10 ? (
+    {current <= 9 ? (
       <div className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
         <TaskCard
           task={task}
           oppgaveNummer={current}
           count={count}
           antallOppgaver={antallOppgaver}
-
         >
           <TaskText text={"Skriv resultatet av regneoperasjonen"} />
         </TaskCard>
@@ -38,7 +36,6 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
           next={next}
           previous={previous}
           setCorrect={setCorrect}
-          changeCount={changeCount}
           setError={setError}
           leggPoeng={leggPoeng}
           poeng={poeng}

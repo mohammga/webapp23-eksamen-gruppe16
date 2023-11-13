@@ -2,7 +2,6 @@ import type { Task } from "@/types";
 import Header from "@/components/Header";
 import Tasks from "@/components/Tasks";
 
-
 export default async function Home() {
 const count = 10;
  await new Promise((resolve) => setTimeout(resolve, 1000));

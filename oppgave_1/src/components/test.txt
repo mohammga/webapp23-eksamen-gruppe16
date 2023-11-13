@@ -1,3 +1,0 @@
-      {current === 2 && (
-        <Result totalPoints={poeng} operationToPractice="multiplication"/>
-      )}

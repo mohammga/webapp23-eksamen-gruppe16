@@ -1,13 +1,11 @@
 import React from 'react'
+
 type ResultProps = {
     operationToPractice: string;
     poeng: number;
   };
 
  const Result: React.FC<ResultProps> = ({ operationToPractice, poeng}) => {
-
-  console.log(`Poengsummen er: ${poeng}`);
-
 
   const handleRestartQuiz = () => {
     // Add a function to reset the state or fetch new tasks

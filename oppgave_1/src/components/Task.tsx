@@ -1,8 +1,7 @@
 "use client";
+
 import type { ReactNode } from "react";
 import { Task } from "@/types";
-import useProgress from "@/hooks/useProgress";
-
 
 type TasksProps = {
   task: Task;
@@ -12,15 +11,15 @@ type TasksProps = {
   antallOppgaver: number;
 };
 
-export default function Task({task, oppgaveNummer, count, antallOppgaver, children }: TasksProps) {
-  const { poeng } = useProgress()
-
+export default function Task({task, oppgaveNummer, count, antallOppgaver }: TasksProps) {
   return (
-    <section className="py-10">
+    <section className="bg-blue-400">
+      <div className="flex justify-between">
+      <p>Spørsmål {oppgaveNummer + 1} av {antallOppgaver}</p>
       <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
+      </div>
+
       <div className="">
-        <p>Spørsmål {oppgaveNummer + 1} av {antallOppgaver}</p>
-        <p>poengsum: {poeng}  </p>
         {/*children */}
         <article key={count}>
           <h3 className="text-lg font-semibold text-gray-800">{task.text}</h3>

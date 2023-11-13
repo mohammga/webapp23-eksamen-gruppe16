@@ -1,22 +1,17 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import * as Yup from "yup";
+import { useState } from "react"
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik"
+import * as Yup from "yup"
 
-
-
-import Progress from "@/components/Progress";
-import useProgress from "@/hooks/useProgress";
-import { Task } from "@/types";
-
+import Progress from "@/components/Progress"
+import { Task } from "@/types"
 
 type TasksProps = {
   current: number
   next: () => void
   previous: () => void
   setError: () => void
-  changeCount: () => void
   setCorrect: Function
   leggPoeng: () => void
   poeng: number
@@ -25,38 +20,47 @@ type TasksProps = {
   correct: boolean
 }
 
-export default function Answer({ task, current, failed, correct, setError, changeCount, setCorrect, next, previous, poeng, leggPoeng }: TasksProps) {
+export default function Answer({
+  task,
+  current,
+  failed,
+  correct,
+  setError,
+  setCorrect,
+  next,
+  previous,
+  poeng,
+  leggPoeng,
+}: TasksProps) {
   const [message, setMessage] = useState("")
-
-
+  const [click, setClick] = useState(false)
 
   // Validation schema using Yup
   const validationSchema = Yup.object().shape({
-    answer: Yup.number()
-      .required("Svar er påkrevd")
+    answer: Yup.number().required("Svar er påkrevd"),
   })
 
   const correctAnswer = eval(task.data)
 
   const handleSubmit = async (
     values: { answer: string },
-    actions: FormikHelpers<{ answer: string }>, // Include 'actions' parameter
+    actions: FormikHelpers<{ answer: string }>,
   ): Promise<void> => {
     if (values.answer === correctAnswer) {
       setCorrect(true)
       setMessage("Bra jobbet!")
       leggPoeng()
-      //resetCount()      //  -     Behøver ikke resette counten, dette gjøres i useProgress
+      //øke poeng med 1
+      //øke forsøk med 1
+
       actions.resetForm() // Use 'actions.resetForm()' to reset the form
     } else {
-      actions.resetForm() // Use 'actions.resetForm()' to reset the form      
+      actions.resetForm()
       setCorrect(false)
       setError()
-      changeCount()
       setMessage("")
-
     }
-    actions.setSubmitting(false) // Use 'actions.setSubmitting()' to update the submitting state
+    actions.setSubmitting(false)
   }
 
   const visFasit = () => {
@@ -64,57 +68,59 @@ export default function Answer({ task, current, failed, correct, setError, chang
     if (svarelement != null) {
       svarelement.innerHTML = `Svaret er: ${correctAnswer}`
     }
+    setClick(true)
   }
 
-  console.log(`Correct answer? is: ${correct}`);
-  // For current
-  console.log(`Current index is: ${current}`);
-
-  // For failed (assuming it's a boolean state)
-  console.log(`Has the current attempt failed? ${failed}`);
-  console.log(`poeng: ${poeng}`)
-
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-red-400">
       <label htmlFor="answer">Svar</label>
       <Formik
-  initialValues={{ answer: "" }}
-  validationSchema={validationSchema}
-  onSubmit={handleSubmit}
->
-  {({ errors, handleChange, handleBlur, values, isSubmitting }) => (
-    <Form className="flex-col">
-      <Field
-        type="number"
-        name="answer"
-        placeholder="Sett svar her"
-        onChange={handleChange}
-        onBlur={handleBlur}
-        className="p-2 border rounded-md"
-      />
-      <ErrorMessage name="answer" component="div" className="error" />
-      <p>{message}</p>
-      {!correct && !failed && (
-        <button className="mt-2 rounded-sm bg-black text-white p-2" type="submit" disabled={isSubmitting}>
-          Sjekk svar {`(${poeng} poeng)`}
-        </button>
-      )}
-      {failed && (
-        <>
-          <button className="mt-2 rounded-sm bg-black text-white p-2" type="button" onClick={visFasit}>
-            Du fikk feil 3 ganger. Trykk for å sjekke fasiten!
-          </button>
-          <br />
-          <span id="fasit"></span>
-        </>
-      )}
-      {(correct || failed) && (
-        <Progress next={next} previous={previous} current={current} />
-      )}
-  
-    </Form>
-  )}
-</Formik>
+        initialValues={{ answer: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ errors, handleChange, handleBlur, values, isSubmitting }) => (
+          <Form className="flex-col">
+            <Field
+              type="number"
+              name="answer"
+              placeholder="Sett svar her"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="w-full rounded-md border p-2"
+            />
+            <ErrorMessage name="answer" component="div" className="error" />
+            <p>{message}</p>
+            {!correct && !failed && (
+              <button
+                className="mt-2 rounded-sm bg-black p-2 text-white"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                Sjekk svar
+              </button>
+            )}
+            {failed && (
+              <>
+                <button
+                  className="mt-2 rounded-sm bg-black p-2 text-white"
+                  type="button"
+                  onClick={visFasit}
+                >
+                  Du fikk feil 3 ganger. Trykk for å vise fasiten!
+                </button>
+
+              {click && (
+              <Progress next={next} previous={previous} current={current} />
+            )}
+              </>
+            )}
+            {correct && (
+              <Progress next={next} previous={previous} current={current} />
+            )}
+          </Form>
+        )}
+      </Formik>
     </div>
   )
 }
