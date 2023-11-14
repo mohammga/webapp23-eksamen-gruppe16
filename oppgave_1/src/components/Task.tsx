@@ -15,7 +15,7 @@ export default function Task({task, oppgaveNummer, count, antallOppgaver }: Task
   return (
     <section className="">
       <div className="flex justify-between">
-      <p>Spørsmål {oppgaveNummer + 1} av {antallOppgaver}</p>
+      <p>Oppgave {oppgaveNummer + 1} av {antallOppgaver}</p>
       <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
       </div>
 
