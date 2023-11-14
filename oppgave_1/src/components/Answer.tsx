@@ -62,7 +62,7 @@ export default function Answer({
   }
 
   return (
-    <div className="flex flex-col bg-red-400">
+    <div className="flex flex-col">
       <form onSubmit={handleSubmit}>
       <label htmlFor="answer">Svar</label>
       <div className="flex-col">

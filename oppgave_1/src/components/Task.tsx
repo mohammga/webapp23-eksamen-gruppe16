@@ -13,7 +13,7 @@ type TasksProps = {
 
 export default function Task({task, oppgaveNummer, count, antallOppgaver }: TasksProps) {
   return (
-    <section className="bg-blue-400">
+    <section className="">
       <div className="flex justify-between">
       <p>Spørsmål {oppgaveNummer + 1} av {antallOppgaver}</p>
       <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
