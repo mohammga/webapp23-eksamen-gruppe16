@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useState } from "react";
+
 
 export default function useProgress() {
   const [count, setCount] = useState(0)
   const [current, setCurrent] = useState(0)
 
+  const [message, setMessage] = useState("")
 
   const [failed, setFailed] = useState(false)
   const [correct, setCorrect] = useState(false)
@@ -14,6 +16,12 @@ export default function useProgress() {
     setCurrent(current + 1)
     // Reseter count til 0 for å starte på nytt med 0 forsøk på neste spørsmål
     setCount(0); 
+    // Setter failed til false for å resette failed state
+    setFailed(false);
+    // Setter correct til false for å resette correct state
+    setCorrect(false);
+    // Setter message til tom string for å resette message state
+    setMessage("");
   };
 
   const previous = () => {
@@ -34,5 +42,5 @@ export default function useProgress() {
     setCount(count + 1)
   }
 
-  return {leggPoeng, poeng, count, current, correct, failed, next, previous, setCorrect, setError}
+  return {leggPoeng, poeng, count, current, correct, failed, message, setMessage, next, previous, setCorrect, setError}
 }

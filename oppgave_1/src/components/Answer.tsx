@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik"
-import * as Yup from "yup"
+import { useState } from "react";
 
-import Progress from "@/components/Progress"
-import { Task } from "@/types"
+
+
+import Progress from "@/components/Progress";
+import { Task } from "@/types";
+
 
 type TasksProps = {
   current: number
@@ -14,6 +15,8 @@ type TasksProps = {
   setError: () => void
   setCorrect: Function
   leggPoeng: () => void
+  setMessage: Function
+  message: string
   poeng: number
   task: Task
   failed: boolean
@@ -29,98 +32,84 @@ export default function Answer({
   setCorrect,
   next,
   previous,
-  poeng,
+  setMessage,
+  message,
   leggPoeng,
 }: TasksProps) {
-  const [message, setMessage] = useState("")
   const [click, setClick] = useState(false)
-
-  // Validation schema using Yup
-  const validationSchema = Yup.object().shape({
-    answer: Yup.number().required("Svar er påkrevd"),
-  })
+  const [answer, setAnswer] = useState("")
 
   const correctAnswer = eval(task.data)
 
-  const handleSubmit = async (
-    values: { answer: string },
-    actions: FormikHelpers<{ answer: string }>,
-  ): Promise<void> => {
-    if (values.answer === correctAnswer) {
+  const handleSubmit = async (): Promise<void> => {
+    if (answer === correctAnswer.toString()) {
       setCorrect(true)
       setMessage("Bra jobbet!")
       leggPoeng()
-      //øke poeng med 1
-      //øke forsøk med 1
-
-      actions.resetForm() // Use 'actions.resetForm()' to reset the form
+      // øke poeng med 1
+      // øke forsøk med 1
+      setAnswer("") // Reset the answer
     } else {
-      actions.resetForm()
       setCorrect(false)
       setError()
       setMessage("")
+      setAnswer("") // Reset the answer
     }
-    actions.setSubmitting(false)
   }
 
   const visFasit = () => {
-    let svarelement = document.getElementById("fasit")
-    if (svarelement != null) {
-      svarelement.innerHTML = `Svaret er: ${correctAnswer}`
-    }
     setClick(true)
   }
 
   return (
     <div className="flex flex-col bg-red-400">
+      <form onSubmit={handleSubmit}>
       <label htmlFor="answer">Svar</label>
-      <Formik
-        initialValues={{ answer: "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ errors, handleChange, handleBlur, values, isSubmitting }) => (
-          <Form className="flex-col">
-            <Field
-              type="number"
-              name="answer"
-              placeholder="Sett svar her"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="w-full rounded-md border p-2"
-            />
-            <ErrorMessage name="answer" component="div" className="error" />
-            <p>{message}</p>
-            {!correct && !failed && (
-              <button
-                className="mt-2 rounded-sm bg-black p-2 text-white"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                Sjekk svar
-              </button>
-            )}
-            {failed && (
-              <>
-                <button
-                  className="mt-2 rounded-sm bg-black p-2 text-white"
-                  type="button"
-                  onClick={visFasit}
-                >
-                  Du fikk feil 3 ganger. Trykk for å vise fasiten!
-                </button>
+      <div className="flex-col">
+        <input
+          type="number"
+          name="answer"
+          placeholder="Sett svar her"
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          className="w-full rounded-md border p-2"
+          readOnly={failed || correct}
+          required // Add the required attribute
+        />
+        {!correct && !failed && (
+          <button
+            className="mt-2 rounded-sm bg-black p-2 text-white"
+            type="button"
+            onClick={handleSubmit}
+            disabled={failed || correct}
+          >
+            Sjekk svar
+          </button>
+        )}
+        {failed && (
+          <>
+            <button
+              className="mt-2 rounded-sm bg-black p-2 text-white"
+              type="button"
+              onClick={visFasit}
+            >
+              Du fikk feil 3 ganger. Trykk for å vise fasiten!
+            </button>
 
-              {click && (
-              <Progress next={next} previous={previous} current={current} />
-            )}
+            {click && (
+              <>
+                <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
+                <Progress next={next} previous={previous} current={current} />
               </>
             )}
-            {correct && (
-              <Progress next={next} previous={previous} current={current} />
-            )}
-          </Form>
+          </>
         )}
-      </Formik>
+
+        {correct && (
+          <Progress next={next} previous={previous} current={current} />
+        )}
+      </div>
+            </form>
     </div>
   )
 }
