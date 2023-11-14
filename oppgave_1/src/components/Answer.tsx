@@ -64,52 +64,62 @@ export default function Answer({
   return (
     <div className="flex flex-col">
       <form onSubmit={handleSubmit}>
-      <label htmlFor="answer">Svar</label>
-      <div className="flex-col">
-        <input
-          type="number"
-          name="answer"
-          placeholder="Sett svar her"
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          className="w-full rounded-md border p-2"
-          readOnly={failed || correct}
-          required // Add the required attribute
-        />
-        {!correct && !failed && (
-          <button
-            className="mt-2 rounded-sm bg-black p-2 text-white"
-            type="button"
-            onClick={handleSubmit}
-            disabled={failed || correct}
-          >
-            Sjekk svar
-          </button>
-        )}
-        {failed && (
-          <>
+        <label htmlFor="answer">Svar</label>
+        <div className="flex-col">
+          <input
+            type="number"
+            name="answer"
+            placeholder="Sett svar her"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            className="w-full rounded-md border p-2"
+            readOnly={failed || correct}
+            required // Add the required attribute
+          />
+          {!correct && !failed && (
+
             <button
               className="mt-2 rounded-sm bg-black p-2 text-white"
               type="button"
-              onClick={visFasit}
+              onClick={handleSubmit}
+              disabled={failed || correct}
             >
-              Du fikk feil 3 ganger. Trykk for å vise fasiten!
+              Sjekk svar
             </button>
 
-            {click && (
-              <>
-                <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
-                <Progress next={next} previous={previous} current={current} />
-              </>
-            )}
-          </>
-        )}
 
-        {correct && (
-          <Progress next={next} previous={previous} current={current} />
-        )}
-      </div>
-            </form>
+
+
+          )}
+          {failed && (
+            <>
+              <button
+                className="mt-2 rounded-sm bg-black p-2 text-white"
+                type="button"
+                onClick={visFasit}
+              >
+                Du fikk feil 3 ganger. Trykk for å vise fasiten!
+              </button>
+
+              {click && (
+                <>
+                  <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
+                  <Progress next={next} previous={previous} current={current} />
+                </>
+              )}
+            </>
+          )}
+
+          {correct && (
+            <>
+              {message}
+              <Progress next={next} previous={previous} current={current} />
+            </>
+
+
+          )}
+        </div>
+      </form>
     </div>
   )
 }
