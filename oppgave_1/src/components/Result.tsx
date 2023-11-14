@@ -3,13 +3,13 @@ import React from 'react'
 type ResultProps = {
     operationToPractice: string;
     poeng: number;
+    setCurrent: Function
   };
 
- const Result: React.FC<ResultProps> = ({ operationToPractice, poeng}) => {
+ const Result: React.FC<ResultProps> = ({ operationToPractice, poeng, setCurrent}) => {
 
   const handleRestartQuiz = () => {
-    // Add a function to reset the state or fetch new tasks
-    window.location.reload();
+    setCurrent(0);
   };
   
 
@@ -19,7 +19,7 @@ type ResultProps = {
       <h2 className="text-2xl font-bold mb-4">Totalt poengsum: {poeng} </h2>
       <p>Du må øve på multiplikasjonsregneoperasjonen: {operationToPractice} </p>
       <button onClick={handleRestartQuiz} className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md">
-        Start på nytt quizen
+        Start på nytt
       </button>
     </div>
   </div>

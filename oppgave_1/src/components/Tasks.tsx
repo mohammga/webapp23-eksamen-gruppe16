@@ -13,7 +13,7 @@ type TasksProps = {
 }
 
 export default function Tasks({tasks, antallOppgaver }: TasksProps) {
-  const {count, current, correct, failed, next, previous, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
+  const {count, current, setCurrent, correct, failed, next, previous, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
   const task = tasks[current]
 
   return (
@@ -41,11 +41,12 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
           poeng={poeng}
           setMessage={setMessage}
           message={message}
+
         />
       </div>
     ) : (
       <div>
-        <Result operationToPractice="multiplication" poeng={poeng} />
+        <Result operationToPractice="multiplication" poeng={poeng} setCurrent = {setCurrent} />
       </div>
     )}
   </section>

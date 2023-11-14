@@ -42,5 +42,5 @@ export default function useProgress() {
     setCount(count + 1)
   }
 
-  return {leggPoeng, poeng, count, current, correct, failed, message, setMessage, next, previous, setCorrect, setError}
+  return {leggPoeng, poeng, count, current, setCurrent, correct, failed, message, setMessage, next, previous, setCorrect, setError}
 }
