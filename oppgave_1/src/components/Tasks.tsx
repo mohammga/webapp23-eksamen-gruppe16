@@ -18,7 +18,7 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
 
   return (
     <section className="flex items-center w-full h-screen flex-col py-20">
-    {current <= 2 ? (
+    {current <= antallOppgaver ? (
       <div className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
         <TaskCard
           task={task}

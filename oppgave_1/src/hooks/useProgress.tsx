@@ -4,9 +4,9 @@ import { useState } from "react";
 export default function useProgress() {
   const [count, setCount] = useState(0)
   const [current, setCurrent] = useState(0)
+   const [amount, setAmount] = useState(0)
 
   const [message, setMessage] = useState("")
-
   const [failed, setFailed] = useState(false)
   const [correct, setCorrect] = useState(false)
   const [poeng, setPoeng] = useState(0)
@@ -42,5 +42,5 @@ export default function useProgress() {
     setCount(count + 1)
   }
 
-  return {leggPoeng, poeng, count, current, setCurrent, correct, failed, message, setMessage, next, previous, setCorrect, setError}
+  return  {poeng, count, current, setCurrent, correct, failed, message, amount, leggPoeng, setAmount, setMessage, next, previous, setCorrect, setError}
 }

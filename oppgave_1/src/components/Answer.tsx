@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
-
-
 import Progress from "@/components/Progress";
 import { Task } from "@/types";
 
@@ -39,21 +36,23 @@ export default function Answer({
   const [click, setClick] = useState(false)
   const [answer, setAnswer] = useState("")
 
+
   const correctAnswer = eval(task.data)
 
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
+    e.preventDefault()
     if (answer === correctAnswer.toString()) {
       setCorrect(true)
       setMessage("Bra jobbet!")
       leggPoeng()
-      // øke poeng med 1
-      // øke forsøk med 1
-      setAnswer("") // Reset the answer
+      setAnswer("")
     } else {
+      setAnswer("")
       setCorrect(false)
       setError()
       setMessage("")
-      setAnswer("") // Reset the answer
     }
   }
 
@@ -64,61 +63,56 @@ export default function Answer({
   return (
     <div className="flex flex-col">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="answer">Svar</label>
-        <div className="flex-col">
-          <input
-            type="number"
-            name="answer"
-            placeholder="Sett svar her"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            className="w-full rounded-md border p-2"
-            readOnly={failed || correct}
-            required // Add the required attribute
-          />
-          {!correct && !failed && (
+        {!correct && !failed && (
+          <>
+            <label htmlFor="answer">Svar</label>
+            <div className="flex-col">
+              <input
+                type="number"
+                name="answer"
+                placeholder="Sett svar her"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className="w-full rounded-md border p-2"
+                readOnly={failed || correct}
+                required // Add the required attribute to the input element
+              />
+            </div>
+            <button
+            className="mt-2 rounded-sm bg-black p-2 text-white"
+            type="submit"
+            disabled={failed || correct}
+          >
+            Sjekk svar
+          </button>
+          </>
+        )}
 
+        {failed && (
+          <>
             <button
               className="mt-2 rounded-sm bg-black p-2 text-white"
               type="button"
-              onClick={handleSubmit}
-              disabled={failed || correct}
+              onClick={visFasit}
             >
-              Sjekk svar
+              Du fikk feil 3 ganger. Trykk for å vise fasiten!
             </button>
 
+            {click && (
+              <>
+                <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
+                <Progress next={next} previous={previous} current={current} />
+              </>
+            )}
+          </>
+        )}
 
-
-
-          )}
-          {failed && (
-            <>
-              <button
-                className="mt-2 rounded-sm bg-black p-2 text-white"
-                type="button"
-                onClick={visFasit}
-              >
-                Du fikk feil 3 ganger. Trykk for å vise fasiten!
-              </button>
-
-              {click && (
-                <>
-                  <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
-                  <Progress next={next} previous={previous} current={current} />
-                </>
-              )}
-            </>
-          )}
-
-          {correct && (
-            <>
-              {message}
-              <Progress next={next} previous={previous} current={current} />
-            </>
-
-
-          )}
-        </div>
+        {correct && (
+          <>
+            {message}
+            <Progress next={next} previous={previous} current={current} />
+          </>
+        )}
       </form>
     </div>
   )
