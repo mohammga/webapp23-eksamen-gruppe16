@@ -13,6 +13,9 @@ export default function Header() {
           <Link href="/">Dashboard</Link>
         </li>
         <li>
+          <Link href="/new/session">Legg til økt</Link>
+        </li>
+        <li>
           <Link href="/new/template">Legg til mal</Link>
         </li>
         <li>
@@ -20,9 +23,6 @@ export default function Header() {
         </li>
         <li>
           <Link href="/new/practitioner">Legg til utøver</Link>
-        </li>
-        <li>
-          <Link href="/practitioners">Utøvere</Link>
         </li>
       </ul>
     </nav>

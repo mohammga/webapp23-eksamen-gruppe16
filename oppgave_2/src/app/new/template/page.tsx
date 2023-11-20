@@ -1,7 +1,11 @@
-export default function Home() {
+import TemplateForm from '@/components/forms/TemplateForm';
+
+const TemplatePage: React.FC = () => {
   return (
     <div>
-      <h1 className="text-3xl">Legg til utøver</h1>
+    <TemplateForm  />
     </div>
   )
 }
+
+export default TemplatePage
