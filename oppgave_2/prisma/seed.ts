@@ -52,5 +52,4 @@ async function main() {
   }
 }
 
-// Call the seed function
 main()
