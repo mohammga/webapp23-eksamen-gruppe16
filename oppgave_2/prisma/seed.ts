@@ -6,6 +6,8 @@ type UserData = {
   id: string
   userId: string
   gender: string
+  sportType: string
+  sport: string
 }
 
 type UsersResponse = {
@@ -27,18 +29,19 @@ async function main() {
     const users: UsersResponse = await getUsers()
 
     for (const userData of users.data) {
-      const existingUser = await prisma.user.findUnique({
+      const existingUser = await prisma.athlete.findUnique({
         where: {
           userId: userData.userId,
         },
       })
 
       if (!existingUser) {
-        await prisma.user.create({
+        await prisma.athlete.create({
           data: {
             id: userData.id,
             userId: userData.userId,
             gender: userData.gender,
+            sportType: userData.sport
           },
         })
       }
