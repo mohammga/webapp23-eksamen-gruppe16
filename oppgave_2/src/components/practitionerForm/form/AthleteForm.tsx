@@ -2,6 +2,8 @@
 
 import { useState, ChangeEvent, FormEvent } from 'react';
 import Activity from "@/components/practitionerForm/form/Activity"
+import IntensityZones from '@/components/practitionerForm/form/IntensityZones';
+
 
 interface AthleteFormData {
   uniqueId: string;
@@ -10,33 +12,42 @@ interface AthleteFormData {
   maxHeartRate: string;
   thresholdWatt: string;
   thresholdSpeed: string;
+  intensityZoneHeartRate: string;
+  intensityZoneWatt: string;
+  intensityZoneSpeed: string;
+  intensityZone: string;
   activities: {
     date: string;
     name: string;
     goalId: string;
   }[];
+
 }
 
 interface AthleteFormProps {
-  onSubmit: (formData: AthleteFormData) => void;
+  // nødvendig props
 }
 
-const AthleteForm: React.FC<AthleteFormProps> = ({ onSubmit }) => {
+const AthleteForm: React.FC<AthleteFormProps> = () => {
+
+
+
   const [formData, setFormData] = useState<AthleteFormData>({
-    uniqueId: '',
+    // fylle forms input feltene med nødvendig informasjon
+    uniqueId: 'abc-20',
     gender: 'male',
     sportType: 'running',
     maxHeartRate: '',
     thresholdWatt: '',
     thresholdSpeed: '',
+    intensityZoneHeartRate: '',
+    intensityZoneWatt: '',
+    intensityZoneSpeed: '',
+    intensityZone: '',
     activities: [],
   });
 
-  const [intensityZones, setIntensityZones] = useState<{
-    heartRate: number[];
-    watt: number[];
-    speed: number[];
-  } | null>(null);
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
@@ -44,15 +55,31 @@ const AthleteForm: React.FC<AthleteFormProps> = ({ onSubmit }) => {
   };
 
   const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
+    // Her skal utøver opprettes, og du kan kalle calculateIntensityZones() her
+    calculateIntensityZones();
+    // ... (resten av handleSubmit-koden)
   };
 
-  
+
+  const calculateIntensityZones = () => {
+    // Implementer beregning av intensitetssoner basert på prestasjonsfaktorer
+    // Dette kan gjøres ved å bruke formData.maxHeartRate, formData.thresholdWatt og formData.thresholdSpeed
+  };
+
+  const handleIntensityChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setFormData({ ...formData, intensityZone: e.target.value });
+  };
+
   const handleActivityChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
     const { id, value } = e.target;
     const updatedActivities = [...formData.activities];
     updatedActivities[index] = { ...updatedActivities[index], [id]: value };
+    setFormData({ ...formData, activities: updatedActivities });
+  };
+
+  const handleDeleteActivity = (index: number) => {
+    const updatedActivities = [...formData.activities];
+    updatedActivities.splice(index, 1); // Fjern aktivitet ved indeks
     setFormData({ ...formData, activities: updatedActivities });
   };
 
@@ -74,6 +101,7 @@ const AthleteForm: React.FC<AthleteFormProps> = ({ onSubmit }) => {
         id="uniqueId"
         placeholder="abc-123-979"
         required
+        value={formData.uniqueId}
         onChange={handleChange}
         className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
@@ -111,56 +139,24 @@ const AthleteForm: React.FC<AthleteFormProps> = ({ onSubmit }) => {
         <option value="other">Annet</option>
       </select>
 
-      <label htmlFor="maxHeartRate" className="block text-gray-700 text-sm font-bold mb-2">
-        Maksimal hjertefrekvens:
-      </label>
-      <input
-        type="number"
-        id="maxHeartRate"
-        value={formData.maxHeartRate}
+      <IntensityZones
+        maxHeartRate={formData.maxHeartRate}
+        thresholdWatt={formData.thresholdWatt}
+        thresholdSpeed={formData.thresholdSpeed}
         onChange={handleChange}
-        required
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
-
-      <label htmlFor="thresholdWatt" className="block text-gray-700 text-sm font-bold mb-2">
-        Terskelwatt:
-      </label>
-      <input
-        type="number"
-        id="thresholdWatt"
-        value={formData.thresholdWatt}
-        onChange={handleChange}
-        required
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
-      />
-
-      <label htmlFor="thresholdSpeed" className="block text-gray-700 text-sm font-bold mb-2">
-        Terskelfart:
-      </label>
-      <input
-        type="number"
-        id="thresholdSpeed"
-        value={formData.thresholdSpeed}
-        onChange={handleChange}
-        required
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
-      />
-
 
       <label className="block text-gray-700 text-sm font-bold mb-2">Treningsaktiviteter</label>
       {formData.activities.map((activity, index) => (
-        <Activity key={index} activity={activity} onChange={(e) => handleActivityChange(e, index)} />
-
-
+        <Activity key={index} activity={activity} onChange={(e) => handleActivityChange(e, index)} onDelete={() => handleDeleteActivity(index)} />
       ))}
 
-      <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
-        Opprett utøver
-      </button>
-      <button type="button" onClick={addActivity} className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
-        Legg til aktivitet
-      </button>
+        <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
+          Opprett utøver
+        </button>
+        <button type="button" onClick={addActivity} className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
+          Legg til aktivitet
+        </button>
     </form>
   );
 };
