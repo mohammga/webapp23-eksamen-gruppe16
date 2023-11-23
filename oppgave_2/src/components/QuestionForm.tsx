@@ -2,20 +2,9 @@
 
 import { useState, FormEvent } from "react"
 
-interface Spørsmål {
-  text: string;
-}
 
-interface SpørsmålFormProps {
-  spørsmålListe: Spørsmål[];
-}
-
-export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
-  const [steps, setSteps] = useState(0) //Progress i Submitten
-  const [questionIndex, setQuestionIndex] = useState(0)
+export default function QuestionForm() {
   const [answerIndex, setAnswerIndex] = useState(0) //Viser hvilket svar som skal brukes
-
-  const [newQuestion, setNewQuestion] = useState(false)
 
   const [saveQuestion, setSaveQuestion] = useState("")
   const [saveAnswer, setSaveAnswer] = useState("")
@@ -23,19 +12,6 @@ export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
   const [errorText, setErrorText] = useState("")
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
-
-  const handleQuestionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    let selectedValue = event.target.value;
-    let val = parseInt(selectedValue)
-    let optionValue = event.target.options[event.target.selectedIndex].text
-    setQuestionIndex(val)
-    if (val === 1) {
-      setSaveQuestion("")
-    } else {
-      setSaveQuestion(optionValue)
-    }
-    handleSteps(val, answerIndex);
-  };
   
   const handleAnswerChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     let selectedAnswer = event.target.value;
@@ -44,80 +20,46 @@ export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
     let answerKey = parseInt(answerSplit[0])
     setSaveAnswer(answerValue)
     setAnswerIndex(answerKey)
-    handleSteps(questionIndex, answerKey);
+    handleSteps(answerKey);
   };
 
-  const handleSteps = (quesProgress: number, answProgress: number, newQuestionString: string = "") => {
+  const handleSteps = (answProgress: number, newQuestionString: string = "") => {
     setErrorText("")
 
-    console.log("Question progress" + quesProgress)
-    console.log("Answer progress" + answProgress)
-    let newStepsValue = 0
     let newAnswerValue = 0
     let newQuestionValue = false
 
-    console.log("Question alternativ: " + newQuestionValue)
-
-    if (quesProgress !== questionIndex) { //Endret type spørsmål 
-      console.log("SPØRSMÅL ENDRET")
-      if (quesProgress === 0) { //Standard svar
-        console.log("Valgt svar 'Standard'")
-        newStepsValue = 0
-        newAnswerValue = 0
-      } else if (quesProgress === 1) { //Opprett nytt spørsmål
-        console.log("Valgt svar 'Opprett ny'")
-        newQuestionValue = true
-        newAnswerValue = 0
-
-      } else { //Template svar
-        newStepsValue = 1
-        newAnswerValue = 0
-      }
-    } else {
-      if (quesProgress === 1) {
-        newQuestionValue = true
-        if (newQuestionString.length >= 5) { //Nytt spørsmål har hvertfall 5 bokstaver
-          console.log("Valgt svar 'Template'")
-          newStepsValue = 1
-          } else {          
-            newStepsValue = 0
-          }
-      }      
-    }
+    if (newQuestionString.length < 5) { //Nytt spørsmål har hvertfall 5 bokstaver
+      newAnswerValue = 0
+    }      
 
     
     if (answProgress !== answerIndex) { //Endret type svaralternativ 
       console.log("SVARALTERNATIV ENDRET")
       newAnswerValue = 0
-      newStepsValue = 1
       if (answProgress !== 0) { //Gitt et svaralternativ som ikke er "velg" answer0
-        newStepsValue = 2
         newAnswerValue = answProgress
       }
 
     }
     console.log("Question alternativ tilstutt: " + newQuestionValue)
       
-    setSteps(newStepsValue)
     setAnswerIndex(newAnswerValue)
     if (newAnswerValue === 0) {
       setSaveAnswer("")
     }
-    setNewQuestion(newQuestionValue)
   }
 
   const handleWriteQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value
     setSaveQuestion(value)
-    handleSteps(questionIndex, answerIndex, value)
+    handleSteps(answerIndex, value)
   }
 
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   
-    if (questionIndex < 1) {
-      setErrorText("Du må velge et spørsmål, eller opprette et nytt før du lagrer dataen");
-    } else if (questionIndex === 1 && saveQuestion.length < 5) {
+    if (saveQuestion.length < 5) {
       setErrorText("Et nytt spørsmål må minimum ha 5 tegn for å kunne opprettes");
     } else if (answerIndex < 1) {
       setErrorText("Du må velge et svaralternativ før du lagrer dataen");
@@ -132,7 +74,7 @@ export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
       setHasSubmitted(true)
     }
   };
-  
+  let questionValLength = 5 //må være 5 bokstaver for å funke
   
   return (
     <div className="max-w-md mx-auto bg-white p-8 mt-8 rounded shadow-md">
@@ -140,27 +82,8 @@ export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
       
       
       <form className="space-y-4" onSubmit={submitForm}>
-      <div>
-          <label htmlFor="questionType" className="block text-md font-medium text-gray-700">
-            Velg et spørsmål
-          </label>
-          <select
-            id="questionTypeFromDb"
-            name="questionTypeFromDb"
-            required
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-            onChange={handleQuestionChange}
-          >
-            <option value="0">Velg et spørsmål</option>
-            <option value="1">OPPRETT ET NYTT SPØRSMÅL</option>
-            {spørsmålListe.map((spørsmål, index) => (
-              <option key={index + 2} value={index + 2}>
-                {spørsmål.text}
-              </option>
-            ))}
-          </select>
-        </div>
-        {newQuestion ? (
+        
+        
         <div>
           <label htmlFor="questionText" className="block text-md font-medium text-gray-700">
             Oprett nytt spørsmål
@@ -177,11 +100,8 @@ export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
         </div>
-        ) : (
-          null
-        )}
 
-        {steps >= 1 ? (
+        {saveQuestion.length >= questionValLength ? (
           <div>
           <label htmlFor="questionType" className="block text-md font-medium text-gray-700">
             Spørsmålstype (Alternativ)
@@ -203,13 +123,13 @@ export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
           null
         )}
 
-        {steps >= 2 ? (
+        {answerIndex > 0 ? (
             <div>
-              Brukeren vil kunne svare med:
+              Brukeren vil kunne svare med {saveAnswer}
               {answerIndex === 1 ? (
                 // Innhold for når answerType === 1
                 <div>
-                  <input type="text" placeholder="Svar på spørsmål"></input>
+                  <input type="text" placeholder="Svar på spørsmål" disabled></input>
                 </div>
               ) : answerIndex === 2 ? (
                 // Innhold for når answerType === 2
@@ -217,10 +137,7 @@ export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
                   <ul>
                     {Array.from({ length: 10 }, (_, i) => (
                       <li className="flex items-center mb-2" key={i}>
-                        <label>
-                          <input type="radio" name="numericRating" value={i + 1} />
-                          {i + 1}
-                        </label>
+                          <p key={i + 1}>{i + 1}</p>
                       </li>
                     ))}
                   </ul>
@@ -229,34 +146,19 @@ export default function QuestionForm({ spørsmålListe }: SpørsmålFormProps) {
                 // Innhold for når answerType === 3
                 <ul>
                   <li className="flex items-center mb-2">
-                    <label>
-                      <input type="radio" name="emojiRating" value=";(" />
-                      {"😢"}
-                    </label>
+                    <p>{"😢"}</p>
                   </li>
                   <li className="flex items-center mb-2">
-                    <label>
-                      <input type="radio" name="emojiRating" value=":(" />
-                      {"🙁"}
-                    </label>
+                    <p>{"🙁"}</p>
                   </li>
                   <li className="flex items-center mb-2">
-                    <label>
-                      <input type="radio" name="emojiRating" value=":|" />
-                      {"😐"}
-                    </label>
+                    <p>{"😐"}</p>
                   </li>
                   <li className="flex items-center mb-2">
-                    <label>
-                      <input type="radio" name="emojiRating" value=":)" />
-                      {"😊"}
-                    </label>
+                    <p>{"😊"}</p>
                   </li>
                   <li className="flex items-center mb-2">
-                    <label>
-                      <input type="radio" name="emojiRating" value="=)" />
-                      {"😃"}
-                    </label>
+                    <p>{"😃"}</p>
                   </li>
                 </ul>
 
