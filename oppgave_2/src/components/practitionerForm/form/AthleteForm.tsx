@@ -5,7 +5,6 @@ import { AthleteFormData } from "@/types/Athlete"
 const AthleteForm: React.FC<AthleteFormData> = () => {
 
   const [formData, setFormData] = useState<AthleteFormData>({
-    // fylle forms input feltene med nødvendig informasjon
     uniqueId: 'abc-20',
     gender: 'male',
     sportType: 'running',
