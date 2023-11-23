@@ -1,20 +1,28 @@
-async function getUsers() {
-  const response = await fetch("http://localhost:3000/api/users")
+import type { Metadata } from "next";
+import type { User } from "@/types/User"
+
+export const metadata: Metadata = {
+  title: "Users",
+  description: "Users",
+}
+
+async function getUsers(): Promise<User> {
+  const response = await fetch("https://webapp-api.vercel.app/api/users")
 
   if (!response.ok) {
     throw new Error("Klarte ikke å hente brukere")
   }
 
-  return response
+  return response.json() as Promise<User>
 }
 
 export default async function Page() {
   const users = await getUsers()
 
   return (
-    <main className="">
+    <div>
       <ul className="px-6">
-        {users.map((user, index) => (
+        {users.data.map((user, index) => (
           <li className="py-3" key={user.id}>
             <p>User number {index + 1}</p>
             <p>ID: {user.id}</p>
@@ -23,6 +31,6 @@ export default async function Page() {
           </li>
         ))}
       </ul>
-    </main>
+    </div>
   )
 }
