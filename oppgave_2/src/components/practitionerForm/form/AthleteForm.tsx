@@ -92,6 +92,7 @@ const AthleteForm: React.FC<AthleteFormProps> = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 mt-8 rounded shadow-md">
+              <h2 className="text-2xl font-bold mb-4">Opprette utøver</h2>
 
       <label htmlFor="uniqueId" className="block text-gray-700 text-sm font-bold mb-2">
         Unik ID:
