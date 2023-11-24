@@ -48,7 +48,6 @@ model Question {
   id         String   @id @default(cuid())
   text       String
   type       String
-  options    String[]
   template   Template @relation(fields: [templateId], references: [id])
   templateId String
 }
