@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { User } from "@/types/User"
+import type { User } from "@/types"
 
 export const metadata: Metadata = {
   title: "Users",
