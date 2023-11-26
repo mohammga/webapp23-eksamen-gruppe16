@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Athlete {
+  id            String            @id @default(cuid())
+  userId        String            @unique
+  gender        String
+  sportType     String
+  //skal være en array av strings
+  meta          String
+  trainingGoals TrainingGoal[]
+  competitions  Competition[]
+  sessions      TrainingSession[]
+}
+
+model Competition {
+  id              String            @id @default(cuid())
+  name            String
+  date            DateTime
+  location        String
+  goal            String
+  type            String
+  priority        String
+  comment         String?
+  athlete         Athlete           @relation(fields: [athleteId], references: [id])
+  athleteId       String
+  TrainingSession TrainingSession[]
+}
+
+model TrainingGoal {
+  id              String            @id @default(cuid())
+  name            String
+  date            DateTime
+  targetValue     Float
+  comment         String?
+  athlete         Athlete           @relation(fields: [athleteId], references: [id])
+  athleteId       String
+  TrainingSession TrainingSession[]
+}
+
+model Question {
+  id         String   @id @default(cuid())
+  text       String
+  type       String
+  template   Template @relation(fields: [templateId], references: [id])
+  templateId String
+}
+
+model Interval {
+  id            String          @id @default(cuid())
+  duration      Int
+  intensityZone String
+  session       TrainingSession @relation(fields: [sessionId], references: [id])
+  sessionId     Int
+  Template      Template?       @relation(fields: [templateId], references: [id])
+  templateId    String?
+}
+
+model Template {
+  id                    String            @id @default(cuid())
+  name                  String
+  tags                  String[]
+  slug                  String
+  activityType          String
+  measurementParameters String
+  questions             Question[]
+  intervals             Interval[]
+  TrainingSession       TrainingSession[]
+}
+
+model TrainingSession {
+  id             String        @id @default(cuid())
+  date           DateTime
+  name           String
+  tags           String[]
+  activityType   String
+  athlete        Athlete       @relation(fields: [athleteId], references: [id])
+  athleteId      String
+  trainingGoal   TrainingGoal? @relation(fields: [trainingGoalId], references: [id])
+  trainingGoalId Int?
+  competition    Competition?  @relation(fields: [competitionId], references: [id])
+  competitionId  Int?
+  template       Template?     @relation(fields: [templateId], references: [id])
+  templateId     String?
+  intervals      Interval[]
+}
+
+//model for tasks
