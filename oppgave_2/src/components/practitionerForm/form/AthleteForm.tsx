@@ -28,7 +28,7 @@ const AthleteForm: React.FC<AthleteFormData> = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 mt-8 rounded shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Opprette utøver</h2>
+      <h2 className="text-2xl font-bold mb-4">Opprett utøver</h2>
 
       <label htmlFor="uniqueId" className="block text-gray-700 text-sm font-bold mb-2">
         Unik ID:
@@ -116,7 +116,7 @@ const AthleteForm: React.FC<AthleteFormData> = () => {
       />
 
       <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
-        Opprett utøver
+        Opprett
       </button>
     </form>
   );

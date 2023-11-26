@@ -77,8 +77,8 @@ export default function QuestionForm() {
   let questionValLength = 5 //må være 5 bokstaver for å funke
   
   return (
-    <div className="max-w-md mx-auto bg-white p-8 mt-8 rounded shadow-md">
-      <h1 className="text-3xl font-bold mb-4">Legg til spørsmål</h1>
+    <div className="max-w-lg mx-auto bg-white p-8 mt-8 rounded shadow-md">
+      <h1 className="text-2xl font-bold mb-4">Opprett spørsmål</h1>
       
       
       <form className="space-y-4" onSubmit={submitForm}>
@@ -86,13 +86,12 @@ export default function QuestionForm() {
         
         <div>
           <label htmlFor="questionText" className="block text-md font-medium text-gray-700">
-            Oprett nytt spørsmål
+            Spørsmålstekst
           </label>
           <input
             type="text"
             id="questionText"
             name="questionText"
-            placeholder="Spørsmålstekst..."
             onChange={handleWriteQuestion}
             minLength={5}
             value={saveQuestion}
@@ -175,7 +174,7 @@ export default function QuestionForm() {
           type="submit"
           className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700"
         >
-          Legg til spørsmål
+          Opprett
         </button>      
       </form>
       {hasSubmitted ? (
