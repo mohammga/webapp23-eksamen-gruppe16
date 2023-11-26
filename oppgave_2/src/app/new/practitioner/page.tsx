@@ -1,4 +1,4 @@
-import AthleteForm from '@/components/practitionerForm/form/AthleteForm';
+import AthleteForm from '@/components/forms/practitioner/AthleteForm';
 const Home: React.FC = () => {
   return (
     <div>

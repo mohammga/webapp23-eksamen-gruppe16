@@ -56,6 +56,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
                     Vis rapporter
                   </button>
                 </td>
+
               </tr>
             ))}
           </tbody>

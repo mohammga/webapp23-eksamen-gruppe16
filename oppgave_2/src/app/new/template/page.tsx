@@ -1,4 +1,4 @@
-import TemplateForm from '@/components/forms/TemplateForm';
+import TemplateForm from '@/components/forms/template/TemplateForm';
 
 const TemplatePage: React.FC = () => {
   return (

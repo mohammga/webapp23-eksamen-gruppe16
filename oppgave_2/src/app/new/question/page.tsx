@@ -1,4 +1,4 @@
-import QuestionForm from "@/components/QuestionForm";
+import QuestionForm from "@/components/forms/question/QuestionForm";
 
 export default function Home() {
   
