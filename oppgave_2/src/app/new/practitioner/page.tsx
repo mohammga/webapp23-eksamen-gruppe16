@@ -1,7 +1,11 @@
-export default function Home() {
+import AthleteForm from '@/components/practitionerForm/form/AthleteForm';
+const Home: React.FC = () => {
   return (
     <div>
-      <h1 className="text-3xl">Legg til utøvere</h1>
+      <section className="p-4">
+        <AthleteForm />
+      </section>
     </div>
-  )
-}
+  );
+};
+export default Home;
