@@ -1,7 +1,11 @@
-export default function Home() {
+import React from 'react'
+import CreateSessionForm from '@/components/forms/session/CreateSessionForm'
+
+
+export default function page() {
   return (
     <div>
-      <h1 className="text-3xl">Legg til økt</h1>
+        <CreateSessionForm/>
     </div>
   )
 }
