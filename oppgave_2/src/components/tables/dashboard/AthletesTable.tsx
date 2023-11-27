@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { User } from "@/types";
+import type { Athlete } from "@/types";
 
-interface UsersTableProps {
-  users: User[];
+interface athletesTableProps {
+  athletes: Athlete[];
 }
 
 const translateGender = (gender: string): string => {
@@ -16,30 +16,29 @@ const translateGender = (gender: string): string => {
   return translations[gender] || gender;
 };
 
-const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
+const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [genderFilter, setGenderFilter] = useState<string>("Alle");
-  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+  const [filteredAthletes, setFilteredAthletes] = useState<Athlete[]>(athletes);
 
   const handleSearch = () => {
-    const updatedFilteredUsers = users.filter((user) => {
+    const updatedFilteredathletes = athletes.filter((athlete) => {
       const includesSearchTerm =
-        user.id.toString().includes(searchTerm) ||
-        user.userId.toString().includes(searchTerm);
+        athlete.userId.toString().includes(searchTerm);
 
       const passesGenderFilter =
-        genderFilter === "Alle" || user.gender === genderFilter;
+        genderFilter === "Alle" || athlete.gender === genderFilter;
 
       return includesSearchTerm && passesGenderFilter;
     });
 
-    setFilteredUsers(updatedFilteredUsers);
+    setFilteredAthletes(updatedFilteredathletes);
   };
 
   const handleClearSearch = () => {
     setSearchTerm("");
     setGenderFilter("Alle");
-    setFilteredUsers(users);
+    setFilteredAthletes(athletes);
   };
 
   const genderOptions = ["Alle", "male", "female"];
@@ -86,13 +85,12 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
           </select>
         </div>
       </div>
-      {filteredUsers.length === 0 ? (
+      {filteredAthletes.length === 0 ? (
         <p>Ingen utøvere funnet.</p>
       ) : (
         <table className="mt-4 w-full border-collapse">
           <thead>
             <tr>
-              <th className="border bg-black px-4 py-2 text-white">ID</th>
               <th className="border bg-black px-4 py-2 text-white">brukerId</th>
               <th className="border bg-black px-4 py-2 text-white">Kjønn</th>
               <th className="border bg-black px-4 py-2 text-white">
@@ -101,12 +99,11 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
-              <tr key={user.id}>
-                <td className="border px-4 py-2">{user.id}</td>
-                <td className="border px-4 py-2">{user.userId}</td>
+            {filteredAthletes.map((athlete) => (
+              <tr key={athlete.userId}>
+                <td className="border px-4 py-2">{athlete.userId}</td>
                 <td className="border px-4 py-2">
-                  {translateGender(user.gender)}
+                  {translateGender(athlete.gender)}
                 </td>
                 <td className="border px-4 py-2">
                   <button className="mr-2 rounded bg-black px-4 py-2 text-white">
@@ -125,4 +122,4 @@ const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
   );
 };
 
-export default UsersTable;
+export default athletesTable;

@@ -1,4 +1,4 @@
-import type { User } from "@/types"
+import type { Athlete } from "@/types"
 import type { Metadata } from "next"
 import UsersTable from "@/components/tables/dashboard/AthletesTable"
 
@@ -7,23 +7,28 @@ export const metadata: Metadata = {
   description: "Dashboard",
 }
 
-async function getUsers(): Promise<User> {
-  const response = await fetch("https://webapp-api.vercel.app/api/users")
+async function getAthletes(): Promise<Athlete> {
+  const response = await fetch("http://localhost:3000/api/athlete",
+    {
+      method: "GET",
+      cache: "no-store",
+    }
+  )
 
   if (!response.ok) {
     throw new Error("Klarte ikke å hente brukere")
   }
 
-  return response.json() as Promise<User>
+  return response.json() as Promise<Athlete>
 }
 
 export default async function Page() {
-  const users = await getUsers()
+  const athletes = await getAthletes()
 
   return (
     <div>
       <h1 className="text-3xl px-6 pt-6 font-bold">Dashboard</h1>
-      <UsersTable users={users.data} />
+      <UsersTable athletes={athletes.data} />
     </div>
   )
 }
