@@ -30,16 +30,16 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
 
 
   const handleShowSession = (id: string) => {
-    router.push(`/show-session/${id}`);
+    router.push(`/session/${id}`);
   };
 
   const handleShowReport = (id: string) => {
-    router.push(`/show-report/${id}`);
+    router.push(`/report/${id}`);
   };
 
 
   const handleShowAthlete = (id: string) => {
-    router.push(`/show-athlete/${id}`);
+    router.push(`/athlete/${id}`);
   };
 
 

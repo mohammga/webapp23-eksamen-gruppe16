@@ -28,7 +28,6 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="text-3xl px-6 pt-6 font-bold">Se økt</h1>
       <SessionsTable/>
     </div>
   )
