@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { Athlete } from "@/types";
+import { useRouter } from "next/navigation"
+
 
 interface athletesTableProps {
   athletes: Athlete[];
@@ -16,10 +19,29 @@ const translateGender = (gender: string): string => {
   return translations[gender] || gender;
 };
 
+
 const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
+
+  const router = useRouter();
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [genderFilter, setGenderFilter] = useState<string>("Alle");
   const [filteredAthletes, setFilteredAthletes] = useState<Athlete[]>(athletes);
+
+
+  const handleShowSession = (id: string) => {
+    router.push(`/show-session/${id}`);
+  };
+
+  const handleShowReport = (id: string) => {
+    router.push(`/show-report/${id}`);
+  };
+
+
+  const handleShowAthlete = (id: string) => {
+    router.push(`/show-athlete/${id}`);
+  };
+
 
   const handleSearch = () => {
     const updatedFilteredathletes = athletes.filter((athlete) => {
@@ -106,11 +128,15 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
                   {translateGender(athlete.gender)}
                 </td>
                 <td className="border px-4 py-2">
-                  <button className="mr-2 rounded bg-black px-4 py-2 text-white">
+                  <button onClick={() => handleShowSession(athlete.userId)} className="mr-2 rounded bg-black px-4 py-2 text-white">
                     Vis økter
                   </button>
-                  <button className="rounded bg-black px-4 py-2 text-white">
+                  <button onClick={() => handleShowReport(athlete.userId)} className="rounded bg-black px-4 py-2 text-white">
                     Vis rapporter
+                  </button>
+
+                  <button onClick={() => handleShowAthlete(athlete.userId)} className="ml-2 rounded bg-black px-4 py-2 text-white">
+                    Vis/endre utøver
                   </button>
                 </td>
               </tr>
