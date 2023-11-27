@@ -50,7 +50,7 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
           <input
             type="text"
             id="search"
-            placeholder="Søk etter utøvere"
+            placeholder="Søk etter utøvere..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="mr-2 border p-2"
@@ -91,7 +91,7 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
         <table className="mt-4 w-full border-collapse">
           <thead>
             <tr>
-              <th className="border bg-black px-4 py-2 text-white">brukerId</th>
+              <th className="border bg-black px-4 py-2 text-white">BrukerId</th>
               <th className="border bg-black px-4 py-2 text-white">Kjønn</th>
               <th className="border bg-black px-4 py-2 text-white">
                 Handlinger
