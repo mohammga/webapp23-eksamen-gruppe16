@@ -38,6 +38,11 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
   };
 
 
+  const handleShowAthlete = (id: string) => {
+    router.push(`/show-athlete/${id}`);
+  };
+
+
   const handleSearch = () => {
     const updatedFilteredathletes = athletes.filter((athlete) => {
       const includesSearchTerm =
@@ -128,6 +133,10 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
                   </button>
                   <button onClick={() => handleShowReport(athlete.userId)} className="rounded bg-black px-4 py-2 text-white">
                     Vis rapporter
+                  </button>
+
+                  <button onClick={() => handleShowAthlete(athlete.userId)} className="ml-2 rounded bg-black px-4 py-2 text-white">
+                    Vis/endre utøver
                   </button>
                 </td>
               </tr>

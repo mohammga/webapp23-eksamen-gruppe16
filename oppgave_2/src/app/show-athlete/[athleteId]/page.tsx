@@ -1,6 +1,6 @@
 import type { Athlete } from "@/types"
 import type { Metadata } from "next"
-import ShowReport from "@/components/sections/ShowReport"
+import ShowAthlete from "@/components/sections/ShowAthlete"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -27,8 +27,7 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="text-3xl px-6 pt-6 font-bold">Se rapport</h1>
-      <ShowReport/>
+      <ShowAthlete/>
     </div>
   )
 }
