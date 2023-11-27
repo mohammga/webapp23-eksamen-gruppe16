@@ -7,7 +7,7 @@ interface ActivityProps {
         goalId: string;
     };
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    onDelete: () => void; // Ny prop for sletting
+    onDelete: () => void;
 }
 
 const Activity: React.FC<ActivityProps> = ({ activity, onChange, onDelete }) => {

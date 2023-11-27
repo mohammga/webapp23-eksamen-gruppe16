@@ -76,45 +76,6 @@ const AthleteForm: React.FC<AthleteFormData> = () => {
         <option value="other">Annet</option>
       </select>
 
-      <label htmlFor="maxHeartRate" className="block text-gray-700 text-sm font-bold mb-2">
-        Maksimal hjertefrekvens:
-      </label>
-      <input
-        type="number"
-        id="maxHeartRate"
-        value={formData.maxHeartRate}
-        onChange={handleChange}
-        required
-        placeholder="190 bpm"
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
-      />
-
-      <label htmlFor="thresholdWatt" className="block text-gray-700 text-sm font-bold mb-2">
-        Terskelwatt:
-      </label>
-      <input
-        type="number"
-        id="thresholdWatt"
-        value={formData.thresholdWatt}
-        onChange={handleChange}
-        required
-        placeholder="250 watt"
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
-      />
-
-      <label htmlFor="thresholdSpeed" className="block text-gray-700 text-sm font-bold mb-2">
-        Terskelfart:
-      </label>
-      <input
-        type="number"
-        id="thresholdSpeed"
-        value={formData.thresholdSpeed}
-        onChange={handleChange}
-        required
-        placeholder="30 km/t"
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
-      />
-
       <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
         Opprett
       </button>
