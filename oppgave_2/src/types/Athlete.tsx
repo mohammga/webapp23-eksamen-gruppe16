@@ -1,6 +1,5 @@
 export type AthleteFormData = {
-
-    uniqueId: string;
+    userId: string;
     gender: string;
     sportType: string;
     maxHeartRate: string;

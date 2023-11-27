@@ -5,46 +5,46 @@ import { AthleteFormData } from "@/types/Athlete"
 const AthleteForm: React.FC<AthleteFormData> = () => {
 
   const [formData, setFormData] = useState<AthleteFormData>({
-    uniqueId: 'abc-20',
+    userId: 'abc',
     gender: 'male',
     sportType: 'running',
-    maxHeartRate: '',
-    thresholdWatt: '',
-    thresholdSpeed: '',
-    intensityZoneHeartRate: '',
-    intensityZoneWatt: '',
-    intensityZoneSpeed: '',
-    intensityZone: '',
-    activities: [],
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
+    const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
 
-  const handleSubmit = (e: FormEvent) => {
-  };
+    const response = await fetch("/api/athlete", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+  }
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 mt-8 rounded shadow-md">
       <h2 className="text-2xl font-bold mb-4">Opprett utøver</h2>
 
-      <label htmlFor="uniqueId" className="block text-gray-700 text-sm font-bold mb-2">
-        Unik ID:
+      <label htmlFor="userId" className="block text-gray-700 text-sm font-bold mb-2">
+        BrukerId
       </label>
       <input
         type="text"
-        id="uniqueId"
+        id="userId"
         placeholder="abc-123-979"
         required
-        value={formData.uniqueId}
+        value={formData.userId}
         onChange={handleChange}
         className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
 
       <label htmlFor="gender" className="block text-gray-700 text-sm font-bold mb-2">
-        Kjønn:
+        Kjønn
       </label>
       <select
         id="gender"
@@ -58,7 +58,7 @@ const AthleteForm: React.FC<AthleteFormData> = () => {
       </select>
 
       <label htmlFor="sportType" className="block text-gray-700 text-sm font-bold mb-2">
-        Type sport:
+        Type sport
       </label>
       <select
         id="sportType"
@@ -75,45 +75,6 @@ const AthleteForm: React.FC<AthleteFormData> = () => {
         <option value="strength">Styrke</option>
         <option value="other">Annet</option>
       </select>
-
-      <label htmlFor="maxHeartRate" className="block text-gray-700 text-sm font-bold mb-2">
-        Maksimal hjertefrekvens:
-      </label>
-      <input
-        type="number"
-        id="maxHeartRate"
-        value={formData.maxHeartRate}
-        onChange={handleChange}
-        required
-        placeholder="190 bpm"
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
-      />
-
-      <label htmlFor="thresholdWatt" className="block text-gray-700 text-sm font-bold mb-2">
-        Terskelwatt:
-      </label>
-      <input
-        type="number"
-        id="thresholdWatt"
-        value={formData.thresholdWatt}
-        onChange={handleChange}
-        required
-        placeholder="250 watt"
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
-      />
-
-      <label htmlFor="thresholdSpeed" className="block text-gray-700 text-sm font-bold mb-2">
-        Terskelfart:
-      </label>
-      <input
-        type="number"
-        id="thresholdSpeed"
-        value={formData.thresholdSpeed}
-        onChange={handleChange}
-        required
-        placeholder="30 km/t"
-        className="w-full p-2 mb-4 border border-gray-300 rounded"
-      />
 
       <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
         Opprett
