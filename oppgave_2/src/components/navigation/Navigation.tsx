@@ -13,9 +13,6 @@ export default function Header() {
           <Link href="/">Dashboard</Link>
         </li>
         <li>
-          <Link href="/new/session">Opprett økt</Link>
-        </li>
-        <li>
           <Link href="/new/template">Opprett mal</Link>
         </li>
         <li>

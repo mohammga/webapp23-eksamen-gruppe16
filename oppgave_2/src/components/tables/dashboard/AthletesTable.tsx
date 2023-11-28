@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import type { Athlete } from "@/types";
-import { useRouter } from "next/navigation"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+
+
 
 
 interface athletesTableProps {
@@ -29,6 +32,11 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
   const [filteredAthletes, setFilteredAthletes] = useState<Athlete[]>(athletes);
 
 
+    const handleCreateSession = (id: string) => {
+    router.push(`/new/session/${id}`);
+  };
+
+
   const handleShowSession = (id: string) => {
     router.push(`/session/${id}`);
   };
@@ -41,6 +49,7 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
   const handleShowAthlete = (id: string) => {
     router.push(`/athlete/${id}`);
   };
+
 
 
   const handleSearch = () => {
@@ -128,6 +137,9 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
                   {translateGender(athlete.gender)}
                 </td>
                 <td className="border px-4 py-2">
+                           <button onClick={() => handleCreateSession(athlete.userId)} className="mr-2 rounded bg-black px-4 py-2 text-white">
+                    Opprett økt
+                  </button>
                   <button onClick={() => handleShowSession(athlete.userId)} className="mr-2 rounded bg-black px-4 py-2 text-white">
                     Vis økter
                   </button>
