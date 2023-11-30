@@ -29,7 +29,7 @@ export default function InputCount({ updateAmount }: InputCountProps) {
     <section className="flex h-screen w-full flex-col items-center py-20">
       <div className="w-full rounded-lg border bg-white p-10 shadow-md md:w-[520px]">
         <section className="rounded p-4">
-          <div className="flex flex-col items-center bg-gray-200">
+          <div className="flex flex-col items-center">
             <p className="mb-4 text-lg font-semibold">
               Hvor mange oppgaver vil du gjennomføre?
             </p>
@@ -43,12 +43,12 @@ export default function InputCount({ updateAmount }: InputCountProps) {
                 min={1}
                 max={10}
                 onChange={handleChange}
-                className="mb-4 w-3/4 rounded-md border p-2 md:w-1/2"
+                className="mb-4 w-full rounded-md border p-2"
                 required
               />
               <button
                 type="submit"
-                className="w-3/4 rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 md:w-1/2"
+                className="w-full rounded-sm bg-black p-2 text-white"
               >
                 Fortsett
               </button>
