@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import TemplateForm from '@/components/forms/session/TemplateForm';
+import Intervals from '@/components/forms/session/Intervals';
 
 interface CreateSessionFormProps { }
 
@@ -37,7 +38,7 @@ const CreateSessionForm: React.FC<CreateSessionFormProps> = () => {
       selectedCompetition: setSelectedCompetition,
       sessionDate: setSessionDate,
     };
-  
+
     const updater = stateUpdater[name];
     updater && updater(value);
   };
@@ -55,10 +56,12 @@ const CreateSessionForm: React.FC<CreateSessionFormProps> = () => {
     setSelectedAthlete(value);
   };
 
+
+  
   const renderCustomizationOptions = () => {
     return (
       <>
-        <div className="mb-4 bg-red_500">
+        <div className="mb-4">
           <label htmlFor="customizeTemplate" className="block text-sm font-medium text-gray-700">
             Vil du tilpasse malen?
           </label>
@@ -75,32 +78,32 @@ const CreateSessionForm: React.FC<CreateSessionFormProps> = () => {
           </select>
 
           {customizeTemplate === 'no' && (
-  <div className="mb-4">
-    <label htmlFor="selectedAthlete" className="block text-sm font-medium text-gray-700">
-      Velg flere utøvere
-    </label>
-    <select
-      id="selectedAthlete"
-      name="selectedAthlete"
-      className="mt-1 p-2 border rounded w-full"
-      value={selectedAthlete}
-      onChange={handleChange}
-      multiple={true}  
-    >
-      <option value="Abdullah">Abdullah</option>
-      <option value="Mohammed">Mohammed</option>
-      <option value="Edvin">Edvin</option>
-      <option value="Ismail">Ismail</option>
-      <option value="Taofik">Taofik</option>
-      <option value="Nina">Nina</option>
-    </select>
-  </div>
-)}
+            <div className="mb-4">
+              <label htmlFor="selectedAthlete" className="block text-sm font-medium text-gray-700">
+                Velg flere utøvere
+              </label>
+              <select
+                id="selectedAthlete"
+                name="selectedAthlete"
+                className="mt-1 p-2 border rounded w-full"
+                value={selectedAthlete}
+                onChange={handleChange}
+                multiple={true}
+              >
+                <option value="Abdullah">Abdullah</option>
+                <option value="Mohammed">Mohammed</option>
+                <option value="Edvin">Edvin</option>
+                <option value="Ismail">Ismail</option>
+                <option value="Taofik">Taofik</option>
+                <option value="Nina">Nina</option>
+              </select>
+            </div>
+          )}
 
 
 
-          
-{customizeTemplate === 'yes' && (
+
+          {customizeTemplate === 'yes' && (
             <div className="mb-4">
               <label htmlFor="selectedAthlete" className="block text-sm font-medium text-gray-700">
                 Velg én utøver
@@ -122,10 +125,28 @@ const CreateSessionForm: React.FC<CreateSessionFormProps> = () => {
               </select>
             </div>
           )}
+
+         
         </div>
       </>
     );
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   return (
     <div className="max-w-lg mx-auto bg-white p-8 mt-8 rounded shadow-md ">
@@ -172,7 +193,7 @@ const CreateSessionForm: React.FC<CreateSessionFormProps> = () => {
               {renderCustomizationOptions()}
             </>
           )}
-          
+
           <TemplateForm />
           <div className="mb-4">
             <label htmlFor="selectedTrainingGoal" className="block text-sm font-medium text-gray-700">
@@ -217,6 +238,8 @@ const CreateSessionForm: React.FC<CreateSessionFormProps> = () => {
               onChange={handleChange}
             />
           </div>
+
+          <Intervals/>
 
           <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
             Opprett Økten

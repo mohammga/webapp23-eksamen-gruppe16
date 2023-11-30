@@ -2,43 +2,52 @@
 
 import { useState } from 'react';
 
+
 interface FormData {
     name: string;
     tags: string;
     slug: string;
-    activityType: string;
-    questions: number;
+    activityTypes: string[];
+    questions: string[];  // Endret fra number[] til string[]
     measurementParameter: string;
-    intervals: Interval[];
-    // Add the rest of the attributes
 }
 
-interface Interval {
-    duration: number;
-    intensityZone: string;
-}
+
+const activityTypes = [
+    "Løp",
+    "Sykkel",
+    "Ski",
+    "Triatlon",
+    "Svømming",
+    "Styrke",
+    "Annet",
+];
+
+const measurementParameters = [
+    "Puls",
+    "Wat",
+    "Fart",
+    "Tid",
+];
+
+const demoQuestions = [
+    "Hvor langt løp du?",
+    "Hva var gjennomsnittspulsen din?",
+    "Hvor lang tid tok det?",
+    "Hvor mange kalorier forbrente du?",
+];
+
 
 const TemplateForm: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         name: '',
         tags: '',
         slug: '',
-        activityType: '',
-        questions: 0,
+        activityTypes: [],
+        questions: [],
         measurementParameter: '',
-        intervals: [{ duration: 0, intensityZone: '' }],
-        // Initialize the rest of the attributes
     });
 
-    const activityTypes = [
-        "Løp",
-        "Sykkel",
-        "Ski",
-        "Triatlon",
-        "Svømming",
-        "Styrke",
-        "Annet",
-    ]
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -55,25 +64,24 @@ const TemplateForm: React.FC = () => {
         }));
     };
 
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleMeasurementParameterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormData((prevData) => ({
             ...prevData,
-            activityType: e.target.value,
-        }))
-    }
+            measurementParameter: e.target.value,
+        }));
+    };
 
-    const handleIntervalChange = (
-        index: number,
-        field: keyof Interval,
-        value: string | number,
-    ) => {
-       
-    }
-
-    const handleAddInterval = () => {
+    const handleQuestionsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
         setFormData((prevData) => ({
             ...prevData,
-            intervals: [...prevData.intervals, { duration: 0, intensityZone: '' }],
+            questions: selectedOptions,
+        }));
+    };
+    const handleActivityTypesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            activityTypes: Array.from(e.target.selectedOptions).map(option => option.value),
         }));
     };
 
@@ -82,6 +90,9 @@ const TemplateForm: React.FC = () => {
         // Add logic for submission, e.g., saving to a database
         console.log('Form data submitted:', formData);
     };
+
+
+
 
     return (
         <form onSubmit={handleSubmit}>
@@ -114,13 +125,12 @@ const TemplateForm: React.FC = () => {
 
             <label className="block text-gray-700 font-bold text-sm mb-2">Aktivitets type</label>
 
-
-
             <label className="block text-gray-700 text-sm mb-2">Type aktivitet:</label>
             <select
-                name="activityType"
-                value={formData.activityType}
-                onChange={handleSelectChange}
+                name="activityTypes"
+                value={formData.activityTypes}
+                onChange={handleActivityTypesChange}
+                multiple
                 className="w-full p-2 mt-1 border rounded-md"
             >
                 {activityTypes.map((type) => (
@@ -131,45 +141,37 @@ const TemplateForm: React.FC = () => {
             </select>
 
 
-
             <label className="block text-gray-700 text-sm mb-2">Number of questions:</label>
-            <input
-                type="number"
+            <select
                 name="questions"
                 value={formData.questions}
-                onChange={handleInputChange}
+                onChange={handleQuestionsChange}
+                multiple
                 className="w-full p-2 mt-1 border rounded-md"
-            />
+            >
+                {demoQuestions.map((question) => (
+                    <option key={question} value={question}>
+                        {question}
+                    </option>
+                ))}
+            </select>
 
             <label className="block text-gray-700 text-sm mb-2">Measurement parameter:</label>
-            <input
-                type="text"
+            <select
                 name="measurementParameter"
                 value={formData.measurementParameter}
-                onChange={handleInputChange}
+                onChange={handleMeasurementParameterChange}
                 className="w-full p-2 mt-1 border rounded-md"
-            />
+            >
+                {measurementParameters.map((param) => (
+                    <option key={param} value={param}>
+                        {param}
+                    </option>
+                ))}
+            </select>
 
-            <label className="block font-bold text-gray-700 text-sm mb-2">Intervals</label>
-            {formData.intervals.map((interval, index) => (
-                <div key={index} className="mt-2">
-                    <label className="block text-gray-700 text-sm mb-2">Duration (min):</label>
-                    <input
-                        type="number"
-                        value={interval.duration}
-                        onChange={(e) => handleIntervalChange(index, 'duration', +e.target.value)}
-                        className="w-full p-1 mt-1 border rounded-md"
-                    />
 
-                    <label className="block text-gray-700 text-sm mb-2">Intensity Zone:</label>
-                    <input
-                        type="text"
-                        value={interval.intensityZone}
-                        onChange={(e) => handleIntervalChange(index, 'intensityZone', e.target.value)}
-                        className="w-full p-1 mt-1 border rounded-md"
-                    />
-                </div>
-            ))}
+
         </form>
     );
 };
