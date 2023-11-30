@@ -45,17 +45,12 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
     router.push(`/athlete/${id}`);
   };
 
-
-
   const handleSearch = () => {
     const updatedFilteredathletes = athletes.filter((athlete) => {
       const includesSearchTerm =
         athlete.userId.toString().includes(searchTerm);
 
-      const passesGenderFilter =
-        genderFilter === "Alle" || athlete.gender === genderFilter;
-
-      return includesSearchTerm && passesGenderFilter;
+      return includesSearchTerm;
     });
 
     setFilteredAthletes(updatedFilteredathletes);
@@ -66,8 +61,6 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
     setGenderFilter("Alle");
     setFilteredAthletes(athletes);
   };
-
-  const genderOptions = ["Alle", "male", "female"];
 
   return (
     <section className="p-6">
@@ -95,20 +88,6 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
               Tøm søk
             </button>
           )}
-        </div>
-        <div className="flex flex-col items-center">
-          <select
-            id="genderFilter"
-            value={genderFilter}
-            onChange={(e) => setGenderFilter(e.target.value)}
-            className="w-[100px] border p-2"
-          >
-            {genderOptions.map((option) => (
-              <option key={option} value={option}>
-                {translateGender(option)}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
       {filteredAthletes.length === 0 ? (
