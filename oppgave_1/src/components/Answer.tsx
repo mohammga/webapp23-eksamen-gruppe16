@@ -11,6 +11,7 @@ type TasksProps = {
   setError: () => void
   answer: string
   setAnswer: Function
+  setTemafeil: Function
   setCorrect: Function
   leggPoeng: () => void
   setMessage: Function
@@ -20,6 +21,7 @@ type TasksProps = {
   failed: boolean
   correct: boolean
   count: number
+  temafeil: string[]
 }
 
 export default function Answer({
@@ -35,6 +37,8 @@ export default function Answer({
   leggPoeng,
   answer,
   setAnswer,
+  setTemafeil,
+  temafeil,
   count,
 }: TasksProps) {
 
@@ -76,6 +80,15 @@ export default function Answer({
       leggPoeng()
       setAnswer("")
     } else {
+      setTemafeil([...temafeil, task.type]);
+
+      console.log("Dette er TEMAFEIL" + temafeil)
+      console.log(temafeil)
+      console.log("SLUTT")
+      console.log("DETTE ER TASK:" + task.data)
+      console.log("DETTE ER TASK:" + task.type)
+
+
       setAnswer("")
       setCorrect(false)
       setError()

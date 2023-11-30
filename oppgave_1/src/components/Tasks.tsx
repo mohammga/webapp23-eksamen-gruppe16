@@ -7,14 +7,20 @@ import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
 import  Result  from "@/components/Result";
 
+
 type TasksProps = {
   tasks: Task[]
+  data: Task[]
   antallOppgaver: number
 }
 
 export default function Tasks({tasks, antallOppgaver }: TasksProps) {
-  const {count, current, setCurrent, correct, failed, next, setAnswer, answer, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
+  const {count, current, data, temafeil, setTemafeil, setCurrent, correct, failed, hvaMåØvesMerPå, next, setAnswer, answer, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
   const task = tasks[current]
+  console.log("THIS IS TASKS: " + tasks)
+  console.log("THIS IS TASKS: " + tasks.length)
+  console.log("THIS IS DATA: " + data)
+  console.log("THIS IS DATA: " + data.length)
 
   return (
     <section className="flex items-center w-full h-screen flex-col py-20">
@@ -35,6 +41,7 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
           correct={correct}
           next={next}
           setAnswer={setAnswer}
+          setTemafeil={setTemafeil}
           count={count}
           answer={answer}
           setCorrect={setCorrect}
@@ -43,12 +50,14 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
           poeng={poeng}
           setMessage={setMessage}
           message={message}
+          temafeil = {temafeil}
 
         />
       </div>
     ) : (
+      
       <div>
-        <Result operationToPractice="multiplication" poeng={poeng} setCurrent = {setCurrent} />
+        <Result operationToPractice={hvaMåØvesMerPå()} poeng={poeng} setCurrent = {setCurrent} />
       </div>
     )}
   </section>

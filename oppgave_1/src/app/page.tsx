@@ -9,12 +9,12 @@ import Tasks from "@/components/Tasks"
 import useProgress from "@/hooks/useProgress"
 
 export default function Home() {
+
   let count = 0
   let result: any
 
   const [recievedData, setRecievedData] = useState(false)
-  const [data, setData] = useState<Task[]>([])
-  const { amount, setAmount } = useProgress()
+  const { amount, data, setAmount, setData } = useProgress()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,12 +42,6 @@ export default function Home() {
   const updateAmount = (newAmount: number) => {
     setAmount(newAmount)
   }
-
-  console.log("Amount" + amount)
-  console.log("Count" + count)
-
-  console.log("Data")
-  console.log(data)
 
   return (
     <div>
