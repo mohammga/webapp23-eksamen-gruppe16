@@ -55,16 +55,6 @@ async function main() {
         type: "subtract",
         data: "18-9",
       },
-      {
-        text: "Skriv resultatet av regneoperasjonen",
-        type: "multiply",
-        data: "4*7",
-      },
-      {
-        text: "Skriv resultatet av regneoperasjonen",
-        type: "divide",
-        data: "25/5",
-      },
     ]
 
     for (const task of tasks) {
