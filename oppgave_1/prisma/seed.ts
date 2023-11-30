@@ -1,34 +1,70 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
 async function main() {
   try {
-    // Eksempeldata for seeding
     const tasks = [
       {
         text: "Skriv resultatet av regneoperasjonen",
         type: "add",
-        data: "9+1"
-    },
-    {
-      
+        data: "9+1",
+      },
+      {
         text: "Skriv resultatet av regneoperasjonen",
         type: "subtract",
-        data: "12-6"
-    },
-    {
-        
+        data: "12-6",
+      },
+      {
         text: "Skriv resultatet av regneoperasjonen",
         type: "multiply",
-        data: "7*2"
-    },
-    {
-       
+        data: "7*2",
+      },
+      {
         text: "Skriv resultatet av regneoperasjonen",
         type: "divide",
-        data: "20/5"
-    }
+        data: "20/5",
+      },
+      {
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "add",
+        data: "3+4",
+      },
+      {
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "subtract",
+        data: "15-8",
+      },
+      {
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "multiply",
+        data: "6*3",
+      },
+      {
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "divide",
+        data: "30/3",
+      },
+      {
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "add",
+        data: "5+5",
+      },
+      {
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "subtract",
+        data: "18-9",
+      },
+      {
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "multiply",
+        data: "4*7",
+      },
+      {
+        text: "Skriv resultatet av regneoperasjonen",
+        type: "divide",
+        data: "25/5",
+      },
     ]
 
     for (const task of tasks) {

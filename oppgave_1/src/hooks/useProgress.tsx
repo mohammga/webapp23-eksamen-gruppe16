@@ -4,7 +4,8 @@ import { useState } from "react";
 export default function useProgress() {
   const [count, setCount] = useState(0)
   const [current, setCurrent] = useState(0)
-   const [amount, setAmount] = useState(0)
+  const [answer, setAnswer] = useState([""])
+  const [amount, setAmount] = useState(0)
 
   const [message, setMessage] = useState("")
   const [failed, setFailed] = useState(false)
@@ -24,10 +25,11 @@ export default function useProgress() {
     setMessage("");
   };
 
-  const previous = () => {
-    // Minske current med 1 for å gå tilbake til forrige spørsmål
-    setCurrent(current - 1)
-  };
+
+  const sendAnswers = () => {
+    //setter answers inne i POST request
+  }
+
 
   const setError = () => {
     if (count < 3) {
@@ -42,5 +44,5 @@ export default function useProgress() {
     setCount(count + 1)
   }
 
-  return  {poeng, count, current, setCurrent, correct, failed, message, amount, leggPoeng, setAmount, setMessage, next, previous, setCorrect, setError}
+  return  {poeng, count, current, setCurrent, correct, failed, message, amount, answer, leggPoeng, setAmount, setMessage, next, setCorrect, setError, setAnswer}
 }

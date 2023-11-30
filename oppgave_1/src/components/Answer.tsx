@@ -8,8 +8,9 @@ import { Task } from "@/types";
 type TasksProps = {
   current: number
   next: () => void
-  previous: () => void
   setError: () => void
+  answer: string
+  setAnswer: Function
   setCorrect: Function
   leggPoeng: () => void
   setMessage: Function
@@ -18,6 +19,7 @@ type TasksProps = {
   task: Task
   failed: boolean
   correct: boolean
+  count: number
 }
 
 export default function Answer({
@@ -28,14 +30,15 @@ export default function Answer({
   setError,
   setCorrect,
   next,
-  previous,
   setMessage,
   message,
   leggPoeng,
+  answer,
+  setAnswer,
+  count,
 }: TasksProps) {
-  const [click, setClick] = useState(false)
-  const [answer, setAnswer] = useState("")
 
+  const [click, setClick] = useState(false)
 
   const correctAnswer = eval(task.data)
 
@@ -44,8 +47,32 @@ export default function Answer({
   ): Promise<void> => {
     e.preventDefault()
     if (answer === correctAnswer.toString()) {
+      setAnswer(answer)
       setCorrect(true)
       setMessage("Bra jobbet!")
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/task",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              attempts: count + 1,
+              taskId: task.id,
+            }),
+          },
+        )
+
+        if (!response.ok) {
+          throw new Error("Feil ved innsending av svar")
+        }
+
+      } catch (error) {
+        console.error("Feil ved innsending av svar:", (error as Error).message);
+      }
+
       leggPoeng()
       setAnswer("")
     } else {
@@ -75,7 +102,7 @@ export default function Answer({
                 onChange={(e) => setAnswer(e.target.value)}
                 className="w-full rounded-md border p-2"
                 readOnly={failed || correct}
-                required // Add the required attribute to the input element
+                required
               />
             </div>
             <button
@@ -101,7 +128,7 @@ export default function Answer({
             {click && (
               <>
                 <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
-                <Progress next={next} previous={previous} current={current} />
+                <Progress next={next} current={current} />
               </>
             )}
           </>
@@ -110,7 +137,7 @@ export default function Answer({
         {correct && (
           <>
             {message}
-            <Progress next={next} previous={previous} current={current} />
+            <Progress next={next} current={current} />
           </>
         )}
       </form>

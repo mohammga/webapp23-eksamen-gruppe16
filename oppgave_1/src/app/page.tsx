@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import type { Task } from "@/types"
 
 import Header from "@/components/Header"
@@ -21,7 +21,7 @@ export default function Home() {
       if (amount > 0 && amount <= 10) {
         try {
           const response = await fetch(
-            `http://localhost:3000/api/restapi?count=${amount}`,
+            `http://localhost:3000/api/task?count=${amount}`,
             {
               method: "GET",
               cache: "no-store",
@@ -53,8 +53,8 @@ export default function Home() {
     <div>
       {amount === 0 ? (
         <>
-                 <Header />
-        <InputCount updateAmount={updateAmount} />
+          <Header />
+          <InputCount updateAmount={updateAmount} />
         </>
       ) : recievedData ? (
         <div>

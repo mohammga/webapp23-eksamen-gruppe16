@@ -13,12 +13,12 @@ type TasksProps = {
 }
 
 export default function Tasks({tasks, antallOppgaver }: TasksProps) {
-  const {count, current, setCurrent, correct, failed, next, previous, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
+  const {count, current, setCurrent, correct, failed, next, setAnswer, answer, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
   const task = tasks[current]
 
   return (
     <section className="flex items-center w-full h-screen flex-col py-20">
-    {current <= antallOppgaver ? (
+    {current+1 <= antallOppgaver ? (
       <div className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
         <TaskCard
           task={task}
@@ -34,7 +34,9 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
           failed={failed}
           correct={correct}
           next={next}
-          previous={previous}
+          setAnswer={setAnswer}
+          count={count}
+          answer={answer}
           setCorrect={setCorrect}
           setError={setError}
           leggPoeng={leggPoeng}
