@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 import type { Athlete } from "@/types";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-
-
-
 
 interface athletesTableProps {
   athletes: Athlete[];
@@ -148,7 +143,7 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
                   </button>
 
                   <button onClick={() => handleShowAthlete(athlete.userId)} className="ml-2 rounded bg-black px-4 py-2 text-white">
-                    Vis/endre utøver
+                    Endre informasjon
                   </button>
                 </td>
               </tr>

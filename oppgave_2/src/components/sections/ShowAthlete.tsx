@@ -1,18 +1,25 @@
-"use client"
+"use client";
 
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+
+
+
+
 
 interface AthleteFormData {
   userId: string
   gender: string
   sportType: string
   meta: {
-    heartRate: string
-    watt: string
-    speed: string
+    heartRate: number
+    watt: number
+    speed: number
   }
   goals: { goalId: string; date: string }[]
+  competitions: { competitionId: string; date: string }[]
 }
+
 
 const ShowAthlete: React.FC = () => {
   const [formData, setFormData] = useState<AthleteFormData>({
@@ -23,16 +30,36 @@ const ShowAthlete: React.FC = () => {
       heartRate: "",
       watt: "",
       speed: "",
-    },
+    }, 
     goals: [{ goalId: "", date: "" }],
+    competitions: [{ competitionId: "", date: "" }],
   })
+
+  const router = useRouter()
+
+  const handleBack = () => {
+    router.push("/")
+  }
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { id, value } = e.target
-    setFormData({ ...formData, [id]: value })
+    const newValue = e.target.type === "number" ? +value : value
+    setFormData({ ...formData, [id]: newValue })
   }
+
+
+  const handleCompetitionChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const { id, value } = e.target
+    const updatedCompetitions = [...formData.competitions]
+    updatedCompetitions[index] = { ...updatedCompetitions[index], [id]: value }
+    setFormData({ ...formData, competitions: updatedCompetitions })
+  }
+
 
   const handleGoalChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -57,6 +84,19 @@ const ShowAthlete: React.FC = () => {
     setFormData({ ...formData, goals: updatedGoals })
   }
 
+  const handleAddCompetition = () => {
+    setFormData({
+      ...formData,
+      competitions: [...formData.competitions, { competitionId: "", date: "" }],
+    })
+  }
+
+  const handleRemoveCompetition = (index: number) => {
+    const updatedCompetitions = [...formData.competitions]
+    updatedCompetitions.splice(index, 1)
+    setFormData({ ...formData, competitions: updatedCompetitions })
+  }
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
   }
@@ -66,18 +106,17 @@ const ShowAthlete: React.FC = () => {
       onSubmit={handleSubmit}
       className="mx-auto mt-8 max-w-md rounded bg-white p-8 shadow-md"
     >
-      <h2 className="mb-4 text-2xl font-bold">Se eller endre utøver</h2>
+      <h2 className="mb-4 text-2xl font-bold">Endre utøver-informasjon</h2>
 
       <label
-        htmlFor="uniqueId"
+        htmlFor="userId"
         className="mb-2 block text-sm font-bold text-gray-700"
       >
-        Unik ID:
+        Unik ID
       </label>
       <input
         type="text"
-        id="uniqueId"
-        placeholder="abc-123-979"
+        id="userId"
         required
         value={formData.userId}
         onChange={handleChange}
@@ -88,7 +127,7 @@ const ShowAthlete: React.FC = () => {
         htmlFor="gender"
         className="mb-2 block text-sm font-bold text-gray-700"
       >
-        Kjønn:
+        Velg kjønn
       </label>
       <select
         id="gender"
@@ -105,7 +144,7 @@ const ShowAthlete: React.FC = () => {
         htmlFor="sportType"
         className="mb-2 block text-sm font-bold text-gray-700"
       >
-        Type sport:
+        Velg type sport:
       </label>
       <select
         id="sportType"
@@ -124,50 +163,47 @@ const ShowAthlete: React.FC = () => {
       </select>
 
       <label
-        htmlFor="maxHeartRate"
+        htmlFor="heartRate"
         className="mb-2 block text-sm font-bold text-gray-700"
       >
-        Maksimal hjertefrekvens:
+        Maksimal hjertefrekvens
       </label>
       <input
         type="number"
-        id="maxHeartRate"
+        id="heartRate"
         value={formData.meta.heartRate}
         onChange={handleChange}
         required
-        placeholder="190 bpm"
         className="mb-4 w-full rounded border border-gray-300 p-2"
       />
 
       <label
-        htmlFor="thresholdWatt"
+        htmlFor="watt"
         className="mb-2 block text-sm font-bold text-gray-700"
       >
-        Terskelwatt:
+        Terskelwatt
       </label>
       <input
         type="number"
-        id="thresholdWatt"
+        id="watt"
         value={formData.meta.watt}
         onChange={handleChange}
         required
-        placeholder="250 watt"
         className="mb-4 w-full rounded border border-gray-300 p-2"
       />
 
       <label
-        htmlFor="thresholdSpeed"
+        htmlFor="speed"
         className="mb-2 block text-sm font-bold text-gray-700"
       >
-        Terskelfart:
+        Terskelfart
       </label>
       <input
         type="number"
-        id="thresholdSpeed"
+        id="speed"
         value={formData.meta.speed}
         onChange={handleChange}
         required
-        placeholder="30 km/t"
         className="mb-4 w-full rounded border border-gray-300 p-2"
       />
 
@@ -178,13 +214,12 @@ const ShowAthlete: React.FC = () => {
               htmlFor={`goalId-${index}`}
               className="mb-2 block text-sm font-bold text-gray-700"
             >
-              Mål:
+              Mål
             </label>
             <input
               type="text"
               id={`goalId-${index}`}
               name={`goalId-${index}`}
-              placeholder="Legg til mål"
               value={goal.goalId}
               onChange={(e) => handleGoalChange(e, index)}
               className="mb-4 w-full rounded border border-gray-300 p-2"
@@ -197,10 +232,9 @@ const ShowAthlete: React.FC = () => {
               Dato:
             </label>
             <input
-              type="text"
+              type="date"
               id={`date-${index}`}
               name={`date-${index}`}
-              placeholder="2023-12-01"
               value={goal.date}
               onChange={(e) => handleGoalChange(e, index)}
               className="mb-2 w-full rounded border border-gray-300 p-2"
@@ -221,18 +255,72 @@ const ShowAthlete: React.FC = () => {
           onClick={handleAddGoal}
           className="rounded bg-gray-500 px-2 py-1 text-white"
         >
-          Legg til mål
+          Legg til nytt mål
         </button>
       </div>
 
+            <div className="mb-4">
+        {formData.competitions.map((competition, index) => (
+          <div key={index}>
+            <label
+              htmlFor={`competitionId-${index}`}
+              className="mb-2 block text-sm font-bold text-gray-700"
+            >
+              Konkurranse
+            </label>
+            <input
+              type="text"
+              id={`competitionId-${index}`}
+              name={`competitionId-${index}`}
+              value={competition.competitionId}
+              onChange={(e) => handleCompetitionChange(e, index)}
+              className="mb-4 w-full rounded border border-gray-300 p-2"
+            />
+
+            <label
+              htmlFor={`competitionDate-${index}`}
+              className="mb-2 block text-sm font-bold text-gray-700"
+            >
+              Dato:
+            </label>
+            <input
+              type="date"
+              id={`competitionDate-${index}`}
+              name={`competitionDate-${index}`}
+              value={competition.date}
+              onChange={(e) => handleCompetitionChange(e, index)}
+              className="mb-2 w-full rounded border border-gray-300 p-2"
+            />
+            {index > 0 && (
+              <button
+                type="button"
+                onClick={() => handleRemoveCompetition(index)}
+                className="mr-2 text-red-500"
+              >
+                Fjern konkurranse
+              </button>
+            )}
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={handleAddCompetition}
+          className="rounded bg-gray-500 px-2 py-1 text-white"
+        >
+          Legg til ny konkurranse
+        </button>
+      </div>
+
+      <button onClick={handleBack} type="button" className="mr-2 rounded bg-gray-700 px-4 py-2 text-white">Tilbake</button>
+
+
       <button
         type="submit"
-        className="mr-2 rounded bg-gray-800 px-4 py-2 text-white hover:bg-gray-700"
+        className="rounded bg-gray-800 px-4 py-2 text-white hover:bg-gray-700"
       >
         Endre
       </button>
 
-      <button className="rounded bg-red-500 px-4 py-2 text-white">Lukk</button>
     </form>
   )
 }

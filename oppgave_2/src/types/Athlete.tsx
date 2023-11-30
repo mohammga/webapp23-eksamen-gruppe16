@@ -7,4 +7,12 @@ export type AthleteFormData = {
         watt: string;
         speed: string;
     };
+    goals: {
+        goalId: string;
+        date: string;
+    }[];
+    competitions: {
+        competitionId: string;
+        date: string;
+    }[];
 }
