@@ -15,13 +15,8 @@ type TasksProps = {
 }
 
 export default function Tasks({tasks, antallOppgaver }: TasksProps) {
-  const {count, current, data, temafeil, setTemafeil, setCurrent, correct, failed, hvaMåØvesMerPå, next, setAnswer, answer, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
+  const {count, current, temafeil, setTemafeil, setCurrent, correct, failed, hvaMåØvesMerPå, next, setAnswer, answer, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
   const task = tasks[current]
-  console.log("THIS IS TASKS: " + tasks)
-  console.log("THIS IS TASKS: " + tasks.length)
-  console.log("THIS IS DATA: " + data)
-  console.log("THIS IS DATA: " + data.length)
-
   return (
     <section className="flex items-center w-full h-screen flex-col py-20">
     {current+1 <= antallOppgaver ? (
