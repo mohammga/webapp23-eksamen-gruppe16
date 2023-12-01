@@ -1,4 +1,3 @@
-import { error } from "console"
 import { NextRequest, NextResponse } from "next/server"
 
 import { Athlete, CreateAthleteInput, Result } from "@/types"

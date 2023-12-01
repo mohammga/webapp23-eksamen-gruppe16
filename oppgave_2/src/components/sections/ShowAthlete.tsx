@@ -2,27 +2,10 @@
 
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-
-
-
-
-
-interface AthleteFormData {
-  userId: string
-  gender: string
-  sportType: string
-  meta: {
-    heartRate: number
-    watt: number
-    speed: number
-  }
-  goals: { goalId: string; date: string }[]
-  competitions: { competitionId: string; date: string }[]
-}
-
+import { Athlete } from "@/types/Athlete"
 
 const ShowAthlete: React.FC = () => {
-  const [formData, setFormData] = useState<AthleteFormData>({
+  const [formData, setFormData] = useState<Athlete>({
     userId: "",
     gender: "",
     sportType: "",
@@ -31,8 +14,6 @@ const ShowAthlete: React.FC = () => {
       watt: "",
       speed: "",
     }, 
-    goals: [{ goalId: "", date: "" }],
-    competitions: [{ competitionId: "", date: "" }],
   })
 
   const router = useRouter()
@@ -47,54 +28,6 @@ const ShowAthlete: React.FC = () => {
     const { id, value } = e.target
     const newValue = e.target.type === "number" ? +value : value
     setFormData({ ...formData, [id]: newValue })
-  }
-
-
-  const handleCompetitionChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const { id, value } = e.target
-    const updatedCompetitions = [...formData.competitions]
-    updatedCompetitions[index] = { ...updatedCompetitions[index], [id]: value }
-    setFormData({ ...formData, competitions: updatedCompetitions })
-  }
-
-
-  const handleGoalChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const { id, value } = e.target
-    const updatedGoals = [...formData.goals]
-    updatedGoals[index] = { ...updatedGoals[index], [id]: value }
-    setFormData({ ...formData, goals: updatedGoals })
-  }
-
-  const handleAddGoal = () => {
-    setFormData({
-      ...formData,
-      goals: [...formData.goals, { goalId: "", date: "" }],
-    })
-  }
-
-  const handleRemoveGoal = (index: number) => {
-    const updatedGoals = [...formData.goals]
-    updatedGoals.splice(index, 1)
-    setFormData({ ...formData, goals: updatedGoals })
-  }
-
-  const handleAddCompetition = () => {
-    setFormData({
-      ...formData,
-      competitions: [...formData.competitions, { competitionId: "", date: "" }],
-    })
-  }
-
-  const handleRemoveCompetition = (index: number) => {
-    const updatedCompetitions = [...formData.competitions]
-    updatedCompetitions.splice(index, 1)
-    setFormData({ ...formData, competitions: updatedCompetitions })
   }
 
   const handleSubmit = (e: FormEvent) => {
@@ -144,7 +77,7 @@ const ShowAthlete: React.FC = () => {
         htmlFor="sportType"
         className="mb-2 block text-sm font-bold text-gray-700"
       >
-        Velg type sport:
+        Velg type sport
       </label>
       <select
         id="sportType"
@@ -153,6 +86,7 @@ const ShowAthlete: React.FC = () => {
         value={formData.sportType}
         className="mb-4 w-full rounded border border-gray-300 p-2"
       >
+        <option value="">Velg sport</option>
         <option value="running">Løp</option>
         <option value="cycling">Sykkel</option>
         <option value="skiing">Ski</option>
@@ -207,112 +141,7 @@ const ShowAthlete: React.FC = () => {
         className="mb-4 w-full rounded border border-gray-300 p-2"
       />
 
-      <div className="mb-4">
-        {formData.goals.map((goal, index) => (
-          <div key={index}>
-            <label
-              htmlFor={`goalId-${index}`}
-              className="mb-2 block text-sm font-bold text-gray-700"
-            >
-              Mål
-            </label>
-            <input
-              type="text"
-              id={`goalId-${index}`}
-              name={`goalId-${index}`}
-              value={goal.goalId}
-              onChange={(e) => handleGoalChange(e, index)}
-              className="mb-4 w-full rounded border border-gray-300 p-2"
-            />
-
-            <label
-              htmlFor={`date-${index}`}
-              className="mb-2 block text-sm font-bold text-gray-700"
-            >
-              Dato:
-            </label>
-            <input
-              type="date"
-              id={`date-${index}`}
-              name={`date-${index}`}
-              value={goal.date}
-              onChange={(e) => handleGoalChange(e, index)}
-              className="mb-2 w-full rounded border border-gray-300 p-2"
-            />
-            {index > 0 && (
-              <button
-                type="button"
-                onClick={() => handleRemoveGoal(index)}
-                className="mr-2 text-red-500"
-              >
-                Fjern mål
-              </button>
-            )}
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={handleAddGoal}
-          className="rounded bg-gray-500 px-2 py-1 text-white"
-        >
-          Legg til nytt mål
-        </button>
-      </div>
-
-            <div className="mb-4">
-        {formData.competitions.map((competition, index) => (
-          <div key={index}>
-            <label
-              htmlFor={`competitionId-${index}`}
-              className="mb-2 block text-sm font-bold text-gray-700"
-            >
-              Konkurranse
-            </label>
-            <input
-              type="text"
-              id={`competitionId-${index}`}
-              name={`competitionId-${index}`}
-              value={competition.competitionId}
-              onChange={(e) => handleCompetitionChange(e, index)}
-              className="mb-4 w-full rounded border border-gray-300 p-2"
-            />
-
-            <label
-              htmlFor={`competitionDate-${index}`}
-              className="mb-2 block text-sm font-bold text-gray-700"
-            >
-              Dato:
-            </label>
-            <input
-              type="date"
-              id={`competitionDate-${index}`}
-              name={`competitionDate-${index}`}
-              value={competition.date}
-              onChange={(e) => handleCompetitionChange(e, index)}
-              className="mb-2 w-full rounded border border-gray-300 p-2"
-            />
-            {index > 0 && (
-              <button
-                type="button"
-                onClick={() => handleRemoveCompetition(index)}
-                className="mr-2 text-red-500"
-              >
-                Fjern konkurranse
-              </button>
-            )}
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={handleAddCompetition}
-          className="rounded bg-gray-500 px-2 py-1 text-white"
-        >
-          Legg til ny konkurranse
-        </button>
-      </div>
-
       <button onClick={handleBack} type="button" className="mr-2 rounded bg-gray-700 px-4 py-2 text-white">Tilbake</button>
-
 
       <button
         type="submit"

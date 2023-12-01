@@ -1,198 +1,126 @@
 "use client"
 
-import { useState, FormEvent } from "react"
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Question } from "@/types/index";
 
+const QuestionForm = () => {
+  const [formData, setFormData] = useState<Question>({
+    text: "",
+    type: "",
+  });
 
-export default function QuestionForm() {
-  const [answerIndex, setAnswerIndex] = useState(0) //Viser hvilket svar som skal brukes
+  const router = useRouter();
+  const [countdown, setCountdown] = useState(0);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const [saveQuestion, setSaveQuestion] = useState("")
-  const [saveAnswer, setSaveAnswer] = useState("")
+  useEffect(() => {
+    let countdownInterval: NodeJS.Timeout;
 
-  const [errorText, setErrorText] = useState("")
-  const [hasSubmitted, setHasSubmitted] = useState(false)
-
-  
-  const handleAnswerChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    let selectedAnswer = event.target.value;
-    let answerSplit = selectedAnswer.split(";")
-    let answerValue = answerSplit[1]
-    let answerKey = parseInt(answerSplit[0])
-    setSaveAnswer(answerValue)
-    setAnswerIndex(answerKey)
-    handleSteps(answerKey);
-  };
-
-  const handleSteps = (answProgress: number, newQuestionString: string = "") => {
-    setErrorText("")
-
-    let newAnswerValue = 0
-    let newQuestionValue = false
-
-    if (newQuestionString.length < 5) { //Nytt spørsmål har hvertfall 5 bokstaver
-      newAnswerValue = 0
-    }      
-
-    
-    if (answProgress !== answerIndex) { //Endret type svaralternativ 
-      console.log("SVARALTERNATIV ENDRET")
-      newAnswerValue = 0
-      if (answProgress !== 0) { //Gitt et svaralternativ som ikke er "velg" answer0
-        newAnswerValue = answProgress
-      }
-
-    }
-    console.log("Question alternativ tilstutt: " + newQuestionValue)
-      
-    setAnswerIndex(newAnswerValue)
-    if (newAnswerValue === 0) {
-      setSaveAnswer("")
-    }
-  }
-
-  const handleWriteQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let value = event.target.value
-    setSaveQuestion(value)
-    handleSteps(answerIndex, value)
-  }
-
-  const submitForm = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  
-    if (saveQuestion.length < 5) {
-      setErrorText("Et nytt spørsmål må minimum ha 5 tegn for å kunne opprettes");
-    } else if (answerIndex < 1) {
-      setErrorText("Du må velge et svaralternativ før du lagrer dataen");
-    } else if (saveQuestion.length < 1) {
-      setErrorText("Spørsmål er ikke lagret");
-    } else if (saveAnswer.length < 1) {
-      setErrorText("Svar er ikke lagret");
+    if (countdown > 0) {
+      countdownInterval = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
     } else {
-      //Send skjema som er validert og ferdig
-      console.log('Sender skjema...', { saveQuestion, saveAnswer });
-      setErrorText("")
-      setHasSubmitted(true)
+      if (formSubmitted) {
+        router.push("/");
+      }
+    }
+
+    return () => clearInterval(countdownInterval);
+  }, [countdown, router, formSubmitted]);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("/api/question", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setCountdown(5);
+        setFormSubmitted(true);
+      } else {
+        console.error("Feil ved opprettelse av spørsmål");
+      }
+    } catch (error) {
+      console.error("Noe gikk galt:", error);
     }
   };
-  let questionValLength = 5 //må være 5 bokstaver for å funke
-  
+
   return (
-    <div className="max-w-lg mx-auto bg-white p-8 mt-8 rounded shadow-md">
-      <h1 className="text-2xl font-bold mb-4">Opprett spørsmål</h1>
-      
-      
-      <form className="space-y-4" onSubmit={submitForm}>
-        
-        
+    <div className="mx-auto mt-8 max-w-lg rounded bg-white p-8 shadow-md">
+      <h1 className="mb-4 text-2xl font-bold">Opprett spørsmål</h1>
+
+      {formSubmitted && (
+        <p className="mb-4 text-md text-gray-600">
+          Spørsmålet har blitt opprettet og du blir omdirigert om {countdown} sekunder.
+        </p>
+      )}
+
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="questionText" className="block text-md font-medium text-gray-700">
+          <label
+            htmlFor="text"
+            className="text-md block font-medium text-gray-700"
+          >
             Spørsmålstekst
           </label>
           <input
             type="text"
-            id="questionText"
-            name="questionText"
-            onChange={handleWriteQuestion}
+            id="text"
+            name="text"
+            onChange={handleChange}
             minLength={5}
-            value={saveQuestion}
+            maxLength={100}
+            value={formData.text}
             required
-            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            className="w-full p-2 mb-2 border border-gray-300 rounded"
           />
         </div>
 
-        {saveQuestion.length >= questionValLength ? (
-          <div>
-          <label htmlFor="questionType" className="block text-md font-medium text-gray-700">
-            Spørsmålstype (Alternativ)
+        <div>
+          <label
+            htmlFor="questionType"
+            className="text-md block font-medium text-gray-700"
+          >
+            Spørsmålstype
           </label>
           <select
-            id="questionType"
-            name="questionType"
+            id="type"
+            name="type"
             required
-            onChange={handleAnswerChange}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            onChange={handleChange}
+            className="w-full p-2 mb-2 border border-gray-300 rounded"
           >
-            <option value="0;">Velg en type</option>
-            <option value="1;text">Tekst</option>
-            <option value="2;radio:range">Radio med tallene 1-10</option>
-            <option value="3;radio:mood">Radio med emojier</option>
+            <option value="">Velg type</option>
+            <option value="text">Tekst</option>
+            <option value="radio:range">Radio med tallene 1-10</option>
+            <option value="radio:mood">Radio med emojier</option>
           </select>
         </div>
-        ) : (
-          null
-        )}
-
-        {answerIndex > 0 ? (
-            <div>
-              Brukeren vil kunne svare med {saveAnswer}
-              {answerIndex === 1 ? (
-                // Innhold for når answerType === 1
-                <div>
-                  <input type="text" placeholder="Svar på spørsmål" disabled></input>
-                </div>
-              ) : answerIndex === 2 ? (
-                // Innhold for når answerType === 2
-                <div>
-                  <ul>
-                    {Array.from({ length: 10 }, (_, i) => (
-                      <li className="flex items-center mb-2" key={i}>
-                          <p key={i + 1}>{i + 1}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : answerIndex === 3 ? (
-                // Innhold for når answerType === 3
-                <ul>
-                  <li className="flex items-center mb-2">
-                    <p>{"😢"}</p>
-                  </li>
-                  <li className="flex items-center mb-2">
-                    <p>{"🙁"}</p>
-                  </li>
-                  <li className="flex items-center mb-2">
-                    <p>{"😐"}</p>
-                  </li>
-                  <li className="flex items-center mb-2">
-                    <p>{"😊"}</p>
-                  </li>
-                  <li className="flex items-center mb-2">
-                    <p>{"😃"}</p>
-                  </li>
-                </ul>
-
-              ) : null}
-
-            </div>
-            
-          ) : null
-        }
-
-        <p className="text-red-500">{errorText}</p>
 
         <button
           type="submit"
-          className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700"
+          className="rounded bg-gray-800 px-4 py-2 text-white hover:bg-gray-700"
         >
           Opprett
-        </button>      
+        </button>
       </form>
-      {hasSubmitted ? (
-        <div>
-          Json vil se slik ut:
-          <pre>            
-            {JSON.stringify({
-              questions: [
-                {
-                  id: "124",
-                  question: saveQuestion,
-                  type: saveAnswer
-                }
-              ]
-            }, null, 2)}
-          </pre>
-        </div>
-      ): (null)}
     </div>
   )
 }
+
+export default QuestionForm

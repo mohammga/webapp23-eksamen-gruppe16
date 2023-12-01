@@ -1,4 +1,4 @@
-export type AthleteFormData = {
+export type Athlete = {
     userId: string;
     gender: string;
     sportType: string;
@@ -7,12 +7,5 @@ export type AthleteFormData = {
         watt: string;
         speed: string;
     };
-    goals: {
-        goalId: string;
-        date: string;
-    }[];
-    competitions: {
-        competitionId: string;
-        date: string;
-    }[];
+
 }
