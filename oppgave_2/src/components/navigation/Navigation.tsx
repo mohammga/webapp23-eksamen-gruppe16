@@ -13,16 +13,10 @@ export default function Header() {
           <Link href="/">Dashboard</Link>
         </li>
         <li>
-          <Link href="/new/template">Legg til mal</Link>
+          <Link href="/new/question">Opprett spørsmål</Link>
         </li>
         <li>
-          <Link href="/new/question">Legg til spørsmål</Link>
-        </li>
-        <li>
-          <Link href="/new/practitioner">Legg til utøver</Link>
-        </li>
-        <li>
-          <Link href="/practitioners">Utøvere</Link>
+          <Link href="/new/practitioner">Opprett utøver</Link>
         </li>
       </ul>
     </nav>

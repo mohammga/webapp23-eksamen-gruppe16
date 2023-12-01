@@ -1,6 +1,6 @@
 import type { Athlete } from "@/types"
 import type { Metadata } from "next"
-import UsersTable from "@/components/tables/dashboard/AthletesTable"
+import ShowReport from "@/components/sections/ShowReport"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -27,8 +27,8 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="text-3xl px-6 pt-6 font-bold">Dashboard</h1>
-      <UsersTable athletes={athletes.data} />
+      <h1 className="text-3xl px-6 pt-6 font-bold">Se rapport</h1>
+      <ShowReport/>
     </div>
   )
 }

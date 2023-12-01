@@ -1,6 +1,7 @@
 import type { Athlete } from "@/types"
 import type { Metadata } from "next"
-import UsersTable from "@/components/tables/dashboard/AthletesTable"
+
+import ShowAthlete from "@/components/sections/ShowAthlete"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -8,12 +9,10 @@ export const metadata: Metadata = {
 }
 
 async function getAthletes(): Promise<Athlete> {
-  const response = await fetch("http://localhost:3000/api/athlete",
-    {
-      method: "GET",
-      cache: "no-store",
-    }
-  )
+  const response = await fetch("http://localhost:3000/api/athlete", {
+    method: "GET",
+    cache: "no-store",
+  })
 
   if (!response.ok) {
     throw new Error("Klarte ikke å hente brukere")
@@ -27,8 +26,7 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="text-3xl px-6 pt-6 font-bold">Dashboard</h1>
-      <UsersTable athletes={athletes.data} />
+      <ShowAthlete />
     </div>
   )
 }
