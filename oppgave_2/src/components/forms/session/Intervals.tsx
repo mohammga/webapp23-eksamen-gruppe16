@@ -6,9 +6,11 @@ interface Interval {
   intensityZone: string;
 }
 
+const defaultInterval = { duration: 0, intensityZone: '' };
+
 export default function Intervals() {
   const [formData, setFormData] = useState({
-    intervals: [{ duration: 0, intensityZone: '' }],
+    intervals: [defaultInterval],
   });
 
   const handleIntervalChange = (index: number, field: keyof Interval, value: number | string) => {
@@ -19,7 +21,7 @@ export default function Intervals() {
 
   const handleAddInterval = () => {
     setFormData({
-      intervals: [...formData.intervals, { duration: 0, intensityZone: '' }],
+      intervals: [...formData.intervals, defaultInterval],
     });
   };
 
@@ -55,9 +57,15 @@ export default function Intervals() {
             className="w-full p-1 mt-1 border rounded-md"
           />
 
-          <button type="button" onClick={() => handleRemoveInterval(index)} className="bg-red-500 text-white p-2 mt-2 rounded-md">
+          {index > 0 && (
+            <button
+              type="button"
+              onClick={() => handleRemoveInterval(index)}
+              className="bg-red-500 text-white p-2 mt-2 rounded-md"
+            >
               slett
-          </button>
+            </button>
+          )}
         </div>
       ))}
 

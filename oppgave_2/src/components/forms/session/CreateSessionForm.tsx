@@ -1,253 +1,220 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import TemplateForm from '@/components/forms/session/TemplateForm';
+
+import { useState } from 'react';
 import Intervals from '@/components/forms/session/Intervals';
 
-interface CreateSessionFormProps { }
+interface FormData {
+    name: string;
+    tags: string;
+    slug: string;
+    activityTypes: string[];
+    questions: string[];
+    measurementParameter: string;
+    sessionDate: string;
+    selectedTrainingGoal: string;
+    selectedCompetition: string;
+}
 
-const CreateSessionForm: React.FC<CreateSessionFormProps> = () => {
-  const [sessionType, setSessionType] = useState<string>('');
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
-  const [customizeTemplate, setCustomizeTemplate] = useState<string>('');
-  const [selectedAthlete, setSelectedAthlete] = useState<string>('');
-  const [selectedTrainingGoal, setSelectedTrainingGoal] = useState<string>('');
-  const [selectedCompetition, setSelectedCompetition] = useState<string>('');
-  const [sessionDate, setSessionDate] = useState<string>('');
+const activityTypes = [
+    "Løp",
+    "Sykkel",
+    "Ski",
+    "Triatlon",
+    "Svømming",
+    "Styrke",
+    "Annet",
+];
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Skjemainnsending:', {
-      sessionType,
-      selectedTemplate,
-      customizeTemplate,
-      selectedAthlete,
-      selectedTrainingGoal,
-      selectedCompetition,
-      sessionDate,
+const measurementParameters = [
+    "Puls",
+    "Wat",
+    "Fart",
+    "Tid",
+];
+
+const demoQuestions = [
+    "Hvor langt løp du?",
+    "Hva var gjennomsnittspulsen din?",
+    "Hvor lang tid tok det?",
+    "Hvor mange kalorier forbrente du?",
+];
+
+const CreateSessionForm: React.FC = () => {
+    const [formData, setFormData] = useState<FormData>({
+        name: '',
+        tags: '',
+        slug: '',
+        activityTypes: [],
+        questions: [],
+        measurementParameter: '',
+        sessionDate: "",
+        selectedTrainingGoal: '',
+        selectedCompetition: '',
     });
-  };
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const stateUpdater: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
-      sessionType: setSessionType,
-      selectedTemplate: setSelectedTemplate,
-      customizeTemplate: setCustomizeTemplate,
-      selectedAthlete: setSelectedAthlete,
-      selectedTrainingGoal: setSelectedTrainingGoal,
-      selectedCompetition: setSelectedCompetition,
-      sessionDate: setSessionDate,
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const updater = stateUpdater[name];
-    updater && updater(value);
-  };
+    const handleSelectChange = (name: string, value: string) => {
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
 
+    const handleQuestionsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+        setFormData((prevData) => ({ ...prevData, questions: selectedOptions }));
+    };
 
-  const handleCustomizeTemplateChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
-    setCustomizeTemplate(value);
-    // Reset state for selectedAthlete when user changes customization choice
-    setSelectedAthlete('');
-  };
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Legg til logikk for innsending, f.eks. lagring til en database
+        console.log('Skjemadata sendt:', formData);
+    };
 
-  const handleSingleAthleteChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
-    setSelectedAthlete(value);
-  };
+    const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            tags: e.target.value,
+        }));
+    };
 
+    const handleActivityTypesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            activityTypes: Array.from(e.target.selectedOptions).map(option => option.value),
+        }));
+    };
 
-  
-  const renderCustomizationOptions = () => {
+    const handleMeasurementParameterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            measurementParameter: e.target.value,
+        }));
+    };
     return (
-      <>
-        <div className="mb-4">
-          <label htmlFor="customizeTemplate" className="block text-sm font-medium text-gray-700">
-            Vil du tilpasse malen?
-          </label>
-          <select
-            id="customizeTemplate"
-            name="customizeTemplate"
-            className="mt-1 p-2 border rounded w-full"
-            value={customizeTemplate}
-            onChange={handleCustomizeTemplateChange}
-          >
-            <option value="">Velg</option>
-            <option value="yes">Ja</option>
-            <option value="no">Nei</option>
-          </select>
+        <div className="max-w-lg mx-auto bg-white p-8 mt-8 rounded shadow-md ">
+            <h1 className="text-2xl font-semibold mb-4">Opprett Økt</h1>
+            <form onSubmit={handleSubmit}>
+                <label className="block text-gray-700 text-sm mb-2">Navn på treningsøkten:</label>
+                <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full p-2 mt-1 border rounded-md mb-4"
+                />
 
-          {customizeTemplate === 'no' && (
-            <div className="mb-4">
-              <label htmlFor="selectedAthlete" className="block text-sm font-medium text-gray-700">
-                Velg flere utøvere
-              </label>
-              <select
-                id="selectedAthlete"
-                name="selectedAthlete"
-                className="mt-1 p-2 border rounded w-full"
-                value={selectedAthlete}
-                onChange={handleChange}
-                multiple={true}
-              >
-                <option value="Abdullah">Abdullah</option>
-                <option value="Mohammed">Mohammed</option>
-                <option value="Edvin">Edvin</option>
-                <option value="Ismail">Ismail</option>
-                <option value="Taofik">Taofik</option>
-                <option value="Nina">Nina</option>
-              </select>
-            </div>
-          )}
+                <label className="block text-gray-700 text-sm mb-2">Taggs (komma-separert):</label>
+                <input
+                    type="text"
+                    name="tags"
+                    value={formData.tags}
+                    onChange={handleTagsChange}
+                    className="w-full p-2 mt-1 border rounded-md"
+                />
 
 
-
-
-          {customizeTemplate === 'yes' && (
-            <div className="mb-4">
-              <label htmlFor="selectedAthlete" className="block text-sm font-medium text-gray-700">
-                Velg én utøver
-              </label>
-              <select
-                id="selectedAthlete"
-                name="selectedAthlete"
-                className="mt-1 p-2 border rounded w-full"
-                value={selectedAthlete}
-                onChange={handleSingleAthleteChange}
-              >
-                <option value="">Velg utøver</option>
-                <option value="Abdullah">Abdullah</option>
-                <option value="Mohammed">Mohammed</option>
-                <option value="Edvin">Edvin</option>
-                <option value="Ismail">Ismail</option>
-                <option value="Taofik">Taofik</option>
-                <option value="Nina">Nina</option>
-              </select>
-            </div>
-          )}
-
-         
-        </div>
-      </>
-    );
-  };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  return (
-    <div className="max-w-lg mx-auto bg-white p-8 mt-8 rounded shadow-md ">
-      <h1 className="text-2xl font-semibold mb-4">Opprett Økt</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-4">
-          <div className="mb-4">
-            <label htmlFor="sessionType" className="block text-sm font-medium text-gray-700">
-              Økt fra grunnen av eller ferdig mal?
-            </label>
-            <select
-              id="sessionType"
-              name="sessionType"
-              className="w-full p-2 mb-4 border border-gray-300 rounded"
-              value={sessionType}
-              onChange={handleChange}
-            >
-              <option value="">Velg type mal</option>
-              <option value="fromScratch">Fra grunnen av</option>
-              <option value="premadeTemplate">Ferdig mal</option>
-            </select>
-          </div>
-
-          {sessionType === 'premadeTemplate' && (
-            <>
-              <div className="mb-4">
-                <label htmlFor="selectedTemplate" className="block text-sm font-medium text-gray-700">
-                  Velg hvilken mal vil du bruke?
+                <label htmlFor="sessionDate" className="block text-sm font-medium text-gray-700">
+                    Dato
                 </label>
+                <input
+                    type="date"
+                    id="sessionDate"
+                    name="sessionDate"
+                    className="mt-4 p-2 border rounded w-full"
+                    value={formData.sessionDate}
+                />
+
+
+                <div className="mb-4">
+                    <label htmlFor="selectedTrainingGoal" className="block text-sm font-medium text-gray-700">
+                        Velg en treningsmål (optional)
+                    </label>
+                    <select
+                        id="selectedTrainingGoal"
+                        name="selectedTrainingGoal"
+                        className="mt-1 p-2 border rounded w-full mb-4"
+                        value={formData.selectedTrainingGoal}
+                        onChange={(e) => handleSelectChange('selectedTrainingGoal', e.target.value)}
+                    >
+                        <option value="">Velg</option>
+                    </select>
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="selectedCompetition" className="block text-sm font-medium text-gray-700">
+                        Velg en konkurranse (optional)
+                    </label>
+                    <select
+                        id="selectedCompetition"
+                        name="selectedCompetition"
+                        className="mt-1 p-2 border rounded w-full"
+                        value={formData.selectedCompetition}
+                        onChange={(e) => handleSelectChange('selectedCompetition', e.target.value)}
+                    >
+                        <option value="">Velg</option>
+                    </select>
+                </div>
+
+                <label className="block text-gray-700 font-bold text-sm mb-2">Aktivitets type</label>
+
+                <label className="block text-gray-700 text-sm mb-2">Type aktivitet:</label>
                 <select
-                  id="selectedTemplate"
-                  name="selectedTemplate"
-                  className="mt-1 p-2 border rounded w-full"
-                  value={selectedTemplate}
-                  onChange={handleChange}
+                    name="activityTypes"
+                    value={formData.activityTypes}
+                    onChange={handleActivityTypesChange}
+                    multiple
+                    className="w-full p-2 mt-1 border rounded-md"
                 >
-                  <option value="">Velg mal</option>
-                  <option value="runningTemplate">Løping mal</option>
-                  <option value="swimmingTemplate">Svømming mal</option>
-                  <option value="strengthTemplate">Styrke mal</option>
+                    {activityTypes.map((type) => (
+                        <option key={type} value={type}>
+                            {type}
+                        </option>
+                    ))}
                 </select>
-              </div>
 
-              {renderCustomizationOptions()}
-            </>
-          )}
 
-          <TemplateForm />
-          <div className="mb-4">
-            <label htmlFor="selectedTrainingGoal" className="block text-sm font-medium text-gray-700">
-              Velg en treningsmål (optional)
-            </label>
-            <select
-              id="selectedTrainingGoal"
-              name="selectedTrainingGoal"
-              className="mt-1 p-2 border rounded w-full"
-              value={selectedTrainingGoal}
-              onChange={handleChange}
-            >
-              <option value="">Velg</option>
-            </select>
-          </div>
+                <label className="block text-gray-700 text-sm mb-2">Number of questions:</label>
+                <select
+                    name="questions"
+                    value={formData.questions}
+                    onChange={handleQuestionsChange}
+                    multiple
+                    className="w-full p-2 mt-1 border rounded-md"
+                >
+                    {demoQuestions.map((question) => (
+                        <option key={question} value={question}>
+                            {question}
+                        </option>
+                    ))}
+                </select>
 
-          <div className="mb-4">
-            <label htmlFor="selectedCompetition" className="block text-sm font-medium text-gray-700">
-              Velg en konkurranse (optional)
-            </label>
-            <select
-              id="selectedCompetition"
-              name="selectedCompetition"
-              className="mt-1 p-2 border rounded w-full"
-              value={selectedCompetition}
-              onChange={handleChange}
-            >
-              <option value="">Velg</option>
-            </select>
-          </div>
+                <label className="block text-gray-700 text-sm mb-2">Measurement parameter:</label>
+                <select
+                    name="measurementParameter"
+                    value={formData.measurementParameter}
+                    onChange={handleMeasurementParameterChange}
+                    className="w-full p-2 mt-1 border rounded-md"
+                >
+                    {measurementParameters.map((param) => (
+                        <option key={param} value={param}>
+                            {param}
+                        </option>
+                    ))}
+                </select>
 
-          <div className="mb-4">
-            <label htmlFor="sessionDate" className="block text-sm font-medium text-gray-700">
-              Dato
-            </label>
-            <input
-              type="date"
-              id="sessionDate"
-              name="sessionDate"
-              className="mt-1 p-2 border rounded w-full"
-              value={sessionDate}
-              onChange={handleChange}
-            />
-          </div>
+                <Intervals />
 
-          <Intervals/>
+                <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
+                    Opprett Økten
+                </button>
 
-          <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
-            Opprett Økten
-          </button>
+            </form>
         </div>
-      </form>
-    </div>
-  );
+
+
+    );
 };
 
 export default CreateSessionForm;

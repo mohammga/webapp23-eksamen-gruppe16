@@ -36,6 +36,10 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
     router.push(`/athlete/${id}`);
   };
 
+  const handleShowGoal = (id: string) => {
+    router.push(`/new/goal/${id}`);
+  };
+
   const handleSearch = () => {
     const updatedFilteredathletes = athletes.filter((athlete) => {
       const includesSearchTerm =
@@ -109,6 +113,9 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
                   </button>
                   <button onClick={() => handleShowAthlete(athlete.userId)} className="ml-2 rounded bg-black px-4 py-2 text-white">
                     Endre informasjon
+                  </button>
+                  <button onClick={() => handleShowGoal(athlete.userId)} className="ml-2 rounded bg-black px-4 py-2 text-white">
+                    Opprett mål
                   </button>
                 </td>
               </tr>
