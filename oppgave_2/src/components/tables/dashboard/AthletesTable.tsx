@@ -19,13 +19,9 @@ const translateGender = (gender: string): string => {
 
 
 const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
-
   const router = useRouter();
-
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [genderFilter, setGenderFilter] = useState<string>("Alle");
   const [filteredAthletes, setFilteredAthletes] = useState<Athlete[]>(athletes);
-
 
     const handleCreateSession = (id: string) => {
     router.push(`/new/session/${id}`);
@@ -35,11 +31,6 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
   const handleShowSession = (id: string) => {
     router.push(`/session/${id}`);
   };
-
-  const handleShowReport = (id: string) => {
-    router.push(`/report/${id}`);
-  };
-
 
   const handleShowAthlete = (id: string) => {
     router.push(`/athlete/${id}`);
@@ -58,7 +49,6 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
 
   const handleClearSearch = () => {
     setSearchTerm("");
-    setGenderFilter("Alle");
     setFilteredAthletes(athletes);
   };
 
@@ -117,10 +107,6 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
                   <button onClick={() => handleShowSession(athlete.userId)} className="mr-2 rounded bg-black px-4 py-2 text-white">
                     Vis økter
                   </button>
-                  <button onClick={() => handleShowReport(athlete.userId)} className="rounded bg-black px-4 py-2 text-white">
-                    Vis rapporter
-                  </button>
-
                   <button onClick={() => handleShowAthlete(athlete.userId)} className="ml-2 rounded bg-black px-4 py-2 text-white">
                     Endre informasjon
                   </button>
