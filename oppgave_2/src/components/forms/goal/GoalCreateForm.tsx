@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AthleteFormData } from "@/types/index";
 
 
-const ShowAthlete: React.FC = () => {
+const GoalCreateForm: React.FC = () => {
     const [formData, setFormData] = useState<AthleteFormData>({
         goals: [{ goalId: "", date: "", name: "", goalValue: "", comment: ""}],
     });
@@ -156,4 +156,4 @@ const ShowAthlete: React.FC = () => {
     );
 };
 
-export default ShowAthlete;
+export default GoalCreateForm;
