@@ -13,8 +13,9 @@ model Athlete {
   gender      String
   sportType   String
   meta        Meta[]
-  competition Competition[]
   goal        Goal[]
+  sessions    Session[]
+
 }
 
 model Meta {
@@ -24,17 +25,6 @@ model Meta {
   athlete   Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model Competition {
-  id              String   @id @default(cuid())
-  date            DateTime
-  location        String
-  competitionGoal String
-  priority        String
-  comment         String
-  athleteId       String
-  athlete         Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
 }
 
 model Goal {
@@ -50,4 +40,13 @@ model Question {
   id         String   @id @default(cuid())
   text       String
   type       String
+}
+
+model Session {
+  id             String        @id @default(cuid())
+  date           DateTime
+  name           String
+  slug           String
+  athleteId      String
+  athlete        Athlete       @relation(fields: [athleteId], references: [id])
 }
