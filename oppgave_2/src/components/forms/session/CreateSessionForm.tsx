@@ -2,18 +2,7 @@
 
 import { useState } from 'react';
 import Intervals from '@/components/forms/session/Intervals';
-
-interface FormData {
-    name: string;
-    tags: string;
-    slug: string;
-    activityTypes: string[];
-    questions: string[];
-    measurementParameter: string;
-    sessionDate: string;
-    selectedTrainingGoal: string;
-    selectedCompetition: string;
-}
+import {FormData} from "@/types/index"
 
 const activityTypes = [
     "Løp",
