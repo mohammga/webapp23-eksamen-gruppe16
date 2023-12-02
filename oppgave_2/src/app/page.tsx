@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Dashboard",
 }
 
-async function getAthletes(): Promise<Athlete> {
+export async function getAthletes(): Promise<Athlete> {
   const response = await fetch("http://localhost:3000/api/athlete",
     {
       method: "GET",
