@@ -10,7 +10,7 @@ import  Result  from "@/components/Result";
 
 type TasksProps = {
   tasks: Task[]
-  data: Task[]
+  /*data: Task[]*/
   antallOppgaver: number
 }
 
