@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
-import { Athlete, CreateAthleteInput, Result } from "@/types"
 import * as athleteRepo from "@/features/athletes/athelete.repository"
+import { Athlete, CreateAthleteInput, Result } from "@/types"
 
 export const create = async (
   athleteData: CreateAthleteInput,
@@ -34,7 +34,11 @@ export const create = async (
       { status: 409 },
     )
 
-  const createdResponse = await athleteRepo.create({ userId, gender, sportType })
+  const createdResponse = await athleteRepo.create({
+    userId,
+    gender,
+    sportType,
+  })
 
   // feil ved lagring av bruker via ORM
   if (!createdResponse.ok) return createdResponse
