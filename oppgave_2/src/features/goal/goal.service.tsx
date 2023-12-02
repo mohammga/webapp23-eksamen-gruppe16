@@ -11,7 +11,12 @@ export const create = async (
     return NextResponse.json(
       {
         success: false,
-        error: `Missing required fields:\n${!name ? "- name\n" : ""}${!comment ? "- comment\n" : ""}${!date ? "- date\n" : ""}${!goalTarget ? "- goalTarget\n" : ""}${!athleteId? "- athleteId\n" : ""}${!date ? "- date\n" : ""}`,
+        error: `Missing required fields:\n
+        ${!name ? "- name\n" : ""}
+        ${!comment ? "- comment\n" : ""}
+        ${!date ? "- date\n" : ""}${!goalTarget ? "- goalTarget\n" : ""}
+        ${!athleteId? "- athleteId\n" : ""}
+        ${!date ? "- date\n" : ""}`,
       },
       { status: 400 }
     );

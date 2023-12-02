@@ -7,7 +7,7 @@ import { AthleteFormData } from "@/types/index";
 
 const ShowAthlete: React.FC = () => {
     const [formData, setFormData] = useState<AthleteFormData>({
-        goals: [{ goalId: "", date: "", name: "", goalValue: "", comment: "" }],
+        goals: [{ goalId: "", date: "", name: "", goalValue: "", comment: ""}],
     });
 
     const router = useRouter();
@@ -31,7 +31,7 @@ const ShowAthlete: React.FC = () => {
             ...formData,
             goals: [
                 ...formData.goals,
-                { goalId: "", date: "", name: "", goalValue: "", comment: "" },
+                { goalId: "", date: "", name: "", goalValue: "", comment: ""},
             ],
         });
     };

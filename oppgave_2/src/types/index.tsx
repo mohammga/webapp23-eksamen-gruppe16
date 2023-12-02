@@ -45,7 +45,7 @@ export type Competition = {
   comment: string
 }
 
-export type Goal = {
+export interface Goal  {
   name: string
   date: Date
   goalTarget: number
