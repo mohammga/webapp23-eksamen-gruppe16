@@ -18,9 +18,9 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
   const {count, current } = useProgress()
   const task = tasks[current]
   return (
-    <section className="flex items-center w-full h-screen flex-col py-20">
+    <>    
     {current+1 <= antallOppgaver ? (
-      <div className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
+      <div>
         <TaskCard
           task={task}
           oppgaveNummer={current}
@@ -40,7 +40,6 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
       Du har fullført alle oppgavene dine!
       </>
     )}
-  </section>
-    
+    </>
   )
 }

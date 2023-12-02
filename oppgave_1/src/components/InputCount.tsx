@@ -7,8 +7,9 @@ interface InputCountProps {
 }
 
 export default function InputCount({ updateAmount }: InputCountProps) {
-  const { setAmount } = useProgress()
+  const { setAmount, setCanSkip } = useProgress()
   const [count, setCount] = useState<number>(0)
+  const [hideNext, setHideNext] = useState(false)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10)
@@ -24,6 +25,11 @@ export default function InputCount({ updateAmount }: InputCountProps) {
       updateAmount(count)
     }
   }
+
+  const clickCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
+    setHideNext(event.target.checked); // Bruk event.target.checked her, ikke event.checked
+    setCanSkip(event.target.checked)
+  };
 
   return (
     <section className="flex h-screen w-full flex-col items-center py-20">
@@ -51,8 +57,10 @@ export default function InputCount({ updateAmount }: InputCountProps) {
                   id="skip-task"
                   name="skip-task"
                   type="checkbox"
+                  checked={hideNext} // Bruk hideNext-variabelen for å reflektere staten
+                  onChange={clickCheckbox} // Legg til onChange for å håndtere endringer
                 />
-                <label for="skip-task">
+                <label htmlFor="skip-task">
                   Kan skippe spørsmål
                 </label>
               </div>

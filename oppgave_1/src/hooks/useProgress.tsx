@@ -11,6 +11,7 @@ export default function useProgress() {
   const [amount, setAmount] = useState(0)
   const [current, setCurrent] = useState(0)
   const [answerCorrect, setAnswerCorrect] = useState(0)
+  const [canSkip, setCanSkip] = useState(false)
 
-  return  {count, current, setCurrent, answerCorrect, setAnswerCorrect, setCount, amount, setAmount}
+  return  {count, current, canSkip, setCanSkip, setCurrent, answerCorrect, setAnswerCorrect, setCount, amount, setAmount}
 }

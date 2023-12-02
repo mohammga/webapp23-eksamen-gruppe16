@@ -16,7 +16,7 @@ export default function Home() {
   const [data, setData] = useState<Task[]>([])
 
   const [recievedData, setRecievedData] = useState(false)
-  const { amount, answerCorrect, count, setAmount, setCurrent } = useProgress()
+  const { amount, answerCorrect, current, count, canSkip, setAmount, setCurrent } = useProgress()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +47,7 @@ export default function Home() {
 
   return (
     <div>
-    <Header />
+      <Header />
       {amount === 0 ? (
         <>
           <InputCount updateAmount={updateAmount} />
@@ -55,10 +55,14 @@ export default function Home() {
       ) : recievedData ? (
         <div>
           <main className="px-6 md:px-0">
+            <div  className="flex items-center w-full h-screen flex-col py-20">
+            <section  className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
             <Tasks tasks={data} antallOppgaver={amount}>
               <Answer count={count} answerCorrect={answerCorrect}/>
             </Tasks>
-            <Progress setCurrent={setCurrent} />
+            <Progress current={current} setCurrent={setCurrent} canSkip={canSkip} />
+            </section>
+            </div>
           </main>
         </div>
       ) : (
