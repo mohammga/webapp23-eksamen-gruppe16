@@ -29,6 +29,7 @@ model Meta {
 
 model Goal {
   id         String   @id @default(cuid())
+  name       String
   date       DateTime
   goalTarget Int
   comment    String

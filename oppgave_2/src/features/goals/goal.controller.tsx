@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from "next/server"
-import { Athlete, Result } from "@/types"
-import * as athleteService from "./athlete.service"
 
-export const createAthlete = async (
+import { Goal, Result } from "@/types"
+import * as goalService from "./goal.service"
+
+export const createGoal = async (
   req: NextRequest,
-): Promise<NextResponse<Result<Athlete>>> => {
+): Promise<NextResponse<Result<Goal>>> => {
   if (!req.body)
     return NextResponse.json(
       { success: false, error: "No body included in request" },
       { status: 400 },
     )
   try {
-    const athleteData = (await req.json()) as Athlete
-    return await athleteService.create(athleteData)
+    const athleteData = (await req.json()) as Goal
+    return await goalService.create(athleteData)
   } catch (error) {
-    console.error("Error occurred while creating athlete", error)
+    console.error("Error occurred while creating goal", error)
     return NextResponse.json(
       {
         success: false,
@@ -25,13 +26,11 @@ export const createAthlete = async (
   }
 }
 
-export const listAllAthletes = async (): Promise<
-  NextResponse<Result<Athlete[]>>
-> => {
+export const listAllGoal = async (): Promise<NextResponse<Result<Goal[]>>> => {
   try {
-    return await athleteService.getAll()
+    return await goalService.getAll()
   } catch (error) {
-    console.error("Error occurred while creating athlete", error)
+    console.error("Error occurred while creating goal", error)
     return NextResponse.json(
       {
         success: false,
