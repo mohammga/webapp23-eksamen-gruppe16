@@ -1,6 +1,6 @@
 "use client"
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { AthleteFormData } from "@/types/Athlete"
+import { AthleteFormData } from "@/types/index"
 
 const AthleteForm: React.FC<AthleteFormData> = () => {
 

@@ -15,7 +15,6 @@ export type TemplateFormData = {
   questions: string[]
   measurementParameter: string
   intervals: Interval[]
-  // Add the rest of the attributes
 }
 
 export type Interval = {
@@ -51,6 +50,7 @@ export type Goal = {
   date: Date
   goalTarget: number
   comment: string
+  athleteId: string
 }
 
 export type Question = {
@@ -58,13 +58,33 @@ export type Question = {
   type: string
 }
 
+export type AthleteFormData = {
+  goals: {
+      goalId: string;
+      date: string;
+      name: string;
+      goalValue: string;
+      comment: string;
+  }[];
+}
 
+export type FormData = {
+  name: string;
+  tags: string;
+  slug: string;
+  activityTypes: string[];
+  questions: string[];
+  measurementParameter: string;
+  sessionDate: string;
+  selectedTrainingGoal: string;
+  selectedCompetition: string;
+}
 
 
 export type CreateAthleteInput = Prisma.AthleteCreateInput
 export type CreateQuestionInput = Prisma.QuestionCreateInput
 export type CreateCompetitionInput = Prisma.CompetitionCreateInput
-export type CreateGoal = Prisma.GoalCreateInput
+export type CreateGoalInput = Prisma.GoalCreateInput
 
 
 export type Data<T> = {

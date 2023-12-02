@@ -1,10 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-
-interface Interval {
-  duration: number;
-  intensityZone: string;
-}
+import { Interval } from '@/types/index';
 
 const defaultInterval = { duration: 0, intensityZone: '' };
 

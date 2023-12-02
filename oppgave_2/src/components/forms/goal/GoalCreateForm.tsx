@@ -2,16 +2,7 @@
 
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-
-interface AthleteFormData {
-    goals: {
-        goalId: string;
-        date: string;
-        name: string;
-        goalValue: string; // Added missing property
-        comment: string;
-    }[];
-}
+import { AthleteFormData } from "@/types/index";
 
 
 const ShowAthlete: React.FC = () => {
