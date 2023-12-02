@@ -1,10 +1,9 @@
-import { NextRequest, NextResponse } from "next/server"
-
+import { NextResponse } from "next/server"
 import * as athleteRepo from "@/features/athletes/athelete.repository"
-import { Athlete, CreateAthleteInput, Result } from "@/types"
+import { Athlete, Result } from "@/types"
 
 export const create = async (
-  athleteData: CreateAthleteInput,
+  athleteData: Athlete,
 ): Promise<NextResponse<Result<Athlete>>> => {
   const { userId, gender, sportType } = athleteData
 

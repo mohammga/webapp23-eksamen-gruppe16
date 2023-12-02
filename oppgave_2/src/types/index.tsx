@@ -1,9 +1,5 @@
 import { Prisma } from "@prisma/client";
 
-
-
-
-
 export type User = {
   id: string
   userId: string
@@ -55,6 +51,7 @@ export type Goal = {
   date: Date
   goalTarget: number
   comment: string
+  athleteId: string
 }
 
 export type Question = {
@@ -73,6 +70,7 @@ export type Session = {
 export type CreateAthleteInput = Prisma.AthleteCreateInput
 export type CreateQuestionInput = Prisma.QuestionCreateInput
 export type CreateSessionInput = Prisma.SessionCreateInput
+export type CreateGoalInput = Prisma.GoalCreateInput
 export type CreateGoal = Prisma.GoalCreateInput
 
 
