@@ -11,7 +11,7 @@ type TasksProps = {
   antallOppgaver: number;
 };
 
-export default function Task({task, oppgaveNummer, count, antallOppgaver }: TasksProps) {
+export default function TaskCard({task, oppgaveNummer, count, antallOppgaver }: TasksProps) {
   return (
     <section className="">
       <div className="flex justify-between">

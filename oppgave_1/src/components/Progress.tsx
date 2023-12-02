@@ -1,10 +1,12 @@
 "use client"
+import  Result  from "@/components/Result";
 
 type TasksProps = {
   next: () => void
+  setCurrent: () => void
 }
 
-export default function Progress({ next }: TasksProps) {
+export default function Progress({ next, setCurrent }: TasksProps) {
   return (
     <footer className="mt-3 space-y-4">
       <button
@@ -14,6 +16,14 @@ export default function Progress({ next }: TasksProps) {
       >
         Neste
       </button>
+      
+      <div>
+        <Result poeng={2} setCurrent = {setCurrent} />
+      </div>
     </footer>
   )
 }
+
+/**operationToPractice={hvaMåØvesMerPå()}
+ * 
+ */

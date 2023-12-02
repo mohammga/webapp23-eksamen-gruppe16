@@ -1,7 +1,7 @@
 "use client";
 
 import Answer from "@/components/Answer";
-import TaskCard from "@/components/Task";
+import TaskCard from "@/components/TaskCard";
 import TaskText from "@/components/Text";
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
@@ -15,7 +15,7 @@ type TasksProps = {
 }
 
 export default function Tasks({tasks, antallOppgaver }: TasksProps) {
-  const {count, current, temafeil, setTemafeil, setCurrent, correct, failed, hvaMåØvesMerPå, next, setAnswer, answer, setCorrect, setError, poeng, leggPoeng, setMessage, message } = useProgress()
+  const {count, current } = useProgress()
   const task = tasks[current]
   return (
     <section className="flex items-center w-full h-screen flex-col py-20">
@@ -30,30 +30,15 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
           <TaskText text={"Skriv resultatet av regneoperasjonen"} />
         </TaskCard>
         <Answer
-          task={task}
-          current={current}
-          failed={failed}
-          correct={correct}
-          next={next}
-          setAnswer={setAnswer}
-          setTemafeil={setTemafeil}
           count={count}
-          answer={answer}
-          setCorrect={setCorrect}
-          setError={setError}
-          leggPoeng={leggPoeng}
-          poeng={poeng}
-          setMessage={setMessage}
-          message={message}
-          temafeil = {temafeil}
-
+          answerCorrect={0}
+          task={task}
         />
       </div>
     ) : (
-      
-      <div>
-        <Result operationToPractice={hvaMåØvesMerPå()} poeng={poeng} setCurrent = {setCurrent} />
-      </div>
+      <>
+      Du har fullført alle oppgavene dine!
+      </>
     )}
   </section>
     

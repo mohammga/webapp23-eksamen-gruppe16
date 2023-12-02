@@ -46,6 +46,16 @@ export default function InputCount({ updateAmount }: InputCountProps) {
                 className="mb-4 w-full rounded-md border p-2"
                 required
               />
+              <div>                
+                <input
+                  id="skip-task"
+                  name="skip-task"
+                  type="checkbox"
+                />
+                <label for="skip-task">
+                  Kan skippe spørsmål
+                </label>
+              </div>
               <button
                 type="submit"
                 className="w-full rounded-sm bg-black p-2 text-white"

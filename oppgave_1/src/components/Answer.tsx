@@ -21,31 +21,89 @@ type TasksProps = {
   failed: boolean
   correct: boolean
   count: number
-  temafeil: string[]
+  temafeil: string[],
+  answerCorrect: number
 }
 
 export default function Answer({
-  task,
-  current,
-  failed,
-  correct,
-  setError,
-  setCorrect,
-  next,
-  setMessage,
-  message,
-  leggPoeng,
-  answer,
-  setAnswer,
-  setTemafeil,
-  temafeil,
   count,
+  answerCorrect,
+  task
 }: TasksProps) {
 
   const [click, setClick] = useState(false)
 
   const correctAnswer = eval(task.data)
 
+
+  return (
+    <div className="flex flex-col">
+      <form >
+          <>
+            <label htmlFor="answer">Svar</label>
+            <div className="flex-col">
+              <input
+                type="number"
+                name="answer"
+                placeholder="Sett svar her"
+                className="w-full rounded-md border p-2"
+                required
+              />
+            </div>
+            <button
+            className="mt-2 rounded-sm bg-black p-2 text-white"
+            type="submit"
+          >
+            Sjekk svar
+          </button>
+          </>
+
+
+      </form>
+    </div>
+  )
+}
+
+/**
+ * 
+ *      Holder på inputten og button
+        {!correct && !failed && (
+        )}
+ * 
+ * 
+ * 
+        {correct && (
+          <>
+            {message}
+          </>
+        )}
+        {failed && (
+          <>
+            <button
+              className="mt-2 rounded-sm bg-black p-2 text-white"
+              type="button"
+              onClick={visFasit}
+            >
+              Du fikk feil 3 ganger. Trykk for å vise fasiten!
+            </button>
+
+            {click && (
+              <>
+                <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
+              </>
+            )}
+          </>
+        )}
+
+        Inputten:        
+                readOnly={failed || correct}
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+
+        Button under INPUTTEN:        
+            disabled={failed || correct}
+
+            
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
@@ -96,64 +154,8 @@ export default function Answer({
     }
   }
 
+  //Må flyttes til usePROGRESSS
   const visFasit = () => {
     setClick(true)
   }
-
-  return (
-    <div className="flex flex-col">
-      <form onSubmit={handleSubmit}>
-        {!correct && !failed && (
-          <>
-            <label htmlFor="answer">Svar</label>
-            <div className="flex-col">
-              <input
-                type="number"
-                name="answer"
-                placeholder="Sett svar her"
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-                className="w-full rounded-md border p-2"
-                readOnly={failed || correct}
-                required
-              />
-            </div>
-            <button
-            className="mt-2 rounded-sm bg-black p-2 text-white"
-            type="submit"
-            disabled={failed || correct}
-          >
-            Sjekk svar
-          </button>
-          </>
-        )}
-
-        {failed && (
-          <>
-            <button
-              className="mt-2 rounded-sm bg-black p-2 text-white"
-              type="button"
-              onClick={visFasit}
-            >
-              Du fikk feil 3 ganger. Trykk for å vise fasiten!
-            </button>
-
-            {click && (
-              <>
-                <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
-                <Progress next={next} current={current} />
-              </>
-            )}
-          </>
-        )}
-
-        {correct && (
-          <>
-            {message}
-            <Progress next={next} current={current} />
-          </>
-        )}
-      </form>
-    </div>
-  )
-}
+ */

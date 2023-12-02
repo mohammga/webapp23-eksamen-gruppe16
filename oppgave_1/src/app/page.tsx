@@ -12,11 +12,11 @@ import Answer from "@/components/Answer"
 
 export default function Home() {
 
-  let count = 0
   let result: any
+  const [data, setData] = useState<Task[]>([])
 
   const [recievedData, setRecievedData] = useState(false)
-  const { amount, data, setAmount, setData } = useProgress()
+  const { amount, answerCorrect, count, setAmount, setCurrent } = useProgress()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,20 +47,19 @@ export default function Home() {
 
   return (
     <div>
+    <Header />
       {amount === 0 ? (
         <>
-          <Header />
           <InputCount updateAmount={updateAmount} />
         </>
       ) : recievedData ? (
         <div>
-          <Header />
           <main className="px-6 md:px-0">
             <Tasks tasks={data} antallOppgaver={amount}>
-              <Answer />
+              <Answer count={count} answerCorrect={answerCorrect}/>
             </Tasks>
-            <Progress />
-          </main>        
+            <Progress setCurrent={setCurrent} />
+          </main>
         </div>
       ) : (
         <p>Laster...</p>
