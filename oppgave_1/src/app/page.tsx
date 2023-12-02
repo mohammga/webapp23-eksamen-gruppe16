@@ -7,6 +7,8 @@ import Header from "@/components/Header"
 import InputCount from "@/components/InputCount"
 import Tasks from "@/components/Tasks"
 import useProgress from "@/hooks/useProgress"
+import Progress from "@/components/Progress"
+import Answer from "@/components/Answer"
 
 export default function Home() {
 
@@ -54,8 +56,11 @@ export default function Home() {
         <div>
           <Header />
           <main className="px-6 md:px-0">
-            <Tasks tasks={data} antallOppgaver={amount} />
-          </main>
+            <Tasks tasks={data} antallOppgaver={amount}>
+              <Answer />
+            </Tasks>
+            <Progress />
+          </main>        
         </div>
       ) : (
         <p>Laster...</p>
