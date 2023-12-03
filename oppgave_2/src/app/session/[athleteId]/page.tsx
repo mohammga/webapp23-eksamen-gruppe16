@@ -1,7 +1,7 @@
 import type { Athlete } from "@/types"
 import type { Metadata } from "next"
 import UsersTable from "@/components/tables/dashboard/AthletesTable"
-import SessionsTable from "@/components/tables/athlete/SessionsTable"
+import SessionsTable from "@/components/tables/athlete/ShowSessionsTable"
 
 export const metadata: Metadata = {
   title: "Dashboard",
