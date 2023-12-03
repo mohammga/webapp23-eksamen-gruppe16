@@ -1,12 +1,10 @@
-<<<<<<< Updated upstream
-import { NextResponse } from "next/server"
-import * as athleteRepo from "@/features/athletes/athelete.repository"
-import { Athlete, Result } from "@/types"
-=======
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+
+
+
 import * as athleteRepo from "@/features/athletes/athelete.repository";
-import { Athlete, CreateAthleteInput, Result } from "@/types";
->>>>>>> Stashed changes
+import { Athlete, Result } from "@/types";
+
 
 export const create = async (
   athleteData: Athlete,
@@ -49,44 +47,33 @@ export const create = async (
   return createdResponse
 }
 
-export const change = async (
-  userId: string,
-  changes: Partial<CreateAthleteInput>,
-): Promise<NextResponse<Result<Athlete>>> => {
-
-  if (!userId || !changes)
-    return NextResponse.json(
-      {
-        success: false,
-        error: `
-        ${userId ? "" : "Missing required field: userId\n"}
-        ${changes.gender ? "" : "Missing required field: gender\n"}
-        ${changes.sportType ? "" : "Missing required field: sport"}`,
-      },
-      { status: 400 },
-    )
-
-  const searchResponse = (await athleteRepo.getById(userId)) as NextResponse<
-    Result<Athlete>
-  >
-
-  // feil med hentingen av data fra databasen via ORM
-  if (searchResponse.status == 500) return searchResponse
-
-  // bruker finnes ikke hvis respons er 404 Not Found
-  if (searchResponse.status == 404)
-    return NextResponse.json(
-      { success: false, error: "Athlete does not exist" },
-      { status: 404 },
-    )
-
-  const updatedResponse = await athleteRepo.changeById(userId, changes)
-
-  if (!updatedResponse.ok) return updatedResponse
-  return updatedResponse
-}
-
 export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
   return await athleteRepo.getAll()
 }
 
+export const getById = async (
+  userId: string,
+): Promise<NextResponse<Result<Athlete>>> => {
+  return await athleteRepo.getById(userId)
+}
+
+export const updateAthlete = async (
+  userId: string,
+  athleteData: Athlete,
+): Promise<NextResponse<Result<Athlete>>> => {
+  const { gender, sportType } = athleteData
+
+  if (!gender || !sportType)
+    return NextResponse.json(
+      {
+        success: false,
+        error: `
+        ${gender ? "" : "Missing required field: gender\n"}
+        ${sportType ? "" : "Missing required field: sport"}`,
+      },
+      { status: 400 },
+    )
+  const updatedResponse = await athleteRepo.update(userId, athleteData)
+
+  return updatedResponse
+}

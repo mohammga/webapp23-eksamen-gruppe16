@@ -1,8 +1,11 @@
-import { Goal as PrismaGoal } from "@prisma/client"
-import { NextRequest, NextResponse } from "next/server"
+import { Goal as PrismaGoal } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 
-import { prisma } from "@/lib/prisma"
-import { Goal, CreateGoalInput, Result } from "@/types"
+
+
+import { prisma } from "@/lib/prisma";
+import { CreateGoalInput, Goal, Result } from "@/types";
+
 
 const goalMapper = <T extends Goal>(goal: PrismaGoal): T => {
   const { athleteId, id, ...rest } = goal
@@ -35,23 +38,57 @@ export const create = async (
   }
 }
 
-export const getAll = async (): Promise<NextResponse<Result<Goal[]>>> => {
+export const getAllForAthlete = async (
+  athleteId: string,
+): Promise<NextResponse<Result<Goal[]>>> => {
   try {
-    const athletes = await prisma.goal.findMany()
+    const goals = await prisma.goal.findMany({
+      where: {
+        athleteId,
+      },
+    })
 
-    if (!athletes) {
+    if (!goals) {
       return NextResponse.json({ success: true, data: null }, { status: 404 })
     }
 
-    const athletesMapped = athletes.map((athlete) => goalMapper(athlete))
+    const goalsMapped = goals.map((goal) => goalMapper(goal))
 
     return NextResponse.json(
-      { success: true, data: athletesMapped },
+      { success: true, data: goalsMapped },
       { status: 200 },
     )
   } catch (error) {
     return NextResponse.json(
       { success: false, error: JSON.stringify(error) },
+      { status: 500 },
+    )
+  }
+}
+
+export const update = async (
+  goalId: string,
+  goalData: Goal,
+): Promise<NextResponse<Result<Goal>>> => {
+  // bruker try/catch for å håndtere feil gitt av Prisma
+  try {
+    const goal = await prisma.goal.update({
+      where: {
+        id: goalId,
+      },
+      data: goalData,
+    })
+
+    return NextResponse.json(
+      { success: true, data: goalMapper(goal) },
+      { status: 200 },
+    )
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `Failed updating athlete goal: \n${JSON.stringify(error)} `,
+      },
       { status: 500 },
     )
   }

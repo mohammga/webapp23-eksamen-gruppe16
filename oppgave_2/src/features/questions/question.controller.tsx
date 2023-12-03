@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { CreateQuestionInput, Question, Result } from "@/types";
 import * as questionService from "./question.service";
 
-
 export const createQuestion = async (
   req: NextRequest,
 ): Promise<NextResponse<Result<Question>>> => {

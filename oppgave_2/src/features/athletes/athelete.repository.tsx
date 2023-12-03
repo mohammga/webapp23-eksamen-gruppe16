@@ -34,6 +34,28 @@ export const create = async (
   }
 }
 
+export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
+  try {
+    const athletes = await prisma.athlete.findMany()
+
+    if (!athletes) {
+      return NextResponse.json({ success: true, data: null }, { status: 404 })
+    }
+
+    const athletesMapped = athletes.map((athlete) => athleteMapper(athlete))
+
+    return NextResponse.json(
+      { success: true, data: athletesMapped },
+      { status: 200 },
+    )
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: JSON.stringify(error) },
+      { status: 500 },
+    )
+  }
+}
+
 export const getById = async (
   userId: string,
 ): Promise<NextResponse<Result<Athlete>>> => {
@@ -60,60 +82,29 @@ export const getById = async (
   }
 }
 
-export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
-  try {
-    const athletes = await prisma.athlete.findMany()
-
-    if (!athletes) {
-      return NextResponse.json({ success: true, data: null }, { status: 404 })
-    }
-
-    const athletesMapped = athletes.map((athlete) => athleteMapper(athlete))
-
-    return NextResponse.json(
-      { success: true, data: athletesMapped },
-      { status: 200 },
-    )
-  } catch (error) {
-    return NextResponse.json(
-      { success: false, error: JSON.stringify(error) },
-      { status: 500 },
-    )
-  }
-}
-
-export const changeById = async (
+export const update = async (
   userId: string,
-  changes: Partial<CreateAthleteInput>,
+  athleteData: Athlete,
 ): Promise<NextResponse<Result<Athlete>>> => {
+  // bruker try/catch for å håndtere feil gitt av Prisma
   try {
-    const existingAthlete = await prisma.athlete.findUnique({
+    const athlete = await prisma.athlete.update({
       where: {
-        userId,
+        userId: userId,
       },
-    })
-
-    if (!existingAthlete) {
-      return NextResponse.json(
-        { success: false, error: "Athlete not found" },
-        { status: 404 },
-      )
-    }
-
-    const updatedAthlete = await prisma.athlete.update({
-      where: {
-        userId,
-      },
-      data: changes,
+      data: athleteData,
     })
 
     return NextResponse.json(
-      { success: true, data: athleteMapper(updatedAthlete) },
+      { success: true, data: athleteMapper(athlete) },
       { status: 200 },
     )
   } catch (error) {
     return NextResponse.json(
-      { success: false, error: JSON.stringify(error) },
+      {
+        success: false,
+        error: `Failed updating athlete: \n${JSON.stringify(error)} `,
+      },
       { status: 500 },
     )
   }
