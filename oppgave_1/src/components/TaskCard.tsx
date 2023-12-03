@@ -15,8 +15,8 @@ export default function TaskCard({task, oppgaveNummer, count, antallOppgaver }: 
   return (
     <section className="">
       <div className="flex justify-between">
-      <p>Oppgave {oppgaveNummer + 1} av {antallOppgaver}</p>
-      <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
+        <p>Oppgave {oppgaveNummer + 1} av {antallOppgaver}</p>
+        <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
       </div>
 
       <div className="">

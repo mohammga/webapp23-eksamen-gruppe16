@@ -6,6 +6,7 @@ import TaskText from "@/components/Text";
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
 import  Result  from "@/components/Result";
+import { useState } from "react";
 
 
 type TasksProps = {
@@ -16,6 +17,8 @@ type TasksProps = {
 
 export default function Tasks({tasks, antallOppgaver }: TasksProps) {
   const {count, current } = useProgress()
+  const [answerCorrect, setAnswerCorrect] = useState(0)
+  const [forsøk, setForsøk] = useState(0)
   const task = tasks[current]
   return (
     <>    
@@ -24,14 +27,15 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
         <TaskCard
           task={task}
           oppgaveNummer={current}
-          count={count}
+          count={forsøk}
           antallOppgaver={antallOppgaver}
         >
           <TaskText text={"Skriv resultatet av regneoperasjonen"} />
         </TaskCard>
         <Answer
-          count={count}
-          answerCorrect={0}
+          setFunct={setForsøk}
+          setAnswerCorrect={setAnswerCorrect}
+          answerCorrect={answerCorrect}
           task={task}
         />
       </div>

@@ -1,13 +1,11 @@
 import React, { ChangeEvent, FormEvent, useState } from "react"
 
-import useProgress from "@/hooks/useProgress"
-
 interface InputCountProps {
   updateAmount: (amount: number) => void
+  setCanSkip: (can: boolean) => void
 }
 
-export default function InputCount({ updateAmount }: InputCountProps) {
-  const { setAmount, setCanSkip } = useProgress()
+export default function InputCount({ updateAmount, setCanSkip }: InputCountProps) {
   const [count, setCount] = useState<number>(0)
   const [hideNext, setHideNext] = useState(false)
 
@@ -21,7 +19,6 @@ export default function InputCount({ updateAmount }: InputCountProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (count > 0 && count <= 10) {
-      setAmount(count)
       updateAmount(count)
     }
   }
@@ -54,7 +51,7 @@ export default function InputCount({ updateAmount }: InputCountProps) {
               />
               <div>                
                 <input
-                  id="skip-task"
+                  id="skip-task" //Her trenger vi egt ikke skip, er mer arbeid å få det til, fant en bedre løsning
                   name="skip-task"
                   type="checkbox"
                   checked={hideNext} // Bruk hideNext-variabelen for å reflektere staten

@@ -10,23 +10,10 @@ type TasksProps = {
 
 export default function Progress({ next, current, setCurrent, canSkip }: TasksProps) {
 
-  const nextQuestion = () => {
-    let nextQ = current + 1
-    setCurrent(nextQ)
-  }
 
   return (
     <footer className="mt-3 space-y-4">
       <>
-      <button
-        onClick={nextQuestion}
-        id="THEBADDESTBITCH"
-        type="button"
-        className={`w-full rounded-sm bg-black py-2 text-white ${!canSkip ? 'opacity-50 cursor-not-allowed' : ''}`}
-        disabled={!canSkip}
-      >
-        Neste
-      </button>
       </>
       
       
