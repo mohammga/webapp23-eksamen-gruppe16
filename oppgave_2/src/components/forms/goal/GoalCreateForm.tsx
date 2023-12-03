@@ -12,8 +12,6 @@ interface AthleteFormData {
         comment: string;
     }[];
 }
-
-
 const ShowAthlete: React.FC = () => {
     const [formData, setFormData] = useState<AthleteFormData>({
         goals: [{ goalId: "", date: "", name: "", goalValue: "", comment: "" }],
@@ -24,36 +22,8 @@ const ShowAthlete: React.FC = () => {
     const handleBack = () => {
         router.push("/");
     };
-
-    const handleGoalChange = (
-        e: ChangeEvent<HTMLInputElement>,
-        index: number,
-    ) => {
-        const { id, value } = e.target;
-        const updatedGoals = [...formData.goals];
-        updatedGoals[index] = { ...updatedGoals[index], [id]: value };
-        setFormData({ ...formData, goals: updatedGoals });
-    };
-
-    const handleAddGoal = () => {
-        setFormData({
-            ...formData,
-            goals: [
-                ...formData.goals,
-                { goalId: "", date: "", name: "", goalValue: "", comment: "" },
-            ],
-        });
-    };
-
-    const handleRemoveGoal = (index: number) => {
-        const updatedGoals = [...formData.goals];
-        updatedGoals.splice(index, 1);
-        setFormData({ ...formData, goals: updatedGoals });
-    };
-
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        // Add your form submission logic here
     };
 
     return (
@@ -138,13 +108,7 @@ const ShowAthlete: React.FC = () => {
                         )}
                     </div>
                 ))}
-                <button
-                    type="button"
-                    onClick={handleAddGoal}
-                    className="rounded bg-gray-500 px-2 py-1 text-white"
-                >
-                    Legg til nytt mål
-                </button>
+
             </div>
 
             <button

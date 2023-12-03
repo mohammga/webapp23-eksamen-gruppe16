@@ -1,7 +1,6 @@
-import { NextRequest, NextResponse } from "next/server"
-
-import { Question, CreateQuestionInput, Result } from "@/types"
-import * as questionsRepo from "@/features/questions/question.repository"
+import { NextResponse } from "next/server";
+import * as questionsRepo from "@/features/questions/question.repository";
+import { CreateQuestionInput, Question, Result } from "@/types";
 
 export const create = async (
   questionData: CreateQuestionInput,
@@ -21,8 +20,11 @@ export const create = async (
 
   const createdResponse = await questionsRepo.create({ text, type })
 
-
   if (!createdResponse.ok) return createdResponse
 
   return createdResponse
+}
+
+export const getAll = async (): Promise<NextResponse<Result<Question[]>>> => {
+  return await questionsRepo.getAll()
 }

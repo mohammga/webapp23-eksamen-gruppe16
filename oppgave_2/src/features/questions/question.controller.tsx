@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server"
-import { Question, CreateQuestionInput, Result } from "@/types"
-import * as questionService from "./question.service"
+import { NextRequest, NextResponse } from "next/server";
+import { CreateQuestionInput, Question, Result } from "@/types";
+import * as questionService from "./question.service";
+
 
 export const createQuestion = async (
   req: NextRequest,
@@ -25,3 +26,19 @@ export const createQuestion = async (
   }
 }
 
+export const listAllQuestions = async (): Promise<
+  NextResponse<Result<Question[]>>
+> => {
+  try {
+    return await questionService.getAll()
+  } catch (error) {
+    console.error("Error occurred while fetching questions", error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: JSON.stringify(error),
+      },
+      { status: 500 },
+    )
+  }
+}

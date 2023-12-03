@@ -1,5 +1,11 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server";
+import * as athleteController from "@/features/athletes/athlete.controller";
 
+
+//vis og endre en utøver
 export function GET(request: NextRequest) {
-  return NextResponse.json({ success: true }, { status: 200 })
+  return athleteController.listAthlete(request)
+}
+export async function PATCH(request: NextRequest) {
+  return athleteController.updateAthlete(request)
 }

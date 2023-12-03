@@ -1,6 +1,5 @@
 import { Session as PrismaSession } from "@prisma/client";
 import { NextResponse } from "next/server";
-
 import { prisma } from "@/lib/prisma";
 import { CreateSessionInput, Result, Session } from "@/types";
 

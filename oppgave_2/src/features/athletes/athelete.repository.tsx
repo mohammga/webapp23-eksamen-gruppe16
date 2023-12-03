@@ -1,8 +1,11 @@
-import { Athlete as PrismaAthlete } from "@prisma/client"
-import { NextRequest, NextResponse } from "next/server"
+import { Athlete as PrismaAthlete } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 
-import {prisma} from "@/lib/prisma"
-import { Athlete, CreateAthleteInput, Result } from "@/types"
+
+
+import { prisma } from "@/lib/prisma";
+import { Athlete, CreateAthleteInput, Result } from "@/types";
+
 
 const athleteMapper = <T extends Athlete>(athlete: PrismaAthlete): T => {
   const { id, ...rest } = athlete
@@ -69,6 +72,43 @@ export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
 
     return NextResponse.json(
       { success: true, data: athletesMapped },
+      { status: 200 },
+    )
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: JSON.stringify(error) },
+      { status: 500 },
+    )
+  }
+}
+
+export const changeById = async (
+  userId: string,
+  changes: Partial<CreateAthleteInput>,
+): Promise<NextResponse<Result<Athlete>>> => {
+  try {
+    const existingAthlete = await prisma.athlete.findUnique({
+      where: {
+        userId,
+      },
+    })
+
+    if (!existingAthlete) {
+      return NextResponse.json(
+        { success: false, error: "Athlete not found" },
+        { status: 404 },
+      )
+    }
+
+    const updatedAthlete = await prisma.athlete.update({
+      where: {
+        userId,
+      },
+      data: changes,
+    })
+
+    return NextResponse.json(
+      { success: true, data: athleteMapper(updatedAthlete) },
       { status: 200 },
     )
   } catch (error) {
