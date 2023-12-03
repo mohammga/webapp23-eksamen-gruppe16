@@ -6,23 +6,34 @@ import TaskText from "@/components/Text";
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
 import  Result  from "@/components/Result";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 type TasksProps = {
   tasks: Task[]
   data: Task[]
   antallOppgaver: number
+  fullført: boolean
+  setFullført: Function
+  setTemafeil: Function
+  temafeil: string[]
 }
 
-export default function Tasks({tasks, antallOppgaver }: TasksProps) {
-  const {count, current } = useProgress()
+export default function Tasks({tasks, antallOppgaver, fullført, setFullført, setTemafeil, temafeil }: TasksProps) {
+  const {count,  setTask} = useProgress()
+
   const [answerCorrect, setAnswerCorrect] = useState(0)
   const [forsøk, setForsøk] = useState(0)
-  const task = tasks[current]
+  const [current, setCurrent] = useState(0)
+
+  let task = tasks[current];
+  let fasit = eval(task.data)
+  let nextQ = current + 1
+  
+
   return (
     <>    
-    {current+1 <= antallOppgaver ? (
+    {nextQ <= antallOppgaver || !fullført ? (
       <div>
         <TaskCard
           task={task}
@@ -33,10 +44,19 @@ export default function Tasks({tasks, antallOppgaver }: TasksProps) {
           <TaskText text={"Skriv resultatet av regneoperasjonen"} />
         </TaskCard>
         <Answer
-          setFunct={setForsøk}
+          setForsøk={setForsøk}
+          forsøk={forsøk}
           setAnswerCorrect={setAnswerCorrect}
           answerCorrect={answerCorrect}
           task={task}
+          fasit={fasit}
+          setCurrent={setCurrent}
+          current={current}
+          setFullført={setFullført}
+          setTemafeil={setTemafeil}
+          temafeil={temafeil}
+          antallOppgaver={antallOppgaver}
+
         />
       </div>
     ) : (

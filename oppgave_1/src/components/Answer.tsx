@@ -3,66 +3,92 @@
 import { useState } from "react";
 import Progress from "@/components/Progress";
 import { Task } from "@/types";
+import useProgress from "@/hooks/useProgress"
 
 
-type TasksProps = { //Fjern de som ikke trengs etterhvert
-  current: number
-  next: () => void
-  setError: () => void
-  answer: string
-  setAnswer: Function
-  setTemafeil: Function
-  setCorrect: Function
-  leggPoeng: () => void
-  setMessage: Function
-  message: string
-  poeng: number
-  task: Task
-  failed: boolean
-  correct: boolean
-  temafeil: string[],
-  answerCorrect: number
-  setAnswerCorrect: (answer: number) => void
-  setFunct: Function
-}
+type TasksProps = {
+  current: number;
+  next: () => void;
+  setError: () => void;
+  answer: string;
+  setAnswer: (answer: string) => void;
+  setTemafeil: (temafeil: string[]) => void;
+  setCorrect: (correct: boolean) => void;
+  leggPoeng: () => void;
+  setMessage: (message: string) => void;
+  message: string;
+  poeng: number;
+  task: Task;
+  failed: boolean;
+  correct: boolean;
+  temafeil: string[];
+  answerCorrect: number;
+  setAnswerCorrect: (answerCorrect: number) => void;
+  setFunct: (value: any) => void; // Bør spesifiseres bedre hvis mulig
+  setForsøk: (forsøk: number) => void;
+  setCurrent: (current: number) => void;
+  setCanInteract: (canInteract: boolean) => void;
+  setFullført: (fullført: boolean) => void;
+  antallOppgaver: number;
+  forsøk: number;
+  fasit: number;
+};
+
+
 
 
 export default function Answer({
-  answerCorrect,
-  setFunct,
+  task,
   setAnswerCorrect,
-  task
+  answerCorrect,
+  setFullført,
+  antallOppgaver,
+  setForsøk,
+  /**setCurrent, */
+  forsøk,
+  fasit,
+  current,
+  setCurrent,
+  setTemafeil,
+  temafeil
 }: TasksProps) {
-  const [answer, setAnswer] = useState(""); // For brukerens svar
-  const [temafeil, setTemafeil] = useState<string[]>([]); // For å holde styr på tema-feil
-  const [message, setMessage] = useState(""); // For å vise en melding basert på svaret
-  const [click, setClick] = useState(false); // For å holde styr på om fasiten er vist
-  const [poeng, setPoeng] = useState(0); // For å holde styr på om fasiten er vist
-  const [forsøk, setForsøk] = useState(0);
+  const [answer, setAnswer] = useState("");
+  const [message, setMessage] = useState("");
+  const [click, setClick] = useState(false);
   const [canInteract, setCanInteract] = useState(false);
-
-  //Vurder å fjerne
-  const [correct, setCorrect] = useState(false); // For å indikere om svaret er riktig
-  const [isCorrect, setIsCorrect] = useState(0);
+  const { poeng, setPoeng} = useProgress();
 
 
   const nextQuestion = () => {
-    let nextQ = current + 1
-    setCurrent(nextQ)
+    console.log("NEXTQUESTION")
+    if (current+1 <= antallOppgaver) {
+      console.log("AUA")
+      let nextQ = current + 1
+      console.log(current + 1)
+      console.log(nextQ)
+      setCurrent(nextQ)
+      setClick(false)
+      setCanInteract(false)
+      setAnswerCorrect(0)
+      setForsøk(0)
+      setMessage("")
+
+    } else {
+      setFullført(true)
+    console.log("WAWAWA SHIT")
+    }
   }
-  
-  const correctAnswer = eval(task.data);
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
+
     e.preventDefault()
-    if (answer === correctAnswer.toString()) {
-      setAnswer(answer)
-      setIsCorrect(1)
-      setCorrect(true)
+    setForsøk(forsøk + 1)    
+
+    if (answer === fasit.toString()) {
+      setAnswerCorrect(1)
       setMessage("Bra jobba! Det var riktig svar")
-      setAnswer("")
       setCanInteract(true)
       
       /*try {
@@ -91,29 +117,26 @@ export default function Answer({
       const pang = poeng + 1
       setPoeng(pang)
     } else {
-      setCanInteract(false)
-      if (forsøk < 2) {
-        setTemafeil([...temafeil, task.type]);
-        setForsøk(forsøk + 1)
-        setFunct(forsøk + 1)
+      if ((forsøk + 1) < 3) {
+        setCanInteract(false)
   
         console.log("Dette er TEMAFEIL" + temafeil)
         console.log(temafeil)
         console.log("SLUTT")
         console.log("DETTE ER TASK:" + task.data)
         console.log("DETTE ER TASK:" + task.type)
-  
-  
-        setAnswer("")
-        setCorrect(false)
+
+        setTemafeil([...temafeil, task.type]);
         //setError()
         setMessage("Feil svar! Prøv igjen")
 
       } else {
+        setCanInteract(true)
         setMessage("Du fikk feil 3 ganger. Trykk for å vise fasiten!")
         setAnswerCorrect(-1)
       }
     }
+    setAnswer("")
   }
 
   //Må flyttes til usePROGRESSS
@@ -133,18 +156,20 @@ export default function Answer({
                 name="answer"
                 placeholder="Sett svar her"
                 className="w-full rounded-md border p-2"
-                readOnly={answerCorrect != 0}
+                readOnly={answerCorrect === 1 || answerCorrect === -1}
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
                 required
               />
             </div>
-            <button
+            {answerCorrect === (0) && (              
+              <button
               className="mt-2 rounded-sm bg-black p-2 text-white"
               type="submit"
             >
               Sjekk svar
             </button>
+            )}
           </>
           {message}
           
@@ -160,7 +185,7 @@ export default function Answer({
 
               {click && (
                 <>
-                  <div>{`Fasit: ${task.data} = ${correctAnswer}`}</div>
+                  <div>{`Fasit: ${task.data} = ${fasit}`}</div>
                 </>
               )}
             </>
@@ -169,7 +194,6 @@ export default function Answer({
       
       <button
         onClick={nextQuestion}
-        id="THEBADDESTBITCH"
         type="button"
         className={`w-full rounded-sm bg-black py-2 text-white ${!canInteract ? 'opacity-50 cursor-not-allowed' : ''}`}
         disabled={!canInteract}

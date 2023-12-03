@@ -12,20 +12,31 @@ type TasksProps = {
 };
 
 export default function TaskCard({task, oppgaveNummer, count, antallOppgaver }: TasksProps) {
+
+  const displayInfo = task?.data !== undefined;
+
   return (
     <section className="">
-      <div className="flex justify-between">
-        <p>Oppgave {oppgaveNummer + 1} av {antallOppgaver}</p>
-        <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
-      </div>
-
-      <div className="">
-        {/*children */}
-        <article key={count}>
-          <h3 className="text-lg font-semibold text-gray-800">{task.text}</h3>
-          <p className="text-base text-gray-600">{task.data}</p>
-        </article>
-      </div>
+      {displayInfo ? (
+        <>
+          <div className="flex justify-between">
+            <p>Oppgave {oppgaveNummer + 1} av {antallOppgaver}</p>
+            <p className='text-muted-foreground'>Brukt {count} av 3 forsøk</p>
+          </div>
+  
+          <div className="">
+            {/* Ensure any children that should be rendered here are included */}
+            <p className="text-xs">Id: {task.id}</p>
+            <article>
+              <h3 className="text-lg font-semibold text-gray-800">{task.text}</h3>
+              <p className="text-base text-gray-600">{task.data}</p>
+            </article>
+          </div>
+        </>
+      ) : (
+        <p>Laster...</p>
+      )}
     </section>
   );
+  
 }

@@ -9,6 +9,7 @@ import Tasks from "@/components/Tasks"
 import useProgress from "@/hooks/useProgress"
 import Progress from "@/components/Progress"
 import Answer from "@/components/Answer"
+import  Result  from "@/components/Result";
 
 export default function Home() {
 
@@ -16,7 +17,10 @@ export default function Home() {
   const [data, setData] = useState<Task[]>([])
 
   const [recievedData, setRecievedData] = useState(false)
-  const { amount, answerCorrect, setAnswerCorrect, current, count, setCount, canSkip, setCanSkip, setAmount, setCurrent } = useProgress()
+  const [fullført, setFullført] = useState(false)
+  const [temafeil, setTemafeil] = useState([]) //"", "addisjon", "", "multiplication", "multi.."
+
+  const { amount, task, poeng, count, setCount, canSkip, setCanSkip, setAmount, hvaMåØvesMerPå } = useProgress()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +49,14 @@ export default function Home() {
     setAmount(newAmount)
   }
 
+  useEffect(() => {
+    if (count >= amount) {
+      setFullført(true);
+    }
+    // Du kan også kjøre andre bieffekter her som avhenger av `count`-verdien
+  }, [count, amount]); // Avhengigheter sikrer at effekten kjører når `count` eller `amount` endres
+  
+
   return (
     <div>
       <Header />
@@ -57,10 +69,24 @@ export default function Home() {
           <main className="px-6 md:px-0">
             <div  className="flex items-center w-full h-screen flex-col py-20">
             <section  className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
-            <Tasks tasks={data} antallOppgaver={amount}>
-              <Answer count={count} answerCorrect={answerCorrect} setAnswerCorrect={setAnswerCorrect} setCount={setCount}/>
-            </Tasks>
-            <Progress current={current} setCurrent={setCurrent} canSkip={canSkip} />
+            {!fullført  ? (
+                <Tasks
+                tasks={data}
+                antallOppgaver={amount}
+                fullført={fullført}
+                setFullført={setFullført}
+                setTemafeil={setTemafeil}
+                temafeil={temafeil}
+                />
+              ) : (
+                <Result
+                  poeng={poeng}
+                  maksPoeng={amount}
+                  operationToPractice={hvaMåØvesMerPå(temafeil)}
+                />
+              )
+            }
+
             </section>
             </div>
           </main>

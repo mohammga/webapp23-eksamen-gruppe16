@@ -49,18 +49,6 @@ export default function InputCount({ updateAmount, setCanSkip }: InputCountProps
                 className="mb-4 w-full rounded-md border p-2"
                 required
               />
-              <div>                
-                <input
-                  id="skip-task" //Her trenger vi egt ikke skip, er mer arbeid å få det til, fant en bedre løsning
-                  name="skip-task"
-                  type="checkbox"
-                  checked={hideNext} // Bruk hideNext-variabelen for å reflektere staten
-                  onChange={clickCheckbox} // Legg til onChange for å håndtere endringer
-                />
-                <label htmlFor="skip-task">
-                  Kan skippe spørsmål
-                </label>
-              </div>
               <button
                 type="submit"
                 className="w-full rounded-sm bg-black p-2 text-white"

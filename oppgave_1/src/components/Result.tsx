@@ -1,14 +1,18 @@
 import React from 'react';
+import useProgress from '@/hooks/useProgress';
 
 type ResultProps = {
   operationToPractice: string;
-  poeng: number;
   setCurrent: Function;
+  maksPoeng: number;
 };
 
-const Result: React.FC<ResultProps> = ({ operationToPractice, poeng, setCurrent }) => {
+const Result: React.FC<ResultProps> = ({ maksPoeng }) => {
+  const { poeng, hvaMåØvesMerPå } = useProgress()
+
   const getTranslation = () => {
-    switch (operationToPractice) {
+    let tema = hvaMåØvesMerPå()
+    switch (tema) {
       case 'multiply':
         return 'Multiplikasjon';
       case 'divide':
@@ -18,18 +22,18 @@ const Result: React.FC<ResultProps> = ({ operationToPractice, poeng, setCurrent 
       case 'subtract':
         return 'Subtraksjon';
       default:
-        return operationToPractice;
+        return tema;
     }
   };
 
   const handleRestartQuiz = () => {
-    setCurrent(0);
+    window.location.reload();
   };
 
   return (
     <div className="flex items-center py-20">
       <div className="bg-gray-200 p-8 rounded-md">
-        <h2 className="text-2xl font-bold mb-4">Totalt poengsum: {poeng} </h2>
+        <h2 className="text-2xl font-bold mb-4">Totalt poengsum: {poeng} av {maksPoeng} </h2>
         <p>Kandidaten må øve mer på temaet: {getTranslation()} </p>
         <button
           onClick={handleRestartQuiz}

@@ -6,19 +6,16 @@ type TasksProps = {
   setCurrent: () => void
   canSkip: boolean
   current: number
+  antallOppgaver: number
+  hvaMåØvesMerPå: Function
 }
 
-export default function Progress({ next, current, setCurrent, canSkip }: TasksProps) {
+export default function Progress({ next, current, setCurrent, canSkip, antallOppgaver, hvaMåØvesMerPå}: TasksProps) {
 
 
   return (
     <footer className="mt-3 space-y-4">
-      <>
-      </>
-      
-      
       <div>
-        <Result poeng={2} setCurrent = {setCurrent} />
       </div>
     </footer>
   )
@@ -27,5 +24,6 @@ export default function Progress({ next, current, setCurrent, canSkip }: TasksPr
 //onClick={next}
 
 /**operationToPractice={hvaMåØvesMerPå()}
+        <Result poeng={2} setCurrent = {setCurrent} maksPoeng={antallOppgaver} />
  * 
  */
