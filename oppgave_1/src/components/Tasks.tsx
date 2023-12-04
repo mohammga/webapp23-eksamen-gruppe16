@@ -6,7 +6,8 @@ import TaskText from "@/components/Text";
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
 import  Result  from "@/components/Result";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { GlobalContext } from '../context/globalContext';
 
 
 type TasksProps = {
@@ -19,14 +20,17 @@ type TasksProps = {
   temafeil: string[]
 }
 
-export default function Tasks({tasks, antallOppgaver, fullført, setFullført, setTemafeil, temafeil }: TasksProps) {
+export default function Tasks({ fullført, setFullført }: TasksProps) {
   const {count,  } = useProgress()
 
   const [answerCorrect, setAnswerCorrect] = useState(0)
   const [forsøk, setForsøk] = useState(0)
-  const [current, setCurrent] = useState(0)
   const [task, setTask] = useState<Task>()
   const [fasit, setFasit] = useState("")
+
+  const context = useContext(GlobalContext);
+
+  const { tasks, antallOppgaver, setTemafeil, temafeil, current } = context;
 
   let nextQ = current + 1
 
@@ -65,18 +69,8 @@ export default function Tasks({tasks, antallOppgaver, fullført, setFullført, s
 
         ) : (<p>Laster...</p>)}
         <Answer
-          setForsøk={setForsøk}
-          forsøk={forsøk}
           setAnswerCorrect={setAnswerCorrect}
           answerCorrect={answerCorrect}
-          task={task}
-          fasit={fasit}
-          setCurrent={setCurrent}
-          current={current}
-          setTemafeil={setTemafeil}
-          temafeil={temafeil}
-          antallOppgaver={antallOppgaver}
-
         />
       </div>
     ) : (

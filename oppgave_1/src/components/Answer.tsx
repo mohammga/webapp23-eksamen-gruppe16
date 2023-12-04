@@ -4,6 +4,7 @@ import { useState } from "react";
 import Progress from "@/components/Progress";
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress"
+import { GlobalContext } from '../context/globalContext';
 
 
 type TasksProps = {
@@ -34,28 +35,20 @@ type TasksProps = {
   fasit: number;
 };
 
-
-
-
 export default function Answer({
-  task,
   setAnswerCorrect,
   answerCorrect,
-  antallOppgaver,
-  setForsøk,
-  /**setCurrent, */
-  forsøk,
-  fasit,
-  current,
-  setCurrent,
-  setTemafeil,
-  temafeil
 }: TasksProps) {
   const [answer, setAnswer] = useState("");
   const [message, setMessage] = useState("");
   const [click, setClick] = useState(false);
   const [canInteract, setCanInteract] = useState(false);
   const { poeng, setPoeng} = useProgress();
+
+  const context = useContext(GlobalContext);
+
+  const { task, antallOppgaver, setForsøk, forsøk, fasit, current, setCurrent, setTemafeil, temafeil } = context;
+
 
 
   const nextQuestion = () => {

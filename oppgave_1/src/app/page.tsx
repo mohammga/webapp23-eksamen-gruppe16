@@ -10,6 +10,7 @@ import useProgress from "@/hooks/useProgress"
 import Progress from "@/components/Progress"
 import Answer from "@/components/Answer"
 import  Result  from "@/components/Result";
+import { GlobalProvider } from "@/context/globalContext"
 
 export default function Home() {
 
@@ -63,23 +64,20 @@ export default function Home() {
           <main className="px-6 md:px-0">
             <div  className="flex items-center w-full h-screen flex-col py-20">
             <section  className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
-            {!fullført  ? (
-                <Tasks
-                  tasks={data}
-                  antallOppgaver={amount}
-                  fullført={fullført}
-                  setFullført={setFullført}
-                  setTemafeil={setTemafeil}
-                  temafeil={temafeil}
-                />
-              ) : (
-                <Result
-                  maksPoeng={amount}
-                  operationToPractice={hvaMåØvesMerPå()}
-                />
-              )
-            }
-
+              <GlobalProvider tasks={data} antallOppgaver={amount}>
+                  {!fullført  ? (
+                    <Tasks
+                      fullført={fullført}
+                      setFullført={setFullført}
+                    />
+                  ) : (
+                    <Result
+                      maksPoeng={amount}
+                      operationToPractice={hvaMåØvesMerPå()}
+                    />
+                  )
+                }
+              </GlobalProvider>
             </section>
             </div>
           </main>

@@ -15,14 +15,22 @@ export default function useProgress() {
   const [fasit, setFasit] = useState("")
   const [task, setTask] = useState<Task>()
 
+  const [current, setCurrent] = useState(0)
+
   const [temafeil, setTemafeil] = useState([]) //"", "addisjon", "", "multiplication", "multi.."
 
   const hvaMåØvesMerPå = () => {
-    console.log(temafeil)
-    let testfeil = temafeil
-    return testfeil.reduce((a, b, _, arr) =>
+    try {
+      console.log(temafeil);
+      let testfeil = temafeil;
+      return testfeil.reduce((a, b, _, arr) =>
         (arr.filter(v => v === a).length >= arr.filter(v => v === b).length ? a : b)
-    );
+      );
+
+    } catch (error) {
+      console.error(error);
+      return "Ingenting"; // Returner en enkel streng hvis en feil oppstår
+    }
   };
 
   return  {count, poeng, 
@@ -30,5 +38,6 @@ export default function useProgress() {
     task, setTask,
     temafeil, setTemafeil,
     setPoeng, canSkip, setCanSkip, 
+    current, setCurrent,
     setCount, amount, setAmount, hvaMåØvesMerPå}
 }
