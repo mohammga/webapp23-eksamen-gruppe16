@@ -90,16 +90,16 @@ const SessionsTable: React.FC = () => {
       <section className="px-6">
         {loading && <p className="py-2">Laster inn...</p>}
         {!loading && athleteSessions.length === 0 && (
-          <p className="py-2">Utøveren har ingen økter. Lag økter for utøveren å se de her.</p>
+          <p className="py-2">Utøveren har ingen økter. Lag økter for utøveren for å se de her.</p>
         )}
         {!loading && athleteSessions.length > 0 && (
           <table className="mt-4 w-full border-collapse">
             <thead>
               <tr>
                 <th className="border bg-black px-4 py-2 text-white">Navn</th>
-                <th className="border bg-black px-4 py-2 text-white">Tagg(er)</th>
+                <th className="border bg-black px-4 py-2 text-white">Tagg</th>
                 <th className="border bg-black px-4 py-2 text-white">Dato</th>
-                <th className="border bg-black px-4 py-2 text-white">Sportstype(r)</th> 
+                <th className="border bg-black px-4 py-2 text-white">Sportstype</th> 
                 <th className="border bg-black px-4 py-2 text-white">
                   Handlinger
                 </th>
@@ -114,16 +114,10 @@ const SessionsTable: React.FC = () => {
                   <td className="border px-4 py-2">{session.sportType}</td>
                   <td className="border px-4 py-2">
                     <button
-                      className="mr-2 rounded bg-black px-4 py-2 text-white"
+                      className="mr-2 rounded bg-red-500 px-4 py-2 text-white"
                       onClick={() => deleteSession(session.id)}
                     >
                       Slett
-                    </button>
-                    <button
-                      className="mr-2 rounded bg-black px-4 py-2 text-white"
-                      onClick={() => editSession(session.id)}
-                    >
-                      Endre
                     </button>
                   </td>
                 </tr>

@@ -30,8 +30,6 @@ model Question {
   id         String   @id @default(cuid())
   text       String
   type       String
-  session    Session  @relation(fields: [sessionId], references: [id])
-  sessionId  String
 }
 
 model Session {
@@ -40,7 +38,6 @@ model Session {
   name           String
   tags           String
   sportType      String
-  questions      Question[]
   athleteId      String
   athlete        Athlete       @relation(fields: [athleteId], references: [id])
 }

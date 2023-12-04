@@ -1,8 +1,5 @@
 import { Goal as PrismaGoal } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-
-
-
 import { prisma } from "@/lib/prisma";
 import { CreateGoalInput, Goal, Result } from "@/types";
 

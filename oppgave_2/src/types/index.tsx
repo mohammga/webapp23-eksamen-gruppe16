@@ -1,22 +1,5 @@
 import { Prisma } from "@prisma/client";
 
-export type User = {
-  id: string
-  userId: string
-  gender: string
-  data: User[]
-}
-
-export type TemplateFormData = {
-  name: string
-  tags: string[]
-  slug: string
-  activityType: string
-  questions: string[]
-  measurementParameter: string
-  intervals: Interval[]
-}
-
 export type Interval = {
   duration: number
   intensityZone: string
@@ -25,25 +8,8 @@ export type Interval = {
 export type Athlete = {
   id?: string
   userId: string
-  gender: "Mann" | "Kvinne"
-  sportType:
-    | "Løp"
-    | "Sykkel"
-    | "Ski"
-    | "Triathlon"
-    | "Svømming"
-    | "Styrke"
-    | "Annet"
-  data: Athlete[]
-}
-
-export type Competition = {
-  name: string
-  date: Date
-  location: string
-  competitionGoal: string
-  priority: string
-  comment: string
+  gender: string
+  sportType: string
 }
 
 export type Goal = {

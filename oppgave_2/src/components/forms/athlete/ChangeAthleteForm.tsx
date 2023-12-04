@@ -2,14 +2,14 @@
 
 import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Athlete } from "@/types/Athlete";
+import { Athlete } from "@/types/index";
 
 interface ApiResponse {
   success: boolean;
   data: Athlete;
 }
 
-const ShowAthlete: React.FC = () => {
+const ChangeAthleteForm: React.FC = () => {
   const [formData, setFormData] = useState<Athlete>({
     userId: "",
     gender: "",
@@ -100,11 +100,14 @@ const ShowAthlete: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to update athlete data");
+      if (response.ok) {
+        setCountdown(5);
+        setFormSubmitted(true);
+      } else {
+        console.error("Feil ved endring av utøver");
       }
-    } catch (error : any) {
-      console.error("Error updating athlete data:", error.message);
+    } catch (error) {
+      console.error("Noe gikk galt:", error);
     }
   };
 
@@ -195,4 +198,4 @@ const ShowAthlete: React.FC = () => {
   );
 };
 
-export default ShowAthlete;
+export default ChangeAthleteForm;

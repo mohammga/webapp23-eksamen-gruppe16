@@ -1,8 +1,8 @@
-import CreateSessionForm from '@/components/forms/session/CreateSessionForm'
+import SessionForm from '@/components/forms/session/SessionForm'
 export default function Home() {
   return (
     <div>
-      <CreateSessionForm/>
+      <SessionForm/>
     </div>
   )
 }

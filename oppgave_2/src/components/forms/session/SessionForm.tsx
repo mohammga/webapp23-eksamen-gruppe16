@@ -1,18 +1,15 @@
 "use client";
 
 import { useState } from 'react';
-import Intervals from '@/components/forms/session/Intervals';
 
 interface FormData {
     name: string;
     tags: string;
     slug: string;
-    activityTypes: string[];
-    questions: string[];
-    measurementParameter: string;
-    sessionDate: string;
-    selectedTrainingGoal: string;
-    selectedCompetition: string;
+    activityType: string;
+    question: string;
+    date: string;
+    goal: string;
 }
 
 const activityTypes = [
@@ -39,17 +36,15 @@ const demoQuestions = [
     "Hvor mange kalorier forbrente du?",
 ];
 
-const CreateSessionForm: React.FC = () => {
+const SessionForm: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         name: '',
         tags: '',
         slug: '',
-        activityTypes: [],
-        questions: [],
-        measurementParameter: '',
-        sessionDate: "",
-        selectedTrainingGoal: '',
-        selectedCompetition: '',
+        activityType: '',
+        question: "",
+        date: "",
+        goal: '',
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +100,7 @@ const CreateSessionForm: React.FC = () => {
                     className="w-full p-2 mt-1 border rounded-md mb-4"
                 />
 
-                <label className="block text-gray-700 text-sm mb-2">Taggs (komma-separert):</label>
+                <label className="block text-gray-700 text-sm mb-2">Tagg</label>
                 <input
                     type="text"
                     name="tags"
@@ -127,9 +122,9 @@ const CreateSessionForm: React.FC = () => {
                 />
 
 
-                <div className="mb-4">
+                <div className="my-4">
                     <label htmlFor="selectedTrainingGoal" className="block text-sm font-medium text-gray-700">
-                        Velg en treningsmål (optional)
+                        Velg en treningsmål
                     </label>
                     <select
                         id="selectedTrainingGoal"
@@ -142,72 +137,24 @@ const CreateSessionForm: React.FC = () => {
                     </select>
                 </div>
 
+
                 <div className="mb-4">
-                    <label htmlFor="selectedCompetition" className="block text-sm font-medium text-gray-700">
-                        Velg en konkurranse (optional)
+                    <label htmlFor="selectedTrainingGoal" className="block text-sm font-medium text-gray-700">
+                        Velg en aktivitetstype
                     </label>
                     <select
-                        id="selectedCompetition"
-                        name="selectedCompetition"
-                        className="mt-1 p-2 border rounded w-full"
-                        value={formData.selectedCompetition}
-                        onChange={(e) => handleSelectChange('selectedCompetition', e.target.value)}
+                        id="selectedTrainingGoal"
+                        name="selectedTrainingGoal"
+                        className="mt-1 p-2 border rounded w-full mb-4"
+                        value={formData.selectedTrainingGoal}
+                        onChange={(e) => handleSelectChange('selectedTrainingGoal', e.target.value)}
                     >
                         <option value="">Velg</option>
                     </select>
                 </div>
 
-                <label className="block text-gray-700 font-bold text-sm mb-2">Aktivitets type</label>
-
-                <label className="block text-gray-700 text-sm mb-2">Type aktivitet:</label>
-                <select
-                    name="activityTypes"
-                    value={formData.activityTypes}
-                    onChange={handleActivityTypesChange}
-                    multiple
-                    className="w-full p-2 mt-1 border rounded-md"
-                >
-                    {activityTypes.map((type) => (
-                        <option key={type} value={type}>
-                            {type}
-                        </option>
-                    ))}
-                </select>
-
-
-                <label className="block text-gray-700 text-sm mb-2">Number of questions:</label>
-                <select
-                    name="questions"
-                    value={formData.questions}
-                    onChange={handleQuestionsChange}
-                    multiple
-                    className="w-full p-2 mt-1 border rounded-md"
-                >
-                    {demoQuestions.map((question) => (
-                        <option key={question} value={question}>
-                            {question}
-                        </option>
-                    ))}
-                </select>
-
-                <label className="block text-gray-700 text-sm mb-2">Measurement parameter:</label>
-                <select
-                    name="measurementParameter"
-                    value={formData.measurementParameter}
-                    onChange={handleMeasurementParameterChange}
-                    className="w-full p-2 mt-1 border rounded-md"
-                >
-                    {measurementParameters.map((param) => (
-                        <option key={param} value={param}>
-                            {param}
-                        </option>
-                    ))}
-                </select>
-
-                <Intervals />
-
                 <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
-                    Opprett Økten
+                    Opprett
                 </button>
 
             </form>
@@ -217,4 +164,4 @@ const CreateSessionForm: React.FC = () => {
     );
 };
 
-export default CreateSessionForm;
+export default SessionForm;

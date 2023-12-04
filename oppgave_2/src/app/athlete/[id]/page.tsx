@@ -1,7 +1,7 @@
 import type { Athlete } from "@/types"
 import type { Metadata } from "next"
 
-import ShowAthlete from "@/components/forms/athlete/ShowAthlete"
+import ShowAthlete from "@/components/forms/athlete/ChangeAthleteForm"
 
 export const metadata: Metadata = {
   title: "Dashboard",

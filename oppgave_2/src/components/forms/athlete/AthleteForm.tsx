@@ -2,7 +2,7 @@
 
 import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Athlete } from "@/types/Athlete"
+import { Athlete } from "@/types/index"
 
 const AthleteForm = () => {
   const [formData, setFormData] = useState<Athlete>({
