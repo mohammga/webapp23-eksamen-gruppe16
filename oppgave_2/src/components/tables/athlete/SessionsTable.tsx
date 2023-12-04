@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 interface Session {
-  id: number
+  id: string
   date: string
   name: string
   tags: string[]
@@ -20,10 +20,11 @@ const SessionsTable: React.FC = () => {
 
   const params = useParams()
   const { athleteId } = params
+  const router = useRouter()
 
   const sessions: Session[] = [
     {
-      id: 1,
+      id: "333",
       date: "2023-11-27",
       name: "Økt 1",
       tags: ["Utendørs", "Løping"],
@@ -31,7 +32,7 @@ const SessionsTable: React.FC = () => {
       status: "normal",
     },
     {
-      id: 2,
+      id: "444",
       date: "2023-11-28",
       name: "Økt 2",
       tags: ["Innendørs", "Styrke"],
@@ -54,25 +55,15 @@ const SessionsTable: React.FC = () => {
     return sortByDate === "asc" ? dateA - dateB : dateB - dateA
   })
 
-  const duplicateSession = (session: Session) => {
-    console.log("Dupliser økt:", session)
+  const deleteSession = (id: string) => {
+    console.log("Slett økt:", id)
   }
 
-  const deleteSession = (session: Session) => {
-    console.log("Slett økt:", session)
+  const editSession = (id: string) => {
+    console.log("Endre økt:", id)
+    router.push(`/session/edit/${id}`)
   }
 
-  const editSession = (session: Session) => {
-    console.log("Endre økt:", session)
-  }
-
-  const reportSession = (session: Session) => {
-    console.log("Rapporter økt:", session)
-  }
-
-  const downloadSession = (session: Session) => {
-    console.log("Last ned økt:", session)
-  }
 
   return (
     <>
@@ -151,38 +142,16 @@ const SessionsTable: React.FC = () => {
                 <td className="border px-4 py-2">
                   <button
                     className="mr-2 rounded bg-black px-4 py-2 text-white"
-                    onClick={() => duplicateSession(session)}
-                  >
-                    Dupliser
-                  </button>
-                  <button
-                    className="mr-2 rounded bg-black px-4 py-2 text-white"
-                    onClick={() => deleteSession(session)}
+                    onClick={() => deleteSession(session.id)}
                   >
                     Slett
                   </button>
                   <button
                     className="mr-2 rounded bg-black px-4 py-2 text-white"
-                    onClick={() => editSession(session)}
+                    onClick={() => editSession(session.id)}
                   >
                     Endre
                   </button>
-
-                  <button
-                    className="mr-2 rounded bg-black px-4 py-2 text-white"
-                    onClick={() => reportSession(session)}
-                  >
-                    Rapporter
-                  </button>
-
-                  {session.status !== "ingen rapport" && (
-                    <button
-                      className="ml-2 rounded bg-black px-4 py-2 text-white"
-                      onClick={() => downloadSession(session)}
-                    >
-                      Last ned
-                    </button>
-                  )}
                 </td>
               </tr>
             ))}

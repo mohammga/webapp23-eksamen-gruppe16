@@ -43,3 +43,4 @@ model Session {
   athleteId      String
   athlete        Athlete       @relation(fields: [athleteId], references: [id])
 }
+

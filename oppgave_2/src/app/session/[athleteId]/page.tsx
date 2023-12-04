@@ -1,34 +1,53 @@
-import type { Athlete } from "@/types"
-import type { Metadata } from "next"
-import UsersTable from "@/components/tables/dashboard/AthletesTable"
-import SessionsTable from "@/components/tables/athlete/SessionsTable"
+"use client";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Dashboard",
-}
+import { useEffect, useState } from "react";
+import type { Session } from "@/types";
+import { useParams } from "next/navigation";
 
-async function getAthletes(): Promise<Athlete> {
-  const response = await fetch("http://localhost:3000/api/athlete",
-    {
-      method: "GET",
-      cache: "no-store",
+
+
+import SessionsTable from "@/components/tables/athlete/SessionsTable";
+
+
+export default function Page() {
+  const params = useParams()
+  const { athleteId } = params
+  const [athleteSessions, setAthleteSessions] = useState<Session[]>([])
+
+  useEffect(() => {
+    const fetchAthleteSessions = async () => {
+      try {
+        if (athleteId) {
+          const response = await fetch(
+            `http://localhost:3000/api/session/${athleteId}`,
+            {
+              method: "GET",
+              cache: "no-store",
+            },
+          )
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch athlete sessions");
+          }
+
+          const sessions: Session[] = await response.json() as Session[];
+          setAthleteSessions(sessions);
+
+          console.log("Fetched athlete sessions:", sessions);
+        }
+      } catch (error: any) {
+        console.error(error.message);
+      }
     }
-  )
 
-  if (!response.ok) {
-    throw new Error("Klarte ikke å hente brukere")
-  }
+    fetchAthleteSessions()
+      console.log("Athlete sessions:", athleteSessions)
+  }, [athleteId])
 
-  return response.json() as Promise<Athlete>
-}
-
-export default async function Page() {
-  const athletes = await getAthletes()
 
   return (
     <div>
-      <SessionsTable/>
+      <SessionsTable />
     </div>
   )
 }
