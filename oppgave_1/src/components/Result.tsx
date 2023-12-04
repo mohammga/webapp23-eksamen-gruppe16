@@ -1,5 +1,4 @@
 import React from 'react';
-import useProgress from '@/hooks/useProgress';
 
 type ResultProps = {
   operationToPractice: string;

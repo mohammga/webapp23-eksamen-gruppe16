@@ -5,13 +5,11 @@ import TaskCard from "@/components/TaskCard";
 import TaskText from "@/components/Text";
 import { Task } from "@/types";
 import useProgress from "@/hooks/useProgress";
-import  Result  from "@/components/Result";
 import { useState, useEffect } from "react";
 
 
 type TasksProps = {
   tasks: Task[]
-  data: Task[]
   antallOppgaver: number
   fullført: boolean
   setFullført: Function
@@ -43,15 +41,13 @@ export default function Tasks({tasks, antallOppgaver, fullført,
   
   useEffect(() => {
     if (count >= antallOppgaver) {
-      console.log(fullført)
       setFullført(true);
     }
     setTask(tasks[current])
     if (task !== undefined) {
       setFasit(eval(task.data))
     }
-    // Du kan også kjøre andre bieffekter her som avhenger av `count`-verdien
-  }, [current, antallOppgaver, task, fasit]); // Avhengigheter sikrer at effekten kjører når `count` eller `amount` endres
+  }, [current, antallOppgaver, task, fasit]);
   
 
   return (
