@@ -19,11 +19,13 @@ type TasksProps = {
   temafeil: string[]
   setPoeng: Function
   poeng: number
+  buttonOverride: boolean
 }
 
 export default function Tasks({tasks, antallOppgaver, fullført, 
   setFullført, setTemafeil, temafeil, 
-  setPoeng, poeng }: TasksProps) {
+  setPoeng, poeng,
+  buttonOverride = false }: TasksProps) {
   const {count,  } = useProgress()
 
   const [answerCorrect, setAnswerCorrect] = useState(0)

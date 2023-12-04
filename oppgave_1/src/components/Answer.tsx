@@ -33,6 +33,7 @@ type TasksProps = {
   fasit: number;
   setPoeng: Function
   poeng: number
+  buttonOverride: boolean
 };
 
 
@@ -51,7 +52,8 @@ export default function Answer({
   setTemafeil,
   temafeil,
   setPoeng,
-  poeng
+  poeng,
+  buttonOverride = false
 }: TasksProps) {
   const [answer, setAnswer] = useState("");
   const [message, setMessage] = useState("");
@@ -193,11 +195,12 @@ export default function Answer({
       <button
         onClick={nextQuestion}
         type="button"
-        className={`w-full rounded-sm bg-black py-2 text-white ${!canInteract ? 'opacity-50 cursor-not-allowed' : ''}`}
-        disabled={!canInteract}
+        className={`w-full rounded-sm bg-black py-2 text-white ${(!canInteract && !buttonOverride) ? 'opacity-50 cursor-not-allowed' : ''}`}
+        disabled={!canInteract && !buttonOverride}
       >
         Neste
       </button>
+
 
     </div>
   )
