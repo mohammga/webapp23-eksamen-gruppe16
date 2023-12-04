@@ -17,14 +17,13 @@ type TasksProps = {
   leggPoeng: () => void;
   setMessage: (message: string) => void;
   message: string;
-  poeng: number;
   task: Task;
   failed: boolean;
   correct: boolean;
   temafeil: string[];
   answerCorrect: number;
   setAnswerCorrect: (answerCorrect: number) => void;
-  setFunct: (value: any) => void; // Bør spesifiseres bedre hvis mulig
+  setFunct: (value: any) => void;
   setForsøk: (forsøk: number) => void;
   setCurrent: (current: number) => void;
   setCanInteract: (canInteract: boolean) => void;
@@ -32,6 +31,8 @@ type TasksProps = {
   antallOppgaver: number;
   forsøk: number;
   fasit: number;
+  setPoeng: Function
+  poeng: number
 };
 
 
@@ -43,19 +44,19 @@ export default function Answer({
   answerCorrect,
   antallOppgaver,
   setForsøk,
-  /**setCurrent, */
   forsøk,
   fasit,
   current,
   setCurrent,
   setTemafeil,
-  temafeil
+  temafeil,
+  setPoeng,
+  poeng
 }: TasksProps) {
   const [answer, setAnswer] = useState("");
   const [message, setMessage] = useState("");
   const [click, setClick] = useState(false);
   const [canInteract, setCanInteract] = useState(false);
-  const { poeng, setPoeng} = useProgress();
 
 
   const nextQuestion = () => {
@@ -86,8 +87,9 @@ export default function Answer({
       setAnswerCorrect(1)
       setMessage("Bra jobba! Det var riktig svar")
       setCanInteract(true)
+      setPoeng(poeng + 1)
       
-      /*try {
+      try {
         const response = await fetch(
           "http://localhost:3000/api/task",
           {
@@ -96,7 +98,7 @@ export default function Answer({
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              attempts: count + 1,
+              attempts: forsøk + 1,
               taskId: task.id,
             }),
           },
@@ -108,7 +110,7 @@ export default function Answer({
 
       } catch (error) {
         console.error("Feil ved innsending av svar:", (error as Error).message);
-      } */
+      }
 
       const pang = poeng + 1
       setPoeng(pang)

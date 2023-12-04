@@ -18,11 +18,16 @@ export default function useProgress() {
   const [temafeil, setTemafeil] = useState([]) //"", "addisjon", "", "multiplication", "multi.."
 
   const hvaMåØvesMerPå = () => {
-    console.log(temafeil)
-    let testfeil = temafeil
-    return testfeil.reduce((a, b, _, arr) =>
+    try {
+      console.log(temafeil);
+      let testfeil = temafeil;
+      return testfeil.reduce((a, b, _, arr) =>
         (arr.filter(v => v === a).length >= arr.filter(v => v === b).length ? a : b)
-    );
+      );
+
+    } catch (error) {
+      return "Ingenting";
+    }
   };
 
   return  {count, poeng, 

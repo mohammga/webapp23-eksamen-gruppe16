@@ -71,10 +71,13 @@ export default function Home() {
                   setFullført={setFullført}
                   setTemafeil={setTemafeil}
                   temafeil={temafeil}
+                  setPoeng={setPoeng}
+                  poeng={poeng}
                 />
               ) : (
                 <Result
                   maksPoeng={amount}
+                  poeng={poeng}
                   operationToPractice={hvaMåØvesMerPå()}
                 />
               )

@@ -17,9 +17,13 @@ type TasksProps = {
   setFullført: Function
   setTemafeil: Function
   temafeil: string[]
+  setPoeng: Function
+  poeng: number
 }
 
-export default function Tasks({tasks, antallOppgaver, fullført, setFullført, setTemafeil, temafeil }: TasksProps) {
+export default function Tasks({tasks, antallOppgaver, fullført, 
+  setFullført, setTemafeil, temafeil, 
+  setPoeng, poeng }: TasksProps) {
   const {count,  } = useProgress()
 
   const [answerCorrect, setAnswerCorrect] = useState(0)
@@ -37,7 +41,6 @@ export default function Tasks({tasks, antallOppgaver, fullført, setFullført, s
   
   useEffect(() => {
     if (count >= antallOppgaver) {
-      console.log("CUMSE")
       console.log(fullført)
       setFullført(true);
     }
@@ -76,7 +79,8 @@ export default function Tasks({tasks, antallOppgaver, fullført, setFullført, s
           setTemafeil={setTemafeil}
           temafeil={temafeil}
           antallOppgaver={antallOppgaver}
-
+          setPoeng={setPoeng}
+          poeng={poeng}
         />
       </div>
     ) : (

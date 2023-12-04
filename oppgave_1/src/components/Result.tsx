@@ -5,10 +5,10 @@ type ResultProps = {
   operationToPractice: string;
   setCurrent: Function;
   maksPoeng: number;
+  poeng: number;
 };
 
-const Result: React.FC<ResultProps> = ({ operationToPractice, maksPoeng }) => {
-  const { poeng, hvaMåØvesMerPå } = useProgress()
+const Result: React.FC<ResultProps> = ({ operationToPractice, maksPoeng, poeng }) => {
 
   const getTranslation = () => {
     switch (operationToPractice) {
@@ -25,6 +25,8 @@ const Result: React.FC<ResultProps> = ({ operationToPractice, maksPoeng }) => {
     }
   };
 
+  let tema = getTranslation()
+
   const handleRestartQuiz = () => {
     window.location.reload();
   };
@@ -33,7 +35,11 @@ const Result: React.FC<ResultProps> = ({ operationToPractice, maksPoeng }) => {
     <div className="flex items-center py-20">
       <div className="bg-gray-200 p-8 rounded-md">
         <h2 className="text-2xl font-bold mb-4">Totalt poengsum: {poeng} av {maksPoeng} </h2>
-        <p>Kandidaten må øve mer på temaet: {getTranslation()} </p>
+        {tema === "Ingenting" ? (
+          <p>Kandidaten fikk riktig på alt uten feilforsøk! Øv mer ved å ta en ny test!</p>
+        ) : (
+          <p>Kandidaten må øve mer på temaet: {tema} </p>
+        )}
         <button
           onClick={handleRestartQuiz}
           className="bg-black text-white px-4 py-2 mt-4 rounded-md"
