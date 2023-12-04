@@ -36,12 +36,9 @@ model Session {
   id             String        @id @default(cuid())
   date           DateTime
   name           String
-  tags           String
+  tag            String
+  slug           String
   sportType      String
   athleteId      String
   athlete        Athlete       @relation(fields: [athleteId], references: [id])
 }
-
-//mangler liste av intervaller
-//mangler liste av spørsmål
-//mangler liste av tags 

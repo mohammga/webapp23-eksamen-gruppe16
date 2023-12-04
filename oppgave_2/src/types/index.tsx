@@ -26,10 +26,11 @@ export type Question = {
 }
 
 export type Session = {
-  id: string
+  id?: string
   date: Date
   name: string
-  tags: string
+  slug: string
+  tag: string
   sportType: string
   athleteId: string
 }

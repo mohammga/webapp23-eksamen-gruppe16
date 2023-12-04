@@ -1,167 +1,177 @@
-"use client";
+"use client"
 
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { useRouter, useParams } from "next/navigation"
 
-interface FormData {
-    name: string;
-    tags: string;
-    slug: string;
-    activityType: string;
-    question: string;
-    date: string;
-    goal: string;
+import { Session } from "@/types/index"
+
+const SessionForm = () => {
+
+    const params = useParams()
+    const { id } = params;
+  const [formData, setFormData] = useState<Session>({
+    name: "",
+    date: new Date(),
+    tag: "",
+    slug: "",
+    sportType: "",
+    athleteId: id,
+  })
+
+  const router = useRouter()
+  const [countdown, setCountdown] = useState(0)
+  const [formSubmitted, setFormSubmitted] = useState(false)
+
+  useEffect(() => {
+    let countdownInterval: NodeJS.Timeout
+
+    if (countdown > 0) {
+      countdownInterval = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1)
+      }, 1000)
+    } else {
+      if (formSubmitted) {
+        router.push("/")
+        router.refresh()
+      }
+    }
+
+    return () => clearInterval(countdownInterval)
+  }, [countdown, router, formSubmitted])
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { id, value } = e.target
+    setFormData({ ...formData, [id]: value })
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/session`, {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      if (response.ok) {
+        setCountdown(5)
+        setFormSubmitted(true)
+      } else {
+        console.error("Feil ved opprettelse av økt")
+      }
+    } catch (error) {
+      console.error("Noe gikk galt:", error)
+    }
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto mt-8 max-w-md rounded bg-white p-8 shadow-md"
+    >
+      <h2 className="mb-4 text-2xl font-bold">Opprett økt</h2>
+
+      {formSubmitted && (
+        <p className="text-md mb-4 text-gray-600">
+          Økten har blitt opprettet og du blir omdirigert om {countdown}{" "}
+          sekunder.
+        </p>
+      )}
+
+      <label
+        htmlFor="name"
+        className="mb-2 block text-sm font-bold text-gray-700"
+      >
+        Navn
+      </label>
+      <input
+        type="text"
+        id="name"
+        required
+        value={formData.name}
+        onChange={handleChange}
+        className="mb-4 w-full rounded border border-gray-300 p-2"
+      />
+
+      <label
+        htmlFor="tag"
+        className="mb-2 block text-sm font-bold text-gray-700"
+      >
+        Tag
+      </label>
+      <input
+        type="text"
+        id="tag"
+        required
+        value={formData.tag}
+        onChange={handleChange}
+        className="mb-4 w-full rounded border border-gray-300 p-2"
+      />
+
+      <label
+        htmlFor="slug"
+        className="mb-2 block text-sm font-bold text-gray-700"
+      >
+        Slug
+      </label>
+      <input
+        type="text"
+        id="slug"
+        required
+        value={formData.slug}
+        onChange={handleChange}
+        className="mb-4 w-full rounded border border-gray-300 p-2"
+      />
+
+      <label
+        htmlFor="date"
+        className="mb-2 block text-sm font-bold text-gray-700"
+      >
+        Dato
+      </label>
+      <input
+        type="date"
+        id="date"
+        onChange={handleChange}
+        className="mb-4 w-full rounded border border-gray-300 p-2"
+      />
+
+      <label
+        htmlFor="sportType"
+        className="mb-2 block text-sm font-bold text-gray-700"
+      >
+        Velg aktivitet
+      </label>
+      <select
+        id="sportType"
+        onChange={handleChange}
+        required
+        value={formData.sportType}
+        className="mb-4 w-full rounded border border-gray-300 p-2"
+      >
+        <option value="">Velg sport</option>
+        <option value="running">Løp</option>
+        <option value="cycling">Sykkel</option>
+        <option value="skiing">Ski</option>
+        <option value="triathlon">Triathlon</option>
+        <option value="swimming">Svømming</option>
+        <option value="strength">Styrke</option>
+        <option value="other">Annet</option>
+      </select>
+
+      <button
+        type="submit"
+        className="rounded bg-gray-800 px-4 py-2 text-white hover:bg-gray-700"
+      >
+        Opprett
+      </button>
+    </form>
+  )
 }
 
-const activityTypes = [
-    "Løp",
-    "Sykkel",
-    "Ski",
-    "Triatlon",
-    "Svømming",
-    "Styrke",
-    "Annet",
-];
-
-const measurementParameters = [
-    "Puls",
-    "Wat",
-    "Fart",
-    "Tid",
-];
-
-const demoQuestions = [
-    "Hvor langt løp du?",
-    "Hva var gjennomsnittspulsen din?",
-    "Hvor lang tid tok det?",
-    "Hvor mange kalorier forbrente du?",
-];
-
-const SessionForm: React.FC = () => {
-    const [formData, setFormData] = useState<FormData>({
-        name: '',
-        tags: '',
-        slug: '',
-        activityType: '',
-        question: "",
-        date: "",
-        goal: '',
-    });
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
-    const handleSelectChange = (name: string, value: string) => {
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
-    const handleQuestionsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
-        setFormData((prevData) => ({ ...prevData, questions: selectedOptions }));
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Legg til logikk for innsending, f.eks. lagring til en database
-        console.log('Skjemadata sendt:', formData);
-    };
-
-    const handleTagsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            tags: e.target.value,
-        }));
-    };
-
-    const handleActivityTypesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            activityTypes: Array.from(e.target.selectedOptions).map(option => option.value),
-        }));
-    };
-
-    const handleMeasurementParameterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            measurementParameter: e.target.value,
-        }));
-    };
-    return (
-        <div className="max-w-lg mx-auto bg-white p-8 mt-8 rounded shadow-md ">
-            <h1 className="text-2xl font-semibold mb-4">Opprett Økt</h1>
-            <form onSubmit={handleSubmit}>
-                <label className="block text-gray-700 text-sm mb-2">Navn på treningsøkten:</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full p-2 mt-1 border rounded-md mb-4"
-                />
-
-                <label className="block text-gray-700 text-sm mb-2">Tagg</label>
-                <input
-                    type="text"
-                    name="tags"
-                    value={formData.tags}
-                    onChange={handleTagsChange}
-                    className="w-full p-2 mt-1 border rounded-md"
-                />
-
-
-                <label htmlFor="sessionDate" className="block text-sm font-medium text-gray-700">
-                    Dato
-                </label>
-                <input
-                    type="date"
-                    id="sessionDate"
-                    name="sessionDate"
-                    className="mt-4 p-2 border rounded w-full"
-                    value={formData.sessionDate}
-                />
-
-
-                <div className="my-4">
-                    <label htmlFor="selectedTrainingGoal" className="block text-sm font-medium text-gray-700">
-                        Velg en treningsmål
-                    </label>
-                    <select
-                        id="selectedTrainingGoal"
-                        name="selectedTrainingGoal"
-                        className="mt-1 p-2 border rounded w-full mb-4"
-                        value={formData.selectedTrainingGoal}
-                        onChange={(e) => handleSelectChange('selectedTrainingGoal', e.target.value)}
-                    >
-                        <option value="">Velg</option>
-                    </select>
-                </div>
-
-
-                <div className="mb-4">
-                    <label htmlFor="selectedTrainingGoal" className="block text-sm font-medium text-gray-700">
-                        Velg en aktivitetstype
-                    </label>
-                    <select
-                        id="selectedTrainingGoal"
-                        name="selectedTrainingGoal"
-                        className="mt-1 p-2 border rounded w-full mb-4"
-                        value={formData.selectedTrainingGoal}
-                        onChange={(e) => handleSelectChange('selectedTrainingGoal', e.target.value)}
-                    >
-                        <option value="">Velg</option>
-                    </select>
-                </div>
-
-                <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700">
-                    Opprett
-                </button>
-
-            </form>
-        </div>
-
-
-    );
-};
-
-export default SessionForm;
+export default SessionForm

@@ -6,9 +6,9 @@ import { Result, Session } from "@/types";
 export const create = async (
   sessionData: Session,
 ): Promise<NextResponse<Result<Session>>> => {
-  const { date, name, slug, athleteId } = sessionData
+  const { date, name, slug, tag, sportType, athleteId } = sessionData
 
-  if (!date || !name || !slug || !athleteId)
+  if (!date || !name || !slug || !athleteId || !tag || !sportType)
     return NextResponse.json(
       {
         success: false,
@@ -16,6 +16,8 @@ export const create = async (
         ${date ? "" : "Missing required field: date\n"}
         ${name ? "" : "Missing required field: name\n"}
         ${slug ? "" : "Missing required field: slug\n"}
+        ${tag ? "" : "Missing required field: tag\n"}
+        ${sportType ? "" : "Missing required field: sportType\n"}
         ${athleteId ? "" : "Missing required field: athleteId\n"}"`,
       },
       { status: 400 },
@@ -25,6 +27,8 @@ export const create = async (
     date,
     name,
     slug,
+    tag,
+    sportType,
     athlete: {
       connect: {
         id: athleteId,
@@ -54,15 +58,17 @@ export const updateSession = async (
   sessionId: string,
   sessionData: Session,
 ): Promise<NextResponse<Result<Session>>> => {
-  const { date, name, slug } = sessionData
+  const { date, name, slug, tag, sportType} = sessionData
 
-  if (!date || !name || !slug )
+  if (!date || !name || !slug || !tag || !sportType)
     return NextResponse.json(
       {
         success: false,
         error: `
         ${date ? "" : "Missing required field: date\n"}
         ${name ? "" : "Missing required field: name\n"}
+        ${tag ? "" : "Missing required field: tag\n"}
+        ${sportType ? "" : "Missing required field: sportType\n"}
         ${slug ? "" : "Missing required field: slug\n"}"`,
       },
       { status: 400 },
