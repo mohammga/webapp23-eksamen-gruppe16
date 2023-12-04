@@ -18,9 +18,10 @@ export default function Home() {
 
   const [recievedData, setRecievedData] = useState(false)
   const [fullført, setFullført] = useState(false)
-  const [temafeil, setTemafeil] = useState([]) //"", "addisjon", "", "multiplication", "multi.."
 
-  const { amount, task, poeng, count, setCount, canSkip, setCanSkip, setAmount, hvaMåØvesMerPå } = useProgress()
+  const { amount, task, poeng, setPoeng, count, setCount, 
+    temafeil, setTemafeil, 
+    canSkip, setCanSkip, setAmount, hvaMåØvesMerPå } = useProgress()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,14 +49,7 @@ export default function Home() {
   const updateAmount = (newAmount: number) => {
     setAmount(newAmount)
   }
-
-  useEffect(() => {
-    if (count >= amount) {
-      setFullført(true);
-    }
-    // Du kan også kjøre andre bieffekter her som avhenger av `count`-verdien
-  }, [count, amount]); // Avhengigheter sikrer at effekten kjører når `count` eller `amount` endres
-  
+ 
 
   return (
     <div>
@@ -71,18 +65,17 @@ export default function Home() {
             <section  className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
             {!fullført  ? (
                 <Tasks
-                tasks={data}
-                antallOppgaver={amount}
-                fullført={fullført}
-                setFullført={setFullført}
-                setTemafeil={setTemafeil}
-                temafeil={temafeil}
+                  tasks={data}
+                  antallOppgaver={amount}
+                  fullført={fullført}
+                  setFullført={setFullført}
+                  setTemafeil={setTemafeil}
+                  temafeil={temafeil}
                 />
               ) : (
                 <Result
-                  poeng={poeng}
                   maksPoeng={amount}
-                  operationToPractice={hvaMåØvesMerPå(temafeil)}
+                  operationToPractice={hvaMåØvesMerPå()}
                 />
               )
             }

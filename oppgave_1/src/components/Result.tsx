@@ -7,12 +7,11 @@ type ResultProps = {
   maksPoeng: number;
 };
 
-const Result: React.FC<ResultProps> = ({ maksPoeng }) => {
+const Result: React.FC<ResultProps> = ({ operationToPractice, maksPoeng }) => {
   const { poeng, hvaMåØvesMerPå } = useProgress()
 
   const getTranslation = () => {
-    let tema = hvaMåØvesMerPå()
-    switch (tema) {
+    switch (operationToPractice) {
       case 'multiply':
         return 'Multiplikasjon';
       case 'divide':
@@ -22,7 +21,7 @@ const Result: React.FC<ResultProps> = ({ maksPoeng }) => {
       case 'subtract':
         return 'Subtraksjon';
       default:
-        return tema;
+        return operationToPractice;
     }
   };
 

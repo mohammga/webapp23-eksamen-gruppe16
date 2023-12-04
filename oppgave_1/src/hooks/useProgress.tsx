@@ -15,7 +15,9 @@ export default function useProgress() {
   const [fasit, setFasit] = useState("")
   const [task, setTask] = useState<Task>()
 
-  const hvaMåØvesMerPå = (temafeil: string[]) => {
+  const [temafeil, setTemafeil] = useState([]) //"", "addisjon", "", "multiplication", "multi.."
+
+  const hvaMåØvesMerPå = () => {
     console.log(temafeil)
     let testfeil = temafeil
     return testfeil.reduce((a, b, _, arr) =>
@@ -26,6 +28,7 @@ export default function useProgress() {
   return  {count, poeng, 
     fasit, setFasit,
     task, setTask,
+    temafeil, setTemafeil,
     setPoeng, canSkip, setCanSkip, 
     setCount, amount, setAmount, hvaMåØvesMerPå}
 }

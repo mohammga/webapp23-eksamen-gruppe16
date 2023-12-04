@@ -20,29 +20,50 @@ type TasksProps = {
 }
 
 export default function Tasks({tasks, antallOppgaver, fullført, setFullført, setTemafeil, temafeil }: TasksProps) {
-  const {count,  setTask} = useProgress()
+  const {count,  } = useProgress()
 
   const [answerCorrect, setAnswerCorrect] = useState(0)
   const [forsøk, setForsøk] = useState(0)
   const [current, setCurrent] = useState(0)
+  const [task, setTask] = useState<Task>()
+  const [fasit, setFasit] = useState("")
 
-  let task = tasks[current];
-  let fasit = eval(task.data)
   let nextQ = current + 1
+
+  const finishExam = () => {
+    setFullført(true)
+  }
+
+  
+  useEffect(() => {
+    if (count >= antallOppgaver) {
+      console.log("CUMSE")
+      console.log(fullført)
+      setFullført(true);
+    }
+    setTask(tasks[current])
+    if (task !== undefined) {
+      setFasit(eval(task.data))
+    }
+    // Du kan også kjøre andre bieffekter her som avhenger av `count`-verdien
+  }, [current, antallOppgaver, task, fasit]); // Avhengigheter sikrer at effekten kjører når `count` eller `amount` endres
   
 
   return (
     <>    
-    {nextQ <= antallOppgaver || !fullført ? (
+    {nextQ <= antallOppgaver ? (
       <div>
-        <TaskCard
-          task={task}
-          oppgaveNummer={current}
-          count={forsøk}
-          antallOppgaver={antallOppgaver}
-        >
-          <TaskText text={"Skriv resultatet av regneoperasjonen"} />
-        </TaskCard>
+        {task !== undefined ? (
+          <TaskCard
+            task={task}
+            oppgaveNummer={current}
+            count={forsøk}
+            antallOppgaver={antallOppgaver}
+          >
+            <TaskText text={"Skriv resultatet av regneoperasjonen"} />
+          </TaskCard>
+
+        ) : (<p>Laster...</p>)}
         <Answer
           setForsøk={setForsøk}
           forsøk={forsøk}
@@ -52,7 +73,6 @@ export default function Tasks({tasks, antallOppgaver, fullført, setFullført, s
           fasit={fasit}
           setCurrent={setCurrent}
           current={current}
-          setFullført={setFullført}
           setTemafeil={setTemafeil}
           temafeil={temafeil}
           antallOppgaver={antallOppgaver}
@@ -62,6 +82,14 @@ export default function Tasks({tasks, antallOppgaver, fullført, setFullført, s
     ) : (
       <>
       Du har fullført alle oppgavene dine!
+      
+      <button
+        onClick={finishExam}
+        type="button"
+        className="w-full rounded-sm bg-black py-2 text-white"
+      >
+        Fullfør Eksamen
+      </button>
       </>
     )}
     </>

@@ -41,7 +41,6 @@ export default function Answer({
   task,
   setAnswerCorrect,
   answerCorrect,
-  setFullført,
   antallOppgaver,
   setForsøk,
   /**setCurrent, */
@@ -73,9 +72,6 @@ export default function Answer({
       setForsøk(0)
       setMessage("")
 
-    } else {
-      setFullført(true)
-    console.log("WAWAWA SHIT")
     }
   }
 
