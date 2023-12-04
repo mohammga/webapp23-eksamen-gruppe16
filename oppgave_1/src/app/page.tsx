@@ -7,8 +7,6 @@ import Header from "@/components/Header"
 import InputCount from "@/components/InputCount"
 import Tasks from "@/components/Tasks"
 import useProgress from "@/hooks/useProgress"
-import Progress from "@/components/Progress"
-import Answer from "@/components/Answer"
 import  Result  from "@/components/Result";
 
 export default function Home() {

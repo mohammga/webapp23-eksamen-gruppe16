@@ -7,27 +7,15 @@ import useProgress from "@/hooks/useProgress"
 
 
 type TasksProps = {
+  task: Task
   current: number;
-  next: () => void;
-  setError: () => void;
-  answer: string;
-  setAnswer: (answer: string) => void;
   setTemafeil: (temafeil: string[]) => void;
-  setCorrect: (correct: boolean) => void;
-  leggPoeng: () => void;
-  setMessage: (message: string) => void;
-  message: string;
-  task: Task;
   failed: boolean;
-  correct: boolean;
   temafeil: string[];
   answerCorrect: number;
   setAnswerCorrect: (answerCorrect: number) => void;
-  setFunct: (value: any) => void;
   setForsøk: (forsøk: number) => void;
   setCurrent: (current: number) => void;
-  setCanInteract: (canInteract: boolean) => void;
-  setFullført: (fullført: boolean) => void;
   antallOppgaver: number;
   forsøk: number;
   fasit: number;
@@ -119,15 +107,7 @@ export default function Answer({
     } else {
       if ((forsøk + 1) < 3) {
         setCanInteract(false)
-  
-        console.log("Dette er TEMAFEIL" + temafeil)
-        console.log(temafeil)
-        console.log("SLUTT")
-        console.log("DETTE ER TASK:" + task.data)
-        console.log("DETTE ER TASK:" + task.type)
-
         setTemafeil([...temafeil, task.type]);
-        //setError()
         setMessage("Feil svar! Prøv igjen")
 
       } else {
@@ -139,7 +119,6 @@ export default function Answer({
     setAnswer("")
   }
 
-  //Må flyttes til usePROGRESSS
   const visFasit = () => {
     setClick(true)
   }
@@ -147,7 +126,7 @@ export default function Answer({
 
   return (
     <div className="flex flex-col">
-      <form onSubmit={handleSubmit}>
+      <form {answerCorrect === 0 ? onSubmit={handleSubmit} : ()}>
           <>
             <label htmlFor="answer">Svar</label>
             <div className="flex-col">
@@ -205,22 +184,3 @@ export default function Answer({
     </div>
   )
 }
-
-/**
- * 
- *      Holder på inputten og button
-        {!correct && !failed && (
-        )}
- * 
- * 
- * 
-        
-
-        Inputten:        
-                
-
-        Button under INPUTTEN:        
-            disabled={failed || correct}
-            
-
- */

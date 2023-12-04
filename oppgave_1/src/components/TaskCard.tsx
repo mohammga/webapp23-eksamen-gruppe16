@@ -25,7 +25,7 @@ export default function TaskCard({task, oppgaveNummer, count, antallOppgaver }: 
           </div>
   
           <div className="">
-            {/* Ensure any children that should be rendered here are included */}
+            {/*children*/}
 
             <p className="text-xs">Id: {task.id}</p>
             <article>
