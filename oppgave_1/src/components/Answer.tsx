@@ -1,80 +1,226 @@
 "use client";
 
 import { useState } from "react";
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import * as Yup from "yup";
 import Progress from "@/components/Progress";
 import { Task } from "@/types";
+import useProgress from "@/hooks/useProgress"
 
 
 type TasksProps = {
-  current: number
-  next: () => void
-  setError: () => void
-  resetCount: () => void
-  tasks: Task[]
-}
+  current: number;
+  next: () => void;
+  setError: () => void;
+  answer: string;
+  setAnswer: (answer: string) => void;
+  setTemafeil: (temafeil: string[]) => void;
+  setCorrect: (correct: boolean) => void;
+  leggPoeng: () => void;
+  setMessage: (message: string) => void;
+  message: string;
+  task: Task;
+  failed: boolean;
+  correct: boolean;
+  temafeil: string[];
+  answerCorrect: number;
+  setAnswerCorrect: (answerCorrect: number) => void;
+  setFunct: (value: any) => void;
+  setForsøk: (forsøk: number) => void;
+  setCurrent: (current: number) => void;
+  setCanInteract: (canInteract: boolean) => void;
+  setFullført: (fullført: boolean) => void;
+  antallOppgaver: number;
+  forsøk: number;
+  fasit: number;
+  setPoeng: Function
+  poeng: number
+  buttonOverride: boolean
+};
 
-export default function Answer({ tasks, current, setError, resetCount, next }: TasksProps) {
-  const [correct, setCorrect] = useState(false)
-  const [message, setMessage] = useState("")
 
-  // Validation schema using Yup
-  const validationSchema = Yup.object().shape({
-    answer: Yup.number()
-      .required("Svar er påkrevd")
-  })
 
-  const correctAnswer = eval(tasks[current].data)
 
-  const handleSubmit = async (
-    values: { answer: string },
-    actions: FormikHelpers<{ answer: string }>, // Include 'actions' parameter
-  ): Promise<void> => {
-    if (values.answer === correctAnswer) {
-      setCorrect(true)
-      setMessage("Bra jobbet!")
-      resetCount()
-      actions.resetForm() // Use 'actions.resetForm()' to reset the form
-    } else {
-      setCorrect(false)
-      setError()
+export default function Answer({
+  task,
+  setAnswerCorrect,
+  answerCorrect,
+  antallOppgaver,
+  setForsøk,
+  forsøk,
+  fasit,
+  current,
+  setCurrent,
+  setTemafeil,
+  temafeil,
+  setPoeng,
+  poeng,
+  buttonOverride = false
+}: TasksProps) {
+  const [answer, setAnswer] = useState("");
+  const [message, setMessage] = useState("");
+  const [click, setClick] = useState(false);
+  const [canInteract, setCanInteract] = useState(false);
+
+
+  const nextQuestion = () => {
+    console.log("NEXTQUESTION")
+    if (current+1 <= antallOppgaver) {
+      console.log("AUA")
+      let nextQ = current + 1
+      console.log(current + 1)
+      console.log(nextQ)
+      setCurrent(nextQ)
+      setClick(false)
+      setCanInteract(false)
+      setAnswerCorrect(0)
+      setForsøk(0)
       setMessage("")
-      actions.resetForm() // Use 'actions.resetForm()' to reset the form
+
     }
-    actions.setSubmitting(false) // Use 'actions.setSubmitting()' to update the submitting state
   }
 
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
 
+    e.preventDefault()
+    setForsøk(forsøk + 1)    
+
+    if (answer === fasit.toString()) {
+      setAnswerCorrect(1)
+      setMessage("Bra jobba! Det var riktig svar")
+      setCanInteract(true)
+      setPoeng(poeng + 1)
+      
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/task",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              attempts: forsøk + 1,
+              taskId: task.id,
+            }),
+          },
+        )
+
+        if (!response.ok) {
+          throw new Error("Feil ved innsending av svar")
+        }
+
+      } catch (error) {
+        console.error("Feil ved innsending av svar:", (error as Error).message);
+      }
+
+      const pang = poeng + 1
+      setPoeng(pang)
+    } else {
+      if ((forsøk + 1) < 3) {
+        setCanInteract(false)
+  
+        console.log("Dette er TEMAFEIL" + temafeil)
+        console.log(temafeil)
+        console.log("SLUTT")
+        console.log("DETTE ER TASK:" + task.data)
+        console.log("DETTE ER TASK:" + task.type)
+
+        setTemafeil([...temafeil, task.type]);
+        //setError()
+        setMessage("Feil svar! Prøv igjen")
+
+      } else {
+        setCanInteract(true)
+        setMessage("Du fikk feil 3 ganger. Trykk for å vise fasiten!")
+        setAnswerCorrect(-1)
+      }
+    }
+    setAnswer("")
+  }
+
+  //Må flyttes til usePROGRESSS
+  const visFasit = () => {
+    setClick(true)
+  }
+  
 
   return (
     <div className="flex flex-col">
-      <label htmlFor="answer">Svar</label>
-      <Formik
-        initialValues={{ answer: "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ errors, handleChange, handleBlur, values, isSubmitting }) => (
-        <Form>
-          <Field
-            type="number"
-            name="answer"
-            placeholder="Sett svar her"
-            onChange={handleChange}
-            onBlur={handleBlur}     
-          />
-          <ErrorMessage name="answer" component="div" className="error" />
-          <p>{message}</p>
-          {!correct && (
-            <button className="rounded-sm bg-black text-white" type="submit" disabled={isSubmitting}>
+      <form onSubmit={handleSubmit}>
+          <>
+            <label htmlFor="answer">Svar</label>
+            <div className="flex-col">
+              <input
+                type="number"
+                name="answer"
+                placeholder="Sett svar her"
+                className="w-full rounded-md border p-2"
+                readOnly={answerCorrect === 1 || answerCorrect === -1}
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                required
+              />
+            </div>
+            {answerCorrect === (0) && (              
+              <button
+              className="mt-2 rounded-sm bg-black p-2 text-white"
+              type="submit"
+            >
               Sjekk svar
             </button>
+            )}
+          </>
+          {message}
+          
+          {answerCorrect === (-1) && (
+            <>
+              <button
+                className="mt-2 rounded-sm bg-black p-2 text-white"
+                type="button"
+                onClick={visFasit}
+              >
+                Vis Fasit
+              </button>
+
+              {click && (
+                <>
+                  <div>{`Fasit: ${task.data} = ${fasit}`}</div>
+                </>
+              )}
+            </>
           )}
-          {correct && <Progress next={next} current={current} />}
-        </Form>
-      )}
-      </Formik>
+      </form>
+      
+      <button
+        onClick={nextQuestion}
+        type="button"
+        className={`w-full rounded-sm bg-black py-2 text-white ${(!canInteract && !buttonOverride) ? 'opacity-50 cursor-not-allowed' : ''}`}
+        disabled={!canInteract && !buttonOverride}
+      >
+        Neste
+      </button>
+
+
     </div>
   )
 }
+
+/**
+ * 
+ *      Holder på inputten og button
+        {!correct && !failed && (
+        )}
+ * 
+ * 
+ * 
+        
+
+        Inputten:        
+                
+
+        Button under INPUTTEN:        
+            disabled={failed || correct}
+            
+
+ */
