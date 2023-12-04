@@ -2,7 +2,6 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { Task } from '@/types';
 import useProgress from '@/hooks/useProgress';
 
-const GlobalContext = createContext(null);
 
 type Types = {
     tasks: Task[]
@@ -36,6 +35,9 @@ type Types = {
     children: ReactNode;
 }
 
+export const GlobalContext = createContext<Task | undefined>(undefined)
+
+
 type GlobalProviderProps = Types & {
     children: ReactNode;
   };
@@ -67,7 +69,7 @@ export const GlobalProvider = ({ tasks, antallOppgaver, children } : Types) => {
           };
 
     return (
-        <GlobalContext.Provider value={value}>
+        <GlobalContext.Provider value={task}>
         {children}
         </GlobalContext.Provider>
     );

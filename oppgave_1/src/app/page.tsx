@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import type { Task } from "@/types"
 
 import Header from "@/components/Header"
@@ -10,7 +10,7 @@ import useProgress from "@/hooks/useProgress"
 import Progress from "@/components/Progress"
 import Answer from "@/components/Answer"
 import  Result  from "@/components/Result";
-import { GlobalProvider } from "@/context/globalContext"
+import { GlobalContext } from "@/context/globalContext"
 
 export default function Home() {
 
@@ -64,7 +64,8 @@ export default function Home() {
           <main className="px-6 md:px-0">
             <div  className="flex items-center w-full h-screen flex-col py-20">
             <section  className="w-full md:w-[520px] rounded-lg border bg-white p-10 shadow-md">
-              <GlobalProvider tasks={data} antallOppgaver={amount}>
+              
+              <GlobalContext.Provider value={task}>
                   {!fullført  ? (
                     <Tasks
                       fullført={fullført}
@@ -77,7 +78,7 @@ export default function Home() {
                     />
                   )
                 }
-              </GlobalProvider>
+              </GlobalContext.Provider>
             </section>
             </div>
           </main>
