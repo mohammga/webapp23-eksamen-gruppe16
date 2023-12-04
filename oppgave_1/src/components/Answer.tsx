@@ -126,7 +126,7 @@ export default function Answer({
 
   return (
     <div className="flex flex-col">
-      <form {answerCorrect === 0 ? onSubmit={handleSubmit} : ()}>
+      <form onSubmit={handleSubmit}>
           <>
             <label htmlFor="answer">Svar</label>
             <div className="flex-col">
