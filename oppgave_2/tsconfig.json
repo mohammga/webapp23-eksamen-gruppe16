@@ -60,7 +60,7 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-  ],
+, "src/components/forms/athleteAndGoalChange"  ],
   "exclude": [
     "node_modules",
     "./coverage/**/*"

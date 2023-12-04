@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Athlete } from "@/types/Athlete"
 
-const AthleteForm = () => {
+const CreateAthleteForm = () => {
   const [formData, setFormData] = useState<Athlete>({
     userId: '',
     gender: '',
@@ -128,4 +128,4 @@ const AthleteForm = () => {
   );
 };
 
-export default AthleteForm;
+export default CreateAthleteForm;

@@ -149,7 +149,6 @@ const ShowAthlete: React.FC = () => {
       >
         Endre
       </button>
-
     </form>
   )
 }

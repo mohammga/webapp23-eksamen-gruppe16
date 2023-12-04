@@ -33,7 +33,7 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
   };
 
   const handleShowAthlete = (id: string) => {
-    router.push(`/athlete/${id}`);
+    router.push(`/edit/goal-and-athlete/${id}`);
   };
 
   const handleShowGoal = (id: string) => {

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AthleteFormData } from "@/types/index";
 
 
-const GoalCreateForm: React.FC = () => {
+const CustomizedEditGoalForm: React.FC = () => {
     const [formData, setFormData] = useState<AthleteFormData>({
         goals: [{ goalId: "", date: "", name: "", goalValue: "", comment: ""}],
     });
@@ -44,17 +44,14 @@ const GoalCreateForm: React.FC = () => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        // Add your form submission logic here
     };
 
     return (
         <form
             onSubmit={handleSubmit}
-            className="mx-auto mt-8 max-w-md rounded bg-white p-8 shadow-md"
         >
-            <h2 className="mb-4 text-2xl font-bold">Opprett mål</h2>
 
-            <div className="mb-4">
+
                 {formData.goals.map((goal, index) => (
                     <div key={index}>
 
@@ -136,24 +133,9 @@ const GoalCreateForm: React.FC = () => {
                 >
                     Legg til nytt mål
                 </button>
-            </div>
 
-            <button
-                onClick={handleBack}
-                type="button"
-                className="mr-2 rounded bg-gray-700 px-4 py-2 text-white"
-            >
-                Tilbake
-            </button>
-
-            <button
-                type="submit"
-                className="rounded bg-gray-800 px-4 py-2 text-white hover:bg-gray-700"
-            >
-                Opprett
-            </button>
         </form>
     );
 };
 
-export default GoalCreateForm;
+export default CustomizedEditGoalForm;
