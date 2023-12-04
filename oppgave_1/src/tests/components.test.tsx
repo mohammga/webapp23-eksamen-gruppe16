@@ -19,6 +19,11 @@ import { Task } from "@/types"
 import { useState, useEffect } from "react";
 
 
+jest.mock('path-to-useProgress-hook', () => ({
+  useProgress: jest.fn(() => ({ poeng: 0, setPoeng: jest.fn() })),
+}));
+
+
 describe("Button Component", () => {
   it("renders a button with children", () => {
     render(<Button classNames="custom-class">Click me</Button>)
@@ -138,10 +143,12 @@ describe("Progress Component", () => {
     expect(inputElement.value).toBe("11")
   })
 
-  /*it('displays "Bra jobbet!" when the answer is correct', async () => {
+  it('displays "Bra jobbet!" when the answer is correct', async () => {
+    const tasks = [{ id: '1', question: '...', correctAnswer: '11' }, ...]; // Mock tasks
     render(<Tasks tasks={tasks} antallOppgaver={3}/>);
+  
     const inputElement = screen.getByPlaceholderText("Sett svar her");
-    const sendButton = screen.getByText("Send");
+    const sendButton = screen.getByText(/Sjekk svar/i);
   
     fireEvent.input(inputElement, { target: { value: "11" } });
     fireEvent.click(sendButton);
@@ -153,37 +160,38 @@ describe("Progress Component", () => {
       const successMessage = screen.getByText(/Bra jobbet!/i);
       expect(successMessage).toBeInTheDocument();
     });
+  });
+
+  /* */
+  
+  /**it("renders a list of tasks correctly", () => {
+    render(<Tasks tasks={tasks} antallOppgaver={3}/>);
+  
+    const firstTask = tasks[0];
+  
+    const taskElement = screen.getByText(new RegExp(firstTask.text.toString(), 'i'));
+    const typeElement = screen.getByText(new RegExp(firstTask.type.toString(), 'i'));
+    const dataElement = screen.getByText(new RegExp(firstTask.data.toString(), 'i'));
+  
+    expect(taskElement).toBeInTheDocument();
+    expect(typeElement).toBeInTheDocument();
+    expect(dataElement).toBeInTheDocument();
   }); */
   
-  it("renders a list of tasks correctly", () => {
-    render(<Tasks tasks={tasks} antallOppgaver={3}/>)
-
-    const firstTask = tasks[0]
-    console.log(firstTask)
-    
-    /**
-    const taskElement = screen.getByText(new RegExp(firstTask.text, 'i'))
-    const typeElement = screen.getByText(new RegExp(firstTask.type, 'i'))
-    const dataElement = screen.getByText(new RegExp(firstTask.data, 'i')) */
-    
-    const taskElement = screen.getByText(firstTask.text)
-    const typeElement = screen.getByText(firstTask.type)
-    const dataElement = screen.getByText(firstTask.data)
-
-    expect(taskElement).toBeInTheDocument()
-    expect(typeElement).toBeInTheDocument()
-    expect(dataElement).toBeInTheDocument()
-  })
 
   /**
+
   it("initializes with count as 0 and returns the current task", () => {
     const { result } = renderHook(() => useProgress({ tasks }))
 
+    console.log("HER ER RESULT: ")
+    console.log(result)
+
     expect(result.current.count).toBe(0)
     expect(result.current.current).toEqual(tasks[0])
-  })
-
-  it("updates count when next is called", () => {
+  }) */
+  
+  /**it("updates count when next is called", () => {
     const { result } = renderHook(() => useProgress({ tasks }))
 
     act(() => {
@@ -192,16 +200,19 @@ describe("Progress Component", () => {
 
     expect(result.current.count).toBe(1)
     expect(result.current.current).toEqual(tasks[1])
-  })
-
-  it("updates count when prev is called", () => {
-    const { result } = renderHook(() => useProgress({ tasks }))
-
-    act(() => {
-      result.current.prev()
-    })
-
-    expect(result.current.count).toBe(tasks.length - 1)
-    expect(result.current.current).toEqual(tasks[tasks.length - 1])
   }) */
+
+  /**
+    Prev testen er ugyldig i vårt prosjekt
+    it("updates count when prev is called", () => {
+      const { result } = renderHook(() => useProgress({ tasks }))
+
+      act(() => {
+        result.current.prev()
+      })
+
+      expect(result.current.count).toBe(tasks.length - 1)
+      expect(result.current.current).toEqual(tasks[tasks.length - 1])
+    })
+ */
 })

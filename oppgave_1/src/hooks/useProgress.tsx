@@ -6,7 +6,7 @@ type Props = {
   data: Task[]
 }
 
-export default function useProgress() {
+export default function useProgress( tasks: Task[] ) {
   const [count, setCount] = useState(0) //Trengs ikke
   const [amount, setAmount] = useState(0)
   const [poeng, setPoeng] = useState(0)
