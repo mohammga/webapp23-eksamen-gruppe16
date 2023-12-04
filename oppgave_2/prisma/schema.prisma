@@ -12,9 +12,6 @@ model Athlete {
   userId      String        @unique
   gender      String
   sportType   String
-  heartRate   Int?
-  watt        Int?
-  speed       Int?
   goal        Goal[]
   sessions    Session[]
 }
@@ -33,14 +30,21 @@ model Question {
   id         String   @id @default(cuid())
   text       String
   type       String
+  session    Session  @relation(fields: [sessionId], references: [id])
+  sessionId  String
 }
 
 model Session {
   id             String        @id @default(cuid())
   date           DateTime
   name           String
-  slug           String
+  tags           String
+  sportType      String
+  questions      Question[]
   athleteId      String
   athlete        Athlete       @relation(fields: [athleteId], references: [id])
 }
 
+//mangler liste av intervaller
+//mangler liste av spørsmål
+//mangler liste av tags 

@@ -47,10 +47,10 @@ export const listAllAthletes = async (): Promise<
 }
 
 export const listAthlete = async (
-  userId: string,
+  athleteId: string,
 ): Promise<NextResponse<Result<Athlete>>> => {
   try {
-    return await athleteService.getById(userId)
+    return await athleteService.getById(athleteId)
   } catch (error) {
     console.error("Error occurred while getting athlete", error)
     return NextResponse.json(
@@ -65,7 +65,7 @@ export const listAthlete = async (
 
 export const updateAthlete = async (
   req: NextRequest,
-  userId: string,
+  athleteId: string,
 ): Promise<NextResponse<Result<Athlete>>> => {
   if (!req.body)
     return NextResponse.json(
@@ -74,7 +74,7 @@ export const updateAthlete = async (
     )
   try {
     const athleteData = (await req.json()) as Athlete
-    return await athleteService.updateAthlete(userId, athleteData)
+    return await athleteService.updateAthlete(athleteId, athleteData)
   } catch (error) {
     console.error("Error occurred while updating athlete", error)
     return NextResponse.json(

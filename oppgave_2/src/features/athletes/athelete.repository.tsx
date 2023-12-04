@@ -9,7 +9,7 @@ import { Athlete, CreateAthleteInput, Result } from "@/types";
 
 const athleteMapper = <T extends Athlete>(athlete: PrismaAthlete): T => {
   const { id, ...rest } = athlete
-  return rest as unknown as T
+  return athlete as unknown as T
 }
 
 export const create = async (
@@ -57,12 +57,12 @@ export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
 }
 
 export const getById = async (
-  userId: string,
+  athleteId: string,
 ): Promise<NextResponse<Result<Athlete>>> => {
   try {
     const athlete = await prisma.athlete.findUnique({
       where: {
-        userId,
+        id: athleteId,
       },
     })
 
@@ -83,14 +83,14 @@ export const getById = async (
 }
 
 export const update = async (
-  userId: string,
+  athleteId: string,
   athleteData: Athlete,
 ): Promise<NextResponse<Result<Athlete>>> => {
   // bruker try/catch for å håndtere feil gitt av Prisma
   try {
     const athlete = await prisma.athlete.update({
       where: {
-        userId: userId,
+        id: athleteId,
       },
       data: athleteData,
     })

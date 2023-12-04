@@ -28,10 +28,10 @@ export const createSession = async (
 
 export const listAllSessionsForAthlete = async (
   req: NextRequest,
-  athleteId: string,
+  userId: string,
 ): Promise<NextResponse<Result<Session[]>>> => {
   try {
-    return await sessionService.getAllForAthlete(athleteId)
+    return await sessionService.getAllForAthlete(userId)
   } catch (error) {
     console.error("Error occurred while getting athlete sessions", error)
     return NextResponse.json(

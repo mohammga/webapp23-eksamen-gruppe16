@@ -15,7 +15,6 @@ export type TemplateFormData = {
   questions: string[]
   measurementParameter: string
   intervals: Interval[]
-  // Add the rest of the attributes
 }
 
 export type Interval = {
@@ -24,6 +23,7 @@ export type Interval = {
 }
 
 export type Athlete = {
+  id?: string
   userId: string
   gender: "Mann" | "Kvinne"
   sportType:
@@ -60,9 +60,11 @@ export type Question = {
 }
 
 export type Session = {
+  id: string
   date: Date
   name: string
-  slug: string
+  tags: string
+  sportType: string
   athleteId: string
 }
 

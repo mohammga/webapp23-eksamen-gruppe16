@@ -6,7 +6,7 @@ import { CreateSessionInput, Result, Session } from "@/types";
 
 const sessionMapper = <T extends Session>(session: PrismaSession): T => {
   const { athleteId, id, ...rest } = session
-  return rest as unknown as T
+  return session as unknown as T
 }
 
 export const create = async (

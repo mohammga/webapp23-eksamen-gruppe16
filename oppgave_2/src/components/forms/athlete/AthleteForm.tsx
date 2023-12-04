@@ -9,11 +9,6 @@ const AthleteForm = () => {
     userId: '',
     gender: '',
     sportType: '',
-    meta: {
-      heartRate: '',
-      watt: '',
-      speed: '',
-    },
   });
 
   const router = useRouter();
@@ -46,7 +41,7 @@ const AthleteForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/athlete", {
+      const response = await fetch("http://localhost:3000/api/athlete/", {
         method: "POST",
         body: JSON.stringify(formData),
         headers: {

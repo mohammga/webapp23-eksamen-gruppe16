@@ -99,22 +99,22 @@ const athletesTable: React.FC<athletesTableProps> = ({ athletes }) => {
           </thead>
           <tbody>
             {filteredAthletes.map((athlete) => (
-              <tr key={athlete.userId}>
+              <tr key={athlete.id}>
                 <td className="border px-4 py-2">{athlete.userId}</td>
                 <td className="border px-4 py-2">
                   {translateGender(athlete.gender)}
                 </td>
                 <td className="border px-4 py-2">
-                           <button onClick={() => handleCreateSession(athlete.userId)} className="mr-2 rounded bg-black px-4 py-2 text-white">
+                           <button onClick={() => handleCreateSession(athlete.id)} className="mr-2 rounded bg-black px-4 py-2 text-white">
                     Opprett økt
                   </button>
-                  <button onClick={() => handleShowSession(athlete.userId)} className="mr-2 rounded bg-black px-4 py-2 text-white">
+                  <button onClick={() => handleShowSession(athlete.id)} className="mr-2 rounded bg-black px-4 py-2 text-white">
                     Vis økter
                   </button>
-                  <button onClick={() => handleShowAthlete(athlete.userId)} className="ml-2 rounded bg-black px-4 py-2 text-white">
+                  <button onClick={() => handleShowAthlete(athlete.id)} className="ml-2 rounded bg-black px-4 py-2 text-white">
                     Endre informasjon
                   </button>
-                  <button onClick={() => handleShowGoal(athlete.userId)} className="ml-2 rounded bg-black px-4 py-2 text-white">
+                  <button onClick={() => handleShowGoal(athlete.id)} className="ml-2 rounded bg-black px-4 py-2 text-white">
                     Opprett mål
                   </button>
                 </td>

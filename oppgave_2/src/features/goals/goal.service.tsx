@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
-
-
-
 import * as goalRepo from "@/features/goals/goal.repository";
 import { Goal, Result } from "@/types";
-
 
 export const create = async (
   goalData: Goal,

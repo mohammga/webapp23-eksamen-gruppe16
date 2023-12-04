@@ -52,13 +52,13 @@ export const getAll = async (): Promise<NextResponse<Result<Athlete[]>>> => {
 }
 
 export const getById = async (
-  userId: string,
+  athleteId: string,
 ): Promise<NextResponse<Result<Athlete>>> => {
-  return await athleteRepo.getById(userId)
+  return await athleteRepo.getById(athleteId)
 }
 
 export const updateAthlete = async (
-  userId: string,
+  athleteId: string,
   athleteData: Athlete,
 ): Promise<NextResponse<Result<Athlete>>> => {
   const { gender, sportType } = athleteData
@@ -73,7 +73,7 @@ export const updateAthlete = async (
       },
       { status: 400 },
     )
-  const updatedResponse = await athleteRepo.update(userId, athleteData)
+  const updatedResponse = await athleteRepo.update(athleteId, athleteData)
 
   return updatedResponse
 }
